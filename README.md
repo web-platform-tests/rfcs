@@ -32,7 +32,7 @@ on the side of skipping it if in doubt!
  - In the case of no substantive disagreement the RFC is considered accepted
    after 1 week.
  - If substantive disagreement remains, then the issue is escalated to the
-   [core team](https://github.com/orgs/web-platform-tests/teams/core) for a
-   decison. Only arguments that have already been made on the issue may be
-   taken into account. A decision should be made within 1 additional week.
+   [core team](https://github.com/orgs/web-platform-tests/teams/wpt-core-team/)
+   for a decison. Only arguments that have already been made on the issue may
+   be taken into account. A decision should be made within 1 additional week.
  - Close the RFC issue when it has been implemented.
