@@ -25,8 +25,8 @@ on the side of skipping it if in doubt!
 
 ## The RFC process
 
- - Create a [new issue](https://github.com/foolip/rfcs/issues/new) in this
-   repository by filling out the issue template.
+ - Create a [new issue](https://github.com/web-platform-tests/rfcs/issues/new)
+   in this repository by filling out the issue template.
  - The proposal is discussed by the community and it is assumed that the
    proposal will change in accordance with that discussion. 
  - In the case of no substantive disagreement the RFC is considered accepted
