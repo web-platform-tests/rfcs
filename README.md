@@ -38,5 +38,5 @@ on the side of skipping it if in doubt!
    [core team](https://github.com/orgs/web-platform-tests/teams/wpt-core-team/)
    for a decison. Only arguments that have already been made on the issue may
    be taken into account. As a last resort, the core team may decide using a
-   2/3 majority vote. A decision should be made within 1 additional week.
+   &geq;2/3 majority vote. A decision should be made within 1 additional week.
  - Close the RFC issue when it has been implemented.
