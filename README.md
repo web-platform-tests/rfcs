@@ -30,9 +30,10 @@ on the side of skipping it if in doubt!
  - Create a [new issue](https://github.com/web-platform-tests/rfcs/issues/new)
    in this repository by filling out the issue template.
  - The proposal is discussed by the community and it is assumed that the
-   proposal will change in accordance with that discussion. 
+   proposal will change in accordance with that discussion.
  - In the case of no substantive disagreement the RFC is considered accepted
-   after 1 week.
+   after 1 week. If any participant requests it, the comment period is extended
+   to 2 weeks.
  - If substantive disagreement remains, then the issue is escalated to the
    [core team](https://github.com/orgs/web-platform-tests/teams/wpt-core-team/)
    for a decison. Only arguments that have already been made on the issue may
