@@ -9,7 +9,7 @@ This RFC (request for comments) process is used to request wider review.
 
 ## When to use the RFC process
 
-Use this process for substantial changes which might impact other stakeholders
+Use this process for substantial changes which would impact other stakeholders
 or users of web-platform-tests. Examples of where it is likely to be useful:
 
  - Changes in [resources/](https://github.com/web-platform-tests/wpt/tree/master/resources)
@@ -27,8 +27,8 @@ Cases where the RFC process need *not* be used:
    for.
  - Behavior-preserving refactoring with a low risk of regressions.
 
-As a rule of thumb, please use the RFC process when it would be useful and err
-on the side of skipping it if in doubt!
+Feel free to err on the side of skipping the process when it does not seem
+valuable. If others disagree they may request that you send an RFC.
 
 ## The RFC process
 
