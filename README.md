@@ -5,14 +5,12 @@
 Most changes in web-platform-tests can be made directly in pull requests
 following the usual review process.
 
-The RFC (request for comments) process is used to request wider review for
-substantial changes, which might impact other stakeholders or users of
-web-platform-tests.
+This RFC (request for comments) process is used to request wider review.
 
 ## When to use the RFC process
 
-A few examples where the process is
-likely to be useful:
+Use this process for substantial changes which would impact other stakeholders
+or users of web-platform-tests. Examples of where it is likely to be useful:
 
  - Changes in [resources/](https://github.com/web-platform-tests/wpt/tree/master/resources)
    which would affect many test authors, such as extending testharness.js.
@@ -22,8 +20,12 @@ likely to be useful:
  - Adding a new third-party code or service dependency.
  - Changing review workflows or policies.
 
-As a rule of thumb, please use the RFC process when it would be useful and err
-on the side of skipping it if in doubt!
+Cases where the RFC process need *not* be used:
+
+ - Introducing a new top-level directory for a new specification.
+ - Minor changes in behavior in where all call sites are known and accounted
+   for.
+ - Behavior-preserving refactoring with a low risk of regressions.
 
 ## The RFC process
 
