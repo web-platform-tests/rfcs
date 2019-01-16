@@ -27,9 +27,6 @@ Cases where the RFC process need *not* be used:
    for.
  - Behavior-preserving refactoring with a low risk of regressions.
 
-Feel free to err on the side of skipping the process when it does not seem
-valuable. If others disagree they may request that you send an RFC.
-
 ## The RFC process
 
  - Create a [new issue](https://github.com/web-platform-tests/rfcs/issues/new)
