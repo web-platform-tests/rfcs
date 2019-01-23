@@ -38,7 +38,12 @@ Cases where the RFC process need *not* be used:
    to 2 weeks.
  - If substantive disagreement remains, then the issue is escalated to the
    [core team](https://github.com/orgs/web-platform-tests/teams/wpt-core-team/)
-   for a decison. Only arguments that have already been made on the issue may
-   be taken into account. As a last resort, the core team may decide using a
-   &geq;2/3 majority vote. A decision should be made within 1 additional week.
+   for a decison:
+   - Only arguments that have already been made on the issue may be taken into
+     account.
+   - If meaningful new information is presented, the comment period can be
+     extended to ensure that all participants have time to consider it.
+   - When no new information is forthcoming, a decision should be made within 1
+     additional week.
+   - As a last resort, the core team may decide using a &geq;2/3 majority vote.
  - Close the RFC issue when it has been implemented.
