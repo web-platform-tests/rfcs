@@ -45,5 +45,7 @@ Cases where the RFC process need *not* be used:
      extended to ensure that all participants have time to consider it.
    - When no new information is forthcoming, a decision should be made within 1
      additional week.
-   - As a last resort, the core team may decide using a &geq;2/3 majority vote.
- - Close the RFC issue when it has been implemented.
+   - The decision can be to defer the issue until a later time. In this case,
+     a new RFC should be sent when revisiting the issue.
+   - If necessary, the core team may decide using a &geq;2/3 majority vote.
+ - Close the RFC issue when a decision has been made.
