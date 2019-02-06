@@ -1,5 +1,3 @@
-**This process is not yet in effect, please see [issue #1](https://github.com/web-platform-tests/rfcs/issues/1).**
-
 # web-platform-tests RFCs
 
 Most changes in web-platform-tests can be made directly in pull requests
