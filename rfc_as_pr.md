@@ -1,4 +1,4 @@
-# RFC [number]
+# RFC 9
 
 ## Summary
 
@@ -19,3 +19,4 @@ The RFC document should get a title that is its PR number (added after submissio
 ## Disadvantages
 * The overhead of creating a PR is slightly higher than for creating an issue (although both can be done fully in the GitHub UI).
 * Seeing the rendered PR requires extra work in the UI.
+* No template is available in the UI for the initial file content analogous to the new issue template.
