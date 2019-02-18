@@ -27,8 +27,14 @@ Cases where the RFC process need *not* be used:
 
 ## The RFC process
 
- - Create a [new issue](https://github.com/web-platform-tests/rfcs/issues/new)
-   in this repository by filling out the issue template.
+ - Each RFC requires a PR in this repository consisting of a single
+   markdown file added to the `rfcs` directory setting out the proposed
+   change. This file must have the PR number as the title and at least
+   the following sections:
+    * Summary
+    * Details
+    * Pros of the change
+    * Cons/Risks of accepting the change
  - The proposal is discussed by the community and it is assumed that the
    proposal will change in accordance with that discussion.
  - In the case of no substantive disagreement the RFC is considered accepted
@@ -45,4 +51,5 @@ Cases where the RFC process need *not* be used:
      additional week.
    - The decision can be to defer the issue until a later time.
    - If necessary, the core team may decide using a &geq;2/3 majority vote.
- - Close the RFC issue when a decision has been made.
+ - An RFC that is accepted is merged. One that is rejected is closed
+   without merging.
