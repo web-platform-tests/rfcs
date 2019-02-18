@@ -11,7 +11,7 @@ The RFC document should get a title that is its PR number (added after submissio
 
 ## Advantages
 
-* PRs involve an actual document that can be revised after change and still has the version control expexted of a git repo. Although this is possible with comments, it's much less expected that a user would  have to examine the history of a comment to understand the discussion, and the tooling for exploring that history is weaker.
+* PRs involve an actual document that can be revised after change and still has the version control expected of a git repo. Although this is possible with comments, it's much less expected that a user would  have to examine the history of a comment to understand the discussion, and the tooling for exploring that history is weaker.
 * Commiting the RFC produces a record of decisions that are made.
 * Allowing people to clone the repo and use existing RFCs as a template helps ensure a consistent structure.
 * Comments on specific spec can be made inline on that text.
