@@ -33,8 +33,8 @@ Cases where the RFC process need *not* be used:
    the following sections:
     * Summary
     * Details
-    * Pros of the change
-    * Cons/Risks of accepting the change
+    * Advantages
+    * Disadvantages
  - The proposal is discussed by the community and it is assumed that the
    proposal will change in accordance with that discussion.
  - In the case of no substantive disagreement the RFC is considered accepted
