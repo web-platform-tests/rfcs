@@ -5,7 +5,7 @@ Add TestDriver support for the "generate_test_report" WebDriver command, which w
 The real-world causes of reports (like deprecations, interventions, and crashes) can differ between different user agents. In order to test reporting consistently, we need the ability to generate reports universally across the web platform. This command provides that ability.
 
 # Risks
-I am not aware of any risks.
+No known risks.
 
 # Details
 No additional details.
