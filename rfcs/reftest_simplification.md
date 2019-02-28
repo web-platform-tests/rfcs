@@ -12,7 +12,7 @@ Currently, reftests form a graph which can quickly end up with a large number of
 
 In rough principle, we load everything with `<link rel=match>`/`<link rel=mismatch>` into a directed graph (with URLs as vertices, `match`/`mismatch` as edges), and then make every source node (i.e., a node with no incoming edges) into a "test".
 
-From each test, we enumerate all possible walks from the source node with either no repeating nodes and ending at a sink node (i.e., a node with no outgoing edges) or a ending at the first repeated node.
+From each test, we enumerate all possible walks from the source node with either no repeating nodes and ending at a sink node (i.e., a node with no outgoing edges), or ending at the first repeated node.
 
 In reality, we have very little complexity within the graph, as of [37e794f690](https://github.com/web-platform-tests/wpt/tree/37e794f69091ffed1dfa7399a3ef154125fddda9): we have 14954 tests, and only 219 are more complex than a simple two page comparison.
 
