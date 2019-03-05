@@ -2,8 +2,8 @@
 
 ## Summary
 
-Allow a distinction between `MISSING` result, and a deliberate, spec-compliant
-lack of some particular implementation.
+Allow a distinction between `FAIL` or `MISSING` result, and a deliberate,
+spec-compliant lack of some particular implementation.
 
 ## Details
 
