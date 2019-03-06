@@ -27,11 +27,13 @@ are missing, some are "failing".
 
 Add `NOT_IMPLEMENTED` - a specific test result for known, valid, non-implementations.
 
-Add assertion `assert_unimplemented(e)`, for specifying a `NOT_IMPLEMENTED` result.
+Add an `unimplemented(description)` function to `test` (the argument passed to `test_function`s),
+for completing with a `NOT_IMPLEMENTED` result.
 
-> __assert_unimplemented(error, description)__
+> __test.unimplemented(description)__
 >
-> Asserts that `error` is an indication that an optional feature is not implemented by the user agent.
+> Concludes the test with `NOT_IMPLEMENTED` status. Used for optional features that are not
+> implemented by the user agent.
 
 #### Example Usage
 
@@ -58,7 +60,11 @@ outcome implications.
  - `MISSING` implies a test was not run at all
    - Indistinguishable from infrastructure error / failure to run
 
+It also allows for more expressive tests, allowing authors to be explicit about their
+expectations.
+
 ## Disadvantages
 
  - An extra outcome to consider
+   - Will involve viral changes to logging, and log consumers
  - Possible metrics skewing from the point that tests change to use this status
