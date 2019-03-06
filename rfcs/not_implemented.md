@@ -27,6 +27,26 @@ are missing, some are "failing".
 
 Add `NOT_IMPLEMENTED` - a specific test result for known, valid, non-implementations.
 
+Add assertion `assert_unimplemented(e)`, for specifying a `NOT_IMPLEMENTED` result.
+
+> __assert_unimplemented(error, description)__
+>
+> Asserts that `error` is an indication that an optional feature is not implemented by the user agent.
+
+#### Example Usage
+
+    promise_test(function(test) {
+      return subtle.generateKey(algorithm, extractable, usages)
+        .then(
+          function(result) { ... },
+          function(err) {
+            if ('NotSupportedError' in self && err instanceof NotSupportedError) {
+                assert_unimplemented(err);
+            }
+            assert_unreached("Threw an unexpected error: " + err.toString());
+        });
+    }
+
 ## Advantages
 
 For spec-compliant implementation omission, it would allow distinction from other
