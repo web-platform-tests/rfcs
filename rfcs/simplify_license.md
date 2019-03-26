@@ -28,8 +28,10 @@ reported:
 Because [Philippe Le Hegaret and Philip Jägenstedt have made it known that
 naming "W3C" as the copyright holder is
 undesirable](https://github.com/web-platform-tests/wpt/pull/11191), we choose
-to adopt the 3-clause BSD license which lists the copyright holder as
-"web-platform-tests contributors." The complete license text is as follows:
+to adopt [the 3-Clause BSD
+License](https://opensource.org/licenses/BSD-3-Clause) which lists the
+copyright holder as "web-platform-tests contributors." The complete license
+text is as follows:
 
 > # The 3-Clause BSD License
 >
