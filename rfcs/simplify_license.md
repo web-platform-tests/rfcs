@@ -2,7 +2,7 @@
 
 ### Summary
 
-Reduce WPT's license to the 3-clause BSD license and update the copyright
+Reduce WPT's license to the 3-Clause BSD License and update the copyright
 holder to "web-platform-tests contributors."
 
 ### Details
