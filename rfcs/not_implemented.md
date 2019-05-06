@@ -1,9 +1,10 @@
-# RFC #16: 'NOT_IMPLEMENTED' subtest result (status)
+# RFC #16: 'SKIP' subtest result (status)
 
 ## Summary
 
-Allow a distinction between `FAIL` or `MISSING` result, and a deliberate,
-spec-compliant lack of some particular implementation.
+Allow a distinction from `FAIL` or `MISSING` results by deliberately
+skipping a subtest that will not produce a meaningful result, such as a 
+spec-compliant lack of feature implementation.
 
 ## Details
 
@@ -25,15 +26,17 @@ are missing, some are "failing".
 
 ### Proposal
 
-Add `NOT_IMPLEMENTED` - a specific test result for known, valid, non-implementations.
+Add subtest result of `SKIP` - a result for deliberately skipped subtests.
 
-Add an `unimplemented(description)` function to `test` (the argument passed to `test_function`s),
-for completing with a `NOT_IMPLEMENTED` result.
+NOTE: `SKIP` is a test status emitted by the wpt-runner
 
-> __test.unimplemented(description)__
+Add an `skip(description)` function to `test` (the argument passed to `test_function`s),
+for completing with a `SKIP` result.
+
+> __test.skip(description)__
 >
-> Concludes the test with `NOT_IMPLEMENTED` status. Used for optional features that are not
-> implemented by the user agent.
+> Concludes the test with `SKIP` status. Used for skipping subtests will not produce
+> a meaningful results, e.g. optional features that are not implemented by the user agent.
 
 #### Example Usage
 
@@ -43,7 +46,7 @@ for completing with a `NOT_IMPLEMENTED` result.
           function(result) { ... },
           function(err) {
             if ('NotSupportedError' in self && err instanceof NotSupportedError) {
-                assert_unimplemented(err);
+                test.skip(algorithm + ' not implemented');
             }
             assert_unreached("Threw an unexpected error: " + err.toString());
         });
