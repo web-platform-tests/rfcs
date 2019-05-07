@@ -45,10 +45,11 @@ for completing with a `SKIP` result.
         .then(
           function(result) { ... },
           function(err) {
-            if ('NotSupportedError' in self && err instanceof NotSupportedError) {
-                test.skip(algorithm + ' not implemented');
+            if (isUnsupported(err)) { // "Unsupported" case determined ad-hoc
+              test.skip(algorithm + ' not implemented');
+            } else {
+              assert_unreached("Threw an unexpected error: " + err.toString());
             }
-            assert_unreached("Threw an unexpected error: " + err.toString());
         });
     }
 
