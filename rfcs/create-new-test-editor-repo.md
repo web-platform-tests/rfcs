@@ -10,5 +10,7 @@ It's been living under the MicrosoftEdge repo up until now, but we believe the c
 
 By moving it to the Web-Platform-Tests repo, the people who are directly working with WPT will have access and context.
 
+The repo would live [here](https://github.com/web-platform-tests/editor).
+
 ## Risks
 This repo was created by an ex-Microsoft employee. Microsoft's current expertise in this repo is limited, so there is some risk regarding maintenance.
