@@ -14,3 +14,6 @@ The repo would live [here](https://github.com/web-platform-tests/editor).
 
 ## Risks
 This repo was created by an ex-Microsoft employee. Microsoft's current expertise in this repo is limited, so there is some risk regarding maintenance.
+
+Tab Atkins and John Jansen have agreed to dedicate some time to maintain it. We can work as a team should we discover there is more work necessary than
+what the two of them can handle.
