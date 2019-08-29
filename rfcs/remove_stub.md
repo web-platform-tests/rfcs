@@ -12,7 +12,7 @@ The stub-* files will be removed first, followed eventually by the manifest chan
 
 ## Risks
 
-A MANIFEST.json file now lists the stub-* files under `manifest.items.stub`, where `manifest` is the result of parsing MANIFEST.json. The combination of an existing manifest and the new manifest code has the follow risks.
+A MANIFEST.json file now lists the stub-* files under `manifest.items.stub`, where `manifest` is the result of parsing MANIFEST.json. The combination of an existing manifest and the new manifest code has the following risks.
 
 ### stub-* files treated as tests
 
