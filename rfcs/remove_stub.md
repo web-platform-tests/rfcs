@@ -4,7 +4,7 @@
 Any files named stub-* are currently treated as "stub" in the manifest. Remove support for this.
 
 ## Details
-Files named stub-* exist only in service-workers/, added in [Initial SW stub addition](https://github.com/web-platform-tests/wpt/commit/5ac8b780247e02235b3d8d344428886b20e5b8b0) and since then not modified in any meaninful way.
+Files named stub-* exist only in service-workers/, added in [Initial SW stub addition](https://github.com/web-platform-tests/wpt/commit/5ac8b780247e02235b3d8d344428886b20e5b8b0) and since then not modified in any meaningful way.
 
 The important effect in the manifest code is that stub-* aren't treated as tests, effectively ignoring them.
 
