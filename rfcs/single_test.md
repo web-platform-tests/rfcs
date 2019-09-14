@@ -287,8 +287,8 @@ jgraham proposed [Don't assume file_is_test when there's a top-level non-assert 
 foolip tried [Remove the error_handler trigger for single-page tests](https://github.com/web-platform-tests/wpt/commit/9cfe47650fd86a039effe162ab9ea039d329dbb3) &rarr; [runs](https://wpt.fyi/runs?sha=9cfe47650fd86a039effe162ab9ea039d329dbb3&max-count=10) / [results](https://wpt.fyi/results/?run_id=319960008&run_id=316100006&run_id=318120011). The [FileAPI example](https://wpt.fyi/results/FileAPI/url/url-format.any.worker.html?run_id=319960008&run_id=316100006&run_id=318120011) is _still_ no good, now there's a bogus passing subtest instead. As mentioned above, this is because `done()` is called in generated code.
 
 With additional tweaking one can probably ensure that an uncaught error is treated as a harness error, solving most of the problem. However, some minor warts would remain:
-- A test would have reach an assert or `done()` before it's known to be a single-page test.
-- Therefore, one couldn't rely on an exception to fail the test, with behavior changing after the first assert. This is subtle, and to avoid a harness error a bogus assert or `setup()` wrapping would be needed.
+- A test would have to reach an assert or `done()` before it's known to be a single-page test.
+- Therefore, one couldn't rely on an exception to fail the test, with behavior changing after the first assert. This is subtle, and to avoid a harness error, correct `setup()` wrapping would be needed.
 
 Note: not all harness errors can be avoided, but they are often a sign of a test problem, and so avoiding them where possible help highlight those problems.
 
@@ -298,4 +298,4 @@ This would leave `done()` as the only opt-in, and the behavior would not change 
 
 ### Add `single_page()` as optional
 
-Keeping `done()` but adding `single_page()` as optional would avoid boilerplate in a small number of existing tests that pass consistently. However, it would only be sound for tests that have no asserts and could never throw exceptions or reject promises. This is too small a niche of tests to warrant more complex rules for single-page tests.
+Keeping `done()` but adding `single_page()` as optional would avoid boilerplate in a small number of existing tests that pass consistently. However, it would only be sound for tests that have no asserts and could never throw exceptions or reject promises, where reaching `done()` is the only pass condition. This is too small a niche of tests to warrant more complex rules for single-page tests.
