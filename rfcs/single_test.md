@@ -95,10 +95,6 @@ Summary:
     <th>648
 </table>
 
-Most tests will both assert something and eventually call `done()`. The categorization depends on details (timing) of how this was measured and so isn't very interesting, but:
-- All 24 "assert" cases were checked and confirmed to be async tests with a `done()` somewhere in the test.
-- The "done" cases are sync tests or async tests where all asserts happen right before the `done()` call.
-
 <details>
 <summary>All of the "assert" and "done" tests:</summary>
 
@@ -233,6 +229,10 @@ done /workers/semantics/navigation/001.html
 done /workers/shared-worker-name-via-options.html
 ```
 </details>
+
+Most of these tests will both assert something and eventually call `done()`. The categorization depends on details (timing) of how this was measured and so isn't very interesting, but:
+- All 24 "assert" cases were checked and confirmed to be async tests with a `done()` somewhere in the test.
+- The "done" cases are sync tests or async tests where all asserts happen right before the `done()` call.
 
 The "error" case is usually hit when the test tries to use some API that isn't supported in the browser under test. That's why there are more of these in stable browsers. Most of these tests aren't intended to be single-page tests.
 
