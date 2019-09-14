@@ -266,7 +266,7 @@ Conclusions:
 
 ## Risks
 
-Single-page tests are intended to have as little boilerplate as possible, based on feedback from Gecko developers familiar with [Mochitest](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Mochitest), see [test example](https://github.com/mozilla/gecko-dev/blob/01c6764830acaabafeec509f5512f8ef564d6964/dom/tests/mochitest/bugs/test_protochains.html). By requiring both `simple_test()` and `done()` even for sync tests where SimpleTest.js requires neither, some Gecko engineers might prefer to use Mochitest instead of WPT.
+Single-page tests are intended to have as little boilerplate as possible, based on feedback from Gecko developers familiar with [Mochitest](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Mochitest), see [test example](https://github.com/mozilla/gecko-dev/blob/01c6764830acaabafeec509f5512f8ef564d6964/dom/tests/mochitest/bugs/test_protochains.html). By requiring both `simple_test()` and `done()` even for sync tests where SimpleTest.js requires neither, some Gecko engineers might prefer to use Mochitest instead of WPT. However, a single sync test can also be written by just wrapping the code in `test()`. 
 
 Updates to testharness.js haven't always been made together with the test updates in all browser engine repos. If this is still the case, the testharness.js changes have to be made first and synced downstream before any test changes are made.
 
