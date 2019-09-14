@@ -32,7 +32,7 @@ The current rules for single-page tests are a bit subtle. They are triggered by 
 - Calling the global `done()`
 - An uncaught exception or unhandled rejection occurs
 
-A problem with the current setup is that uncaught errors are common in tests not intended to be single-page tests, and manifest as a bogus failing subtest, see [FileAPI example](https://wpt.fyi/results/FileAPI/url/url-format.any.worker.html?run_id=312160003&run_id=306970005&run_id=321820002&run_id=319900004). In fact, this appears to be *much* more common that real single-page tests.
+A problem with the current setup is that uncaught errors are common in tests not intended to be single-page tests, and manifest as a bogus failing subtest, see [FileAPI example](https://wpt.fyi/results/FileAPI/url/url-format.any.worker.html?run_id=312160003&run_id=306970005&run_id=321820002&run_id=319900004). In fact, this appears to be *much* more common than real single-page tests.
 
 Another issue is that in [dedicated and shared workers, `done()` has to be called](https://web-platform-tests.org/writing-tests/testharness-api.html#determining-when-all-tests-are-complete), and the [generated `done()` for any.js tests](https://github.com/web-platform-tests/wpt/blob/b683b48465900b5585bf08ee4b6c25b219944333/tools/serve/serve.py#L292-L304) is called even if the test script failed. This explains some of the results seen in the following.
 
