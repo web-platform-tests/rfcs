@@ -2,7 +2,7 @@
 
 ## Summary
 
-Single-page tests are simple testharness.js tests that just do assertions and finally call `done()`. They reduce boilerplate as no `test()` or `async_test()` is needed. Callbacks also need not be wrapped with `step_func()` as any error simply fails the test. See [simple sync test](https://github.com/web-platform-tests/wpt/blob/ded00e006a083cacc108e8a1e92963fe7b15de4e/mediacapture-streams/MediaDevices-SecureContext.html) and [simple async test](https://github.com/web-platform-tests/wpt/blob/87d9cd16b9b4992649dc2ea1ecb3261f163e9184/html/webappapis/timers/negative-setinterval.html) for real examples.
+Single-page tests are simple testharness.js tests that just do assertions and finally call `done()`. They reduce boilerplate, as no `test()` or `async_test()` is needed. Callbacks also need not be wrapped with `step_func()`, as any error simply fails the test. See [simple sync test](https://github.com/web-platform-tests/wpt/blob/ded00e006a083cacc108e8a1e92963fe7b15de4e/mediacapture-streams/MediaDevices-SecureContext.html) and [simple async test](https://github.com/web-platform-tests/wpt/blob/87d9cd16b9b4992649dc2ea1ecb3261f163e9184/html/webappapis/timers/negative-setinterval.html) for real examples.
 
 Unfortunately, the rules for single-page tests are subtle and many tests accidentally enter this mode. This leads to less consistent results cross-browser, see [FileAPI example](https://wpt.fyi/results/FileAPI/url/url-format.any.worker.html?run_id=312160003&run_id=306970005&run_id=321820002&run_id=319900004).
 
@@ -32,7 +32,7 @@ The current rules for single-page tests are a bit subtle. They are triggered by 
 - Calling the global `done()`
 - An uncaught exception or unhandled rejection occurs
 
-A problem with the current setup is that uncaught errors are common in tests not intended to be single-page tests, and manifest as a bogus failing subtest, see [FileAPI example](https://wpt.fyi/results/FileAPI/url/url-format.any.worker.html?run_id=312160003&run_id=306970005&run_id=321820002&run_id=319900004). In fact, this appears to be *much* more common than real single-page tests.
+A problem with the current setup is that uncaught errors are common in tests not intended to be single-page tests, and manifest as a bogus failing subtest; see [FileAPI example](https://wpt.fyi/results/FileAPI/url/url-format.any.worker.html?run_id=312160003&run_id=306970005&run_id=321820002&run_id=319900004). In fact, this appears to be *much* more common than real single-page tests.
 
 Another issue is that in [dedicated and shared workers, `done()` has to be called](https://web-platform-tests.org/writing-tests/testharness-api.html#determining-when-all-tests-are-complete), and the [generated `done()` for any.js tests](https://github.com/web-platform-tests/wpt/blob/b683b48465900b5585bf08ee4b6c25b219944333/tools/serve/serve.py#L292-L304) is called even if the test script failed. This explains some of the results seen in the following.
 
@@ -266,7 +266,7 @@ Conclusions:
 
 ## Risks
 
-Single-page tests are intended to have as little boilerplate as possible, based on feedback from Gecko developers familiar with [Mochitest](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Mochitest), see [test example](https://github.com/mozilla/gecko-dev/blob/01c6764830acaabafeec509f5512f8ef564d6964/dom/tests/mochitest/bugs/test_protochains.html). By requiring both `single_test()` and `done()` even for sync tests where SimpleTest.js requires neither, some Gecko engineers might prefer to use Mochitest instead of WPT. However, a single sync test can also be written by just wrapping the code in `test()`. 
+Single-page tests are intended to have as little boilerplate as possible, based on feedback from Gecko developers familiar with [Mochitest](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Mochitest); see [test example](https://github.com/mozilla/gecko-dev/blob/01c6764830acaabafeec509f5512f8ef564d6964/dom/tests/mochitest/bugs/test_protochains.html). By requiring both `single_test()` and `done()` even for sync tests where SimpleTest.js requires neither, some Gecko engineers might prefer to use Mochitest instead of WPT. However, a single sync test can also be written by just wrapping the code in `test()`. 
 
 Updates to testharness.js haven't always been made together with the test updates in all browser engine repos. If this is still the case, the testharness.js changes have to be made first and synced downstream before any test changes are made.
 
