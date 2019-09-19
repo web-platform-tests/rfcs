@@ -45,11 +45,10 @@ with a `PRECONDITION_FAILED` result when `condition` is not truthy.
         .then(
           function(result) { ... },
           function(err) {
-            if (isUnsupported(err)) { // "Unsupported" case determined ad-hoc
-              assert_precondition(false, algorithm + ' not implemented');
-            } else {
-              assert_unreached("Threw an unexpected error: " + err.toString());
-            }
+            var supported = !isUnsupported(err); // "Unsupported" case determined ad-hoc
+            assert_precondition(supported, algorithm + ' not implemented');
+            assert_unreached("Threw an unexpected error: " + err.toString());
+          }
         });
     }
 
