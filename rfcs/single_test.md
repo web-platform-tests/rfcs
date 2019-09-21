@@ -1,4 +1,4 @@
-# RFC: `single_test()` opt-in for single-page tests
+# RFC: `setup({single_test: true})` opt-in for single-page tests
 
 ## Summary
 
@@ -6,11 +6,11 @@ Single-page tests are simple testharness.js tests that just do assertions and fi
 
 Unfortunately, the rules for single-page tests are subtle and many tests accidentally enter this mode. This leads to less consistent results cross-browser, see [FileAPI example](https://wpt.fyi/results/FileAPI/url/url-format.any.worker.html?run_id=312160003&run_id=306970005&run_id=321820002&run_id=319900004).
 
-Introduce `single_test()` as an explicit opt-in for single-page tests. Once added to the existing ~130 tests, remove the old ways of enabling the mode, which happens inadvertently for up to ~640 tests in some browsers.
+Introduce `setup({single_test: true})` as an explicit opt-in for single-page tests. Once added to the existing ~130 tests, remove the old ways of enabling the mode, which happens inadvertently for up to ~640 tests in some browsers.
 
 Example:
 ```js
-single_test();
+setup({single_test: true})
 assert_false(someCondition);
 doSomething();
 addEventListener('someevent', () => {
@@ -18,8 +18,6 @@ addEventListener('someevent', () => {
   done();
 });
 ```
-
-The `single_test()` method will optionally take the same `name` and `properties` arguments as other test types.
 
 Acknowledgments:
 - jgraham [added single-page tests in 2014](https://github.com/w3c/testharness.js/pull/67)
@@ -258,7 +256,7 @@ Conclusions:
 
 ## Risks
 
-Single-page tests are intended to have as little boilerplate as possible, based on feedback from Gecko developers familiar with [Mochitest](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Mochitest); see [test example](https://github.com/mozilla/gecko-dev/blob/01c6764830acaabafeec509f5512f8ef564d6964/dom/tests/mochitest/bugs/test_protochains.html). By requiring both `single_test()` and `done()` even for sync tests where SimpleTest.js requires neither, some Gecko engineers might prefer to use Mochitest instead of WPT. However, a single sync test can also be written by just wrapping the code in `test()`. 
+Single-page tests are intended to have as little boilerplate as possible, based on feedback from Gecko developers familiar with [Mochitest](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Mochitest); see [test example](https://github.com/mozilla/gecko-dev/blob/01c6764830acaabafeec509f5512f8ef564d6964/dom/tests/mochitest/bugs/test_protochains.html). By requiring both `setup({single_test: true})` and `done()` even for sync tests where SimpleTest.js requires neither, some Gecko engineers might prefer to use Mochitest instead of WPT. However, a single sync test can also be written by just wrapping the code in `test()`. 
 
 Updates to testharness.js haven't always been made together with the test updates in all browser engine repos. If this is still the case, the testharness.js changes have to be made first and synced downstream before any test changes are made.
 
@@ -286,8 +284,8 @@ Note: not all harness errors can be avoided, but they are often a sign of a test
 
 ### Also remove the "assert" trigger
 
-This would leave `done()` as the only opt-in, and the behavior would not change on the first assert. However, any failing assert would turn into a harness error, which is no good. Fixing it with an early opt-in amounts to the `single_test()` proposal.
+This would leave `done()` as the only opt-in, and the behavior would not change on the first assert. However, any failing assert would turn into a harness error, which is no good. Fixing it with an early opt-in amounts to this proposal.
 
-### Add `single_test()` as optional
+### Use `single_test()` as the opt-in
 
-Keeping `done()` but adding `single_test()` as optional would avoid boilerplate in a small number of existing tests that pass consistently. However, it would only be sound for tests that have no asserts and could never throw exceptions or reject promises, where reaching `done()` is the only pass condition. This is too small a niche of tests to warrant more complex rules for single-page tests.
+This would allow giving a name and other properties to the single test. However, it doesn't suggest in the same way as `setup({single_test: true})` that this is a special mode that changes the rules of testharness.js.
