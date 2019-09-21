@@ -10,7 +10,7 @@ Introduce `setup({single_test: true})` as an explicit opt-in for single-page tes
 
 Example:
 ```js
-setup({single_test: true})
+setup({single_test: true});
 assert_false(someCondition);
 doSomething();
 addEventListener('someevent', () => {
