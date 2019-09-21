@@ -1,4 +1,4 @@
-# RFC: `setup({single_test: true})` opt-in for single-page tests
+# RFC: `setup({single_test: true})` opt-in
 
 ## Summary
 
