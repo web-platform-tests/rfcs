@@ -4,11 +4,11 @@
 
 Single-page tests are simple testharness.js tests that just do assertions and finally call `done()`. They reduce boilerplate, as no `test()` or `async_test()` is needed. Callbacks also need not be wrapped with `step_func()`, as any error simply fails the test. See [simple sync test](https://github.com/web-platform-tests/wpt/blob/ded00e006a083cacc108e8a1e92963fe7b15de4e/mediacapture-streams/MediaDevices-SecureContext.html) and [simple async test](https://github.com/web-platform-tests/wpt/blob/87d9cd16b9b4992649dc2ea1ecb3261f163e9184/html/webappapis/timers/negative-setinterval.html) for real examples.
 
-Unfortunately, the rules for single-page tests are subtle and many tests accidentally enter this mode. This leads to less consistent results cross-browser, see [FileAPI example](https://wpt.fyi/results/FileAPI/url/url-format.any.worker.html?run_id=312160003&run_id=306970005&run_id=321820002&run_id=319900004).
+Unfortunately, the rules for single-page tests are subtle and many tests accidentally enter this mode. This leads to less consistent results cross-browser, see [FileAPI example](https://wpt.fyi/results/FileAPI/url/url-format.any.worker.html?run_id=312160003&run_id=306970005&run_id=321820002&run_id=319900004). There are ~130 intentional single-page tests and ~640 tests that accidentally trigger the mode in one or more browsers.
 
-Introduce `setup({single_test: true})` as an explicit opt-in for single-page tests. Once added to the existing ~130 tests, remove the old ways of enabling the mode, which happens inadvertently for up to ~640 tests in some browsers.
+Introduce `setup({single_test: true})` as an a required opt-in for single-page tests.
 
-Example:
+Example usage:
 ```js
 setup({single_test: true});
 assert_false(someCondition);
@@ -24,6 +24,16 @@ Acknowledgments:
 - zcorpan [proposed the `single_test()` opt-in in 2018](https://github.com/web-platform-tests/wpt/pull/11364)
 
 ## Details
+
+The changes will be rolled out as follows:
+- Support `setup({single_test: true})` as an additional trigger for the single-page test mode.
+- Add `setup({single_test: true})` to the ~130 tests already identified.
+- Handle any remaining tests that reference the global `done` but use neither `setup({explicit_done: true})` nor `setup({single_test: true})`.
+- Update any of the ~640 accidental single-page tests that would regress or fail in a less clear way in the final step.
+- Wait for the above changes to roll into vendor repos and for additional tests there to be updated.
+- Remove the pre-existing triggers for single-page tests, leaving only `setup({single_test: true})`.
+
+###
 
 The current rules for single-page tests are a bit subtle. They are triggered by one of the following happening _before_ any test is explicitly defined:
 - Using any assert method
