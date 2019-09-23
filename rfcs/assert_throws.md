@@ -27,7 +27,7 @@ Six new APIs are proposed to handle each of the cases separately:
 
 - `promise_rejects_dom` and `assert_throws_dom`, called with a string representing a `DOMException` (as above);
 - `promise_rejects_js` and `assert_throws_js`, called with the Error constructor (e.g. `TypeError`);
-- `assert_throws_exactly` and `promise_rejects_exactly`, called with the expected object and using `Object.is`.
+- `assert_throws_exactly` and `promise_rejects_exactly`, called with the expected value (which no longer needs to be an object) and using `Object.is`.
 
 The new APIs will be added first, in order to allow a well-organized transition.
 Once this is done and browser vendors have updated their copies of `testharness.js`, we can start working on a (mostly automated) conversion of the tests in wpt.
