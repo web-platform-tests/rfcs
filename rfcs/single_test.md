@@ -31,6 +31,7 @@ The changes will be rolled out as follows:
 - Handle any remaining tests that reference the global `done` but use neither `setup({explicit_done: true})` nor `setup({single_test: true})`.
 - Update any of the ~640 accidental single-page tests that would regress or fail in a less clear way in the final step.
 - Wait for the above changes to roll into vendor repos and for additional tests there to be updated.
+- Make it an error to call `done()` or make any assertion before any test has been defined.
 - Remove the pre-existing triggers for single-page tests, leaving only `setup({single_test: true})`.
 
 ###
