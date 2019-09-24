@@ -12,45 +12,45 @@ Currently, reftests form a graph which can quickly end up with a large number of
 
 In rough principle, we load everything with `<link rel=match>`/`<link rel=mismatch>` into a directed graph (with URLs as vertices, `match`/`mismatch` as edges), and then make every source node (i.e., a node with no incoming edges) into a "test".
 
-From each test, we enumerate all possible walks from the source node with either no repeating nodes and ending at a sink node (i.e., a node with no outgoing edges), or ending at the first repeated node.
+From each test, we enumerate all possible walks from the source node with either no repeating nodes and ending at a sink node (i.e., a node with no outgoing edges), or ending at the first repeated node. Each walk becomes a sequence of ANDs, and at least one walk must be satisfied for the test to pass.
 
-In reality, we have very little complexity within the graph, as of [37e794f690](https://github.com/web-platform-tests/wpt/tree/37e794f69091ffed1dfa7399a3ef154125fddda9): we have 14954 tests, and only 219 are more complex than a simple two page comparison.
+In reality, we have very little complexity within the graph, as of [a12f37b6a0](https://github.com/web-platform-tests/wpt/tree/a12f37b6a04bdbde0902b0fc36b6a46f4782bd06): we have 15905 tests, and only 253 are more complex than a simple two page comparison.
 
-Of those 219:
- * 111 just have alternates at the top level (the basic OR case),
- * 55 are trails with no repeating vertices (the basic AND case),
- * 48 are trails ending in a cycle (still a basic AND),
- * leaving us with 5 more complex cases (which mix AND and OR).
+Of those 253:
+ * 118 just have alternates at the top level (the basic OR case),
+ * 132 are just trails (the basic AND case),
+ * leaving us with 3 more complex cases (which mix AND and OR).
  
-These five more complex cases are given [here](https://gist.github.com/gsnedders/7874fe11acd1dc8eaacb7448db8ca690). All but one of these are `css-transforms` that have been known to be broken for years and are quite clearly bogus (many pass conditions are subsets of one another!). The only other example is `/css/CSS2/text/text-indent-wrap-001.xht`, which must be \[(not) equal to `/css/CSS2/text/text-indent-wrap-001-notref-block-margin.xht`] OR \[equal to `/css/CSS2/text/text-indent-wrap-001-ref-inline-margin.xht` AND `/css/CSS2/text/text-indent-wrap-001-ref-float.xht`]. Looking at the individual tests, it appears that all of these are mistaking multiple links as conjunctions, and all of these should be simple chains rather than alternates; [#15523](https://github.com/web-platform-tests/wpt/pull/15523) does this. (This also makes me suspicious as to how many of the 111 tests we have with alternates make a similar mistake, and whether we can make this clearer.)
+However, notably our definition of how we define the pass condition differs from what the [CSS WG had documented for their testsuite](https://wiki.csswg.org/test/format#reference-links) originally defined (in 2011), which the WPT behaviour was originally meant to match.
 
-We also have a number of "tests" which aren't actually found in the manifest, because we have a cycle of "tests" (and therefore we have no source node among them); these are given [here](https://gist.github.com/gsnedders/ce17e7df69ee89ce471d5a553b826dd2). Note that the majority of these are tracked in [#5294](https://github.com/web-platform-tests/wpt/issues/5492) and fixed in [#15523](https://github.com/web-platform-tests/wpt/pull/15523), and the rest are broken `/infrastructure` tests that are meant to test for support of cycles.
+This behaviour is that if there is at least one `<link rel=match>` at least one must match, and all `<link rel=mismatch>` must match.
+
+Of the 118 tests we detect as OR under our current logic, but [85 of these](https://gist.github.com/gsnedders/2ee57070569e177d973a6736f7d278bb#file-only_or_mixed_eq_cond-txt) have a combination of both match and mismatch, which is likely a bug under our current logic, and looking at a mostly random subset of these, it appears that the intention was the CSS WG documented behaviour.
+
+There are also [7 tests](https://gist.github.com/gsnedders/2ee57070569e177d973a6736f7d278bb#file-only_or_mismatch-txt) that have multiple mismatches; again it appears like the intention was the CSS WG documented behaviour. In both categories, all of these are within `/css`, and  most of these tests predate WPT's manifest generation, so were just following the documented CSS WG behaviour.
 
 ### Proposal
 
 This RFC contains a number of proposals, given below:
 
-#### Test Detection
+It is proposed that we get rid of the references-of-references (i.e., the current AND case) as this is the root of a large amount of implementation complexity and the current behaviour of only source nodes being considered tests has confused a number of users. It also requires us to process every file in the repository to update the manifest before we can run a single reftest, which would be desirable to avoid.
 
-With the current logic, we need to process every changed file in the repository before running a single given path, as we need to recompute the reftest graph to determine whether that path is still a source node in the graph. This current behaviour also sometimes causes confusion from users when files they believe to be tests do not appear in the results.
+In general, we shall make every file with at least one `<link rel=match>`/`<link rel=mismatch>` into a test; this will introduce new tests for all current references which currently chain onto further references.
 
-While purely judging whether or not something is a test from the path (presumably with [`not name_is_reference`](https://github.com/web-platform-tests/wpt/blob/6111e21ca42dea24a07df1acfbed78769a415b5b/tools/manifest/sourcefile.py#L335)) will lead to redundant tests (e.g, `test-001.html == test-002.html == test-ref.html` will now lead to two tests), this matches user expectations more clearly and makes it possible to do partial manifest updates for reftests.
+Further, it is proposed that we change the default combinatorial behaviour to the one originally defined by the CSS WG: if there is at least one `<link rel=match>`, at least one must match, and all `<link rel=mismatch>` must match.
 
-#### Valid Graphs
+However, due to some people raising concerns about the ability to continue to do more complex AND/OR combinations (@jgraham and @SimonSapin among them), we will also add explicit grouping (into AND) via the `data-reftest-all-group` (Bikeshedding possible!).
 
-It becomes much easier to explain why a reftest fails if we have less complexity in what is allowed within the graph. Given we have so few complex cases, it seems like we should be able to massively simplify what we allow.
+The attribute not-present/empty behaviour will be that described above, for all other groups all match and mismatch must match. (Effectively you can view the former case as producing max(1, number of matches) "normal" groups.)
 
-In short, the proposal is that from a test node:
-
- * If the out degree of the test node is > 1, then each reachable node from the test node must have an out degree of 0. (i.e., if we have alternates, no reference can have a `<link rel=match>`)
- * If the out degree of the test node is 1, then every reachable node from the test node must have an out degree of ≤ 1. (i.e., if we have conjunctions, it's a simple chain with no alternation)
+The test will be considered to pass if any group passes.
  
 ## Advantages
 
-* Simplify runner implementations,
+* Avoids needing to create a whole graph to find/execute reftests,
+* Avoids tests disappearing when they are referenced elsewhere in the graph.
 * Makes it simpler to explain failure to users.
 
 ## Disadvantages
 
-* Unable to deal with more complex cases that seemingly never appear in the wild but have been occasionally stated that we need.
-* Linting graph structure means following references.
+* Loses the chains of failure when a reference renders incorrectly.
