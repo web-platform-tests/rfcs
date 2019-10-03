@@ -1,4 +1,4 @@
-# Remove support for stub-* files in the manifest
+# RFC 27: Remove support for stub-* files in the manifest
 
 ## Summary
 Any files named stub-* are currently treated as "stub" in the manifest. Remove support for this.
