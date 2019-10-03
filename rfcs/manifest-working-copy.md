@@ -1,4 +1,4 @@
-# Always use the working copy for the manifest
+# RFC 19: Always use the working copy for the manifest
 
 ## Summary
 

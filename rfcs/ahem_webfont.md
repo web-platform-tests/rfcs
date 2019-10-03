@@ -1,4 +1,4 @@
-# Load Ahem as a Webfont always
+# RFC 22: Load Ahem as a Webfont always
 
 ## Summary
 Make all tests load the Ahem font as a webfont instead of expecting Ahem to be
