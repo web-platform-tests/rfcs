@@ -44,8 +44,8 @@ signature as the existing global function named `setup`. This function should:
    1. Set the harness status to `ERROR`
    2. Transition the harness to the `COMPLETE` phase
    3. Abort this algorithm
-5. Configure testharness.js to not execute any tests which are subsequently
-   defined
+5. Configure testharness.js to defer execution of any tests subsequently
+   defined with `promise_test`
 6. Wait for the result of the provided function to settle or for the amount of
    time equal to the internal harness timeout to pass (whichever comes first)
 7. If the result of the provided function has not settled:
@@ -56,8 +56,8 @@ signature as the existing global function named `setup`. This function should:
    1. Set the harness status to `ERROR`
    2. Transition the harness to the `COMPLETE` phase
    3. Abort this algorithm
-9. Configure testharness.js to execute any tests which are subsequently defined
-10. Begin execution of any tests which were defined while this algorithm waited
+0. Begin the serial execution of any tests which were defined with
+   `promise_test` while this algorithm waited
 
 These steps are intended to approximate the corresponding synchronous behavior
 of the `setup` function.
