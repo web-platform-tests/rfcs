@@ -37,14 +37,14 @@ It is proposed that we get rid of the references-of-references (i.e., the curren
 
 In general, we shall make every file with at least one `<link rel=match>`/`<link rel=mismatch>` into a test; this will introduce new tests for all current references which currently chain onto further references.
 
-Further, it is proposed that we change the default combinatorial behaviour to the one originally defined by the CSS WG: if there is at least one `<link rel=match>`, at least one must match, and all `<link rel=mismatch>` must match.
+Further, it is proposed that we change the combinatorial behaviour to the one originally defined by the CSS WG: if there is at least one `<link rel=match>`, at least one must match, and all `<link rel=mismatch>` must match.
 
-However, due to some people raising concerns about the ability to continue to do more complex AND/OR combinations (@jgraham and @SimonSapin among them), we will also add explicit grouping (into AND) via the `data-reftest-all-group` (Bikeshedding possible!).
+### Potential future additions
 
-The attribute not-present/empty behaviour will be that described above, for all other groups all match and mismatch must match. (Effectively you can view the former case as producing max(1, number of matches) "normal" groups.)
+Some people have raised concerns about the ability to continue to do more complex AND/OR combinations, we could in the future re-introduce support for this through some explicit grouping (into AND) via some attribute on the `link` elements.
 
-The test will be considered to pass if any group passes.
- 
+The risk of punting this to be future work is that it makes some tests impossible to write in web-platform-tests in the meantime. However, it has been eight years since the CSS WG defined their format and four years since we started supporting arbitrary reftest chains and it appears nobody has written such a test. Either it turns out this functionality is unneeded or nobody knows about it.
+
 ## Advantages
 
 * Avoids needing to create a whole graph to find/execute reftests,
