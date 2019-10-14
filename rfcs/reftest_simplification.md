@@ -23,7 +23,7 @@ Of those 253:
  
 However, notably our definition of how we define the pass condition differs from what the [CSS WG had documented for their testsuite](https://wiki.csswg.org/test/format#reference-links) originally defined (in 2011), which the WPT behaviour was originally meant to match.
 
-This behaviour is that if there is at least one `<link rel=match>` at least one must match, and all `<link rel=mismatch>` must match.
+This behaviour is that if there is at least one `<link rel=match>` at least one must pass, and all `<link rel=mismatch>` must pass.
 
 Of the 118 tests we detect as OR under our current logic, but [85 of these](https://gist.github.com/gsnedders/2ee57070569e177d973a6736f7d278bb#file-only_or_mixed_eq_cond-txt) have a combination of both match and mismatch, which is likely a bug under our current logic, and looking at a mostly random subset of these, it appears that the intention was the CSS WG documented behaviour.
 
@@ -37,7 +37,7 @@ It is proposed that we get rid of the references-of-references (i.e., the curren
 
 In general, we shall make every file with at least one `<link rel=match>`/`<link rel=mismatch>` into a test; this will introduce new tests for all current references which currently chain onto further references.
 
-Further, it is proposed that we change the combinatorial behaviour to the one originally defined by the CSS WG: if there is at least one `<link rel=match>`, at least one must match, and all `<link rel=mismatch>` must match.
+Further, it is proposed that we change the combinatorial behaviour to the one originally defined by the CSS WG: if there is at least one `<link rel=match>`, at least one must pass, and all `<link rel=mismatch>` must pass.
 
 ### Potential future additions
 
