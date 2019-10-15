@@ -13,4 +13,4 @@ This RFC is created as a recommendation to [this WPT issues](https://github.com/
 
 ## Risks
 
-No risks so far
+The new test runner incoporates components that run on the client (DUT and Companion device) and on the server. The server components are written in JavaScript and run in Node.js, which could be a risk for WPT since a new depencencie (Node.js) is introduced. If this is considered as an issue, it remains the option to port the JavaScript code to Python, but this is associated with additional effort. 
