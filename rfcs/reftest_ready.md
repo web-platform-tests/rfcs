@@ -14,7 +14,7 @@ This addition corresponds to the gecko `MozReftestInvalidate` event. Providing t
 
 Adapted from the [gecko docs](https://searchfox.org/mozilla-central/source/layout/tools/reftest/README.txt#509)
 
-```
+```js
 
 function doTest() {
   document.body.style.border = "";
