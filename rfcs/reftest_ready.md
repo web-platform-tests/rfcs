@@ -6,7 +6,22 @@ Fire a `ReftestReady` event when layout, fonts and paiting are complete. This co
 
 ## Details
 
-Reftests which want to check for behaviour in the face of dynamic changes need to know when those changes can be made with a complete initial state. This corresponds to the time that a screenshot would be taken in the case that the `reftest-wait` attribute is not present. Firing an event at this time allows the test to schedule dynamic changes and then remove the `reftest-wait` attribute to triger a screenshot without concern that the changes are batched into the intial render. For want of a better name the event fired will be called `ReftestReady`. This corresponds to the gecko `MozReftestInvalidate` event. Providing this event is expected to unblock upstreaming some more Gecko reftests.
+Reftests which want to check for behaviour in the face of dynamic changes need to know when those changes can be made with a complete initial state. This corresponds to the time that a screenshot would be taken in the case that the `reftest-wait` attribute is not present. Firing an event at this time allows the test to schedule dynamic changes and then remove the `reftest-wait` attribute to triger a screenshot without concern that the changes are batched into the intial render. For want of a better name the event fired will be called `ReftestReady`. The event is fired at the document root element and bubbles.
+
+This addition corresponds to the gecko `MozReftestInvalidate` event. Providing this event is expected to unblock upstreaming some more Gecko reftests.
+
+## Example
+
+Adapted from the [gecko docs](https://searchfox.org/mozilla-central/source/layout/tools/reftest/README.txt#509)
+
+```
+
+function doTest() {
+  document.body.style.border = "";
+  document.documentElement.removeAttribute('class');
+}
+document.addEventListener("ReftestReady", doTest, false);
+```      
 
 ## Risks
 
