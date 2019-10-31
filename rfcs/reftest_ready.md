@@ -2,7 +2,7 @@
 
 ## Summary
 
-Fire a `TestRendered` event for reftests when a `reftest-wait` class is present on the root and layout, fonts and painting are complete. This coresponds to the point at which the screenshot would be taken in the absence of `reftest-wait`.
+Fire a `TestRendered` event for reftests when a `reftest-wait` class is present on the root and layout, fonts and painting are complete. This corresponds to the point at which the screenshot would be taken in the absence of `reftest-wait`.
 
 ## Details
 
