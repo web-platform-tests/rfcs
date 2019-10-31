@@ -2,7 +2,7 @@
 
 ## Summary
 
-Fire a `WptTestRendered` event for reftests when a `reftest-wait` class is present on the root and layout, fonts and painting are complete. This coresponds to the point at which the screenshot would be taken in the absence of `reftest-wait`.
+Fire a `TestRendered` event for reftests when a `reftest-wait` class is present on the root and layout, fonts and painting are complete. This coresponds to the point at which the screenshot would be taken in the absence of `reftest-wait`.
 
 ## Details
 
@@ -12,7 +12,7 @@ The detailed steps for running a reftest with this addition are as follows:
 
 * Wait for the document to complete loading, all fonts to load, and for pending paints to be flushed.
 * If the document root element does not contain a class named `reftest-wait`, screenshot the viewport and abort these steps
-* Fire an event at the document root with the name `WptTestRendered` and the bubbles attribute set to true.
+* Fire an event at the document root with the name `TestRendered` and the bubbles attribute set to true.
 * Wait for the `reftest-wait` class to be removed from the document root
 * Wait for pending paints to flush
 * Screenshot the viewport
