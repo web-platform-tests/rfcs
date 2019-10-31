@@ -6,7 +6,7 @@ Fire a `TestRendered` event for reftests when a `reftest-wait` class is present 
 
 ## Details
 
-Reftests which want to check for behaviour in the face of dynamic changes need to know when those changes can be made with a complete initial state. This corresponds to the time that a screenshot would be taken in the case that the `reftest-wait` attribute is not present. Firing an event at this time allows the test to schedule dynamic changes and then remove the `reftest-wait` attribute to triger a screenshot without concern that the changes are batched into the intial render.
+Reftests which want to check for behaviour in the face of dynamic changes need to know when those changes can be made with a complete initial state. This corresponds to the time that a screenshot would be taken in the case that the `reftest-wait` attribute is not present. Firing an event at this time allows the test to schedule dynamic changes and then remove the `reftest-wait` attribute to trigger a screenshot without concern that the changes are batched into the intial render.
 
 The detailed steps for running a reftest with this addition are as follows:
 
