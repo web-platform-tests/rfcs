@@ -29,7 +29,7 @@ function doTest() {
   document.body.style.border = "";
   document.documentElement.removeAttribute('class');
 }
-document.addEventListener("ReftestReady", doTest, false);
+document.addEventListener("TestRendered", doTest, false);
 ```      
 
 ## Risks
