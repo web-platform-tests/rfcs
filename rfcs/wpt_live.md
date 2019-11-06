@@ -11,7 +11,8 @@ hosted at http://wptpr.live.
 
 Bocoup and Google have collaborated on a service to provide a
 publicly-accessible instance of the web-platform-tests. The source code and the
-infrastructure configuration are maintained in the following repository:
+infrastructure configuration are maintained in the following repository (to be
+relocated to the web-platform-tests GitHub organization):
 
 https://github.com/bocoup/web-platform-tests.live
 
@@ -54,6 +55,16 @@ In addition, the project has been configured to use [Google Cloud Platform's
 "autohealing"
 feature](https://cloud.google.com/compute/docs/instance-groups/#autohealing) in
 order to guard against more persistent problems (e.g. faulty disk state).
+
+Because the web-platform-tests project lacks a general solution for sharing
+secrets between its members, the overhead of ad-hoc access control is another
+risk of inheriting this service. Deployment and troubleshooting requires
+privileged access to the relevant Google Cloud Platform project. Members of
+Google's Ecosystem Infra team have this access. This includes a non-Google
+employee, demonstrating that employment in that organization is not a
+requirement. Although TLS certificates commonly represent another source of
+privileged information, the process has been automated via [Let's
+Encrypt](https://letsencrypt.org/).
 
 ## Alternatives considered
 
