@@ -9,7 +9,7 @@ In order to track progress over time,
 install the [Pull Panda](https://pullpanda.com/) GitHub App
 for the web-platform-tests organization (all repositories).
 
-Pull Panda can show [analytics](https://pullpanda.com/analytics) for the past 3 months for, among other things,
+Pull Panda can show [analytics](https://pullpanda.com/analytics) for the past 24 weeks for, among other things,
 PR merge time and open PRs,
 which are relevant for tracking the above-mentioned priorities.
 
@@ -45,7 +45,7 @@ It is free to use for GitHub orgs.
 
 ## Risks
 
-3 months is not enough history to see trends on a longer time scale.
+24 weeks (\~6 months) is not enough history to see trends on a longer time scale.
 There is [an open issue](https://github.com/pullreminders/backlog/issues/94) about this.
 
 Trust. This risk is severely mitigated by the granted permission being read-only
