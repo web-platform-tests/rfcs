@@ -7,13 +7,13 @@ which include increasing PR review velocity and reduce the number of stale PRs.
 
 In order to track progress over time,
 install the [Pull Panda](https://pullpanda.com/) GitHub App
-for the web-platform-tests/wpt repository (or all repos in the org).
+for the web-platform-tests organization (all repositories).
 
 Pull Panda can show [analytics](https://pullpanda.com/analytics) for the past 3 months for, among other things,
 PR merge time and open PRs,
 which are relevant for tracking the above-mentioned priorities.
 
-No setup required, only give it read permission to the org or repo.
+No setup required, only give it read permission to the organization.
 The analytics should be [visible to all organization members](https://docs.pullpanda.com/products/pull-analytics/user-access).
 This app is owned by GitHub.
 
