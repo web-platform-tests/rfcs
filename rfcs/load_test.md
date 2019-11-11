@@ -21,7 +21,7 @@ e.g. as the output of a fuzzing tool.
 The infrastructure changes are as follows:
 
 * A new test type `crash` recognised by the manifest and assigned to
-  any test file with a name containing `-crashtest` immediately before
+  any test file with a name containing `-crash` immediately before
   the extension or in a subdirectory called `crashtests`.
 
 * A new executor type with the following behaviour:
