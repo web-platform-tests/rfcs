@@ -17,3 +17,5 @@ In addition, actually using the server for testing is easier if one can directly
 Running an extra server is always some risk since it may cause instability.
 
 Vendor CI systems may not allow the use of port `9000` for some reason.
+
+This adds an extra requirement for OpenSSL 1.0.2+ and Python 2.7.15+
