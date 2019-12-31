@@ -1,4 +1,4 @@
-# RFC XX: Loading top-level tests on a subdomain.
+# [RFC 39](https://github.com/web-platform-tests/rfcs/pull/39): Loading top-level tests on a subdomain.
 
 ## Summary
 
