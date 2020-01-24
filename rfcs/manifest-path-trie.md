@@ -1,4 +1,4 @@
-# RFC XX: New Manifest Format (path trie)
+# RFC 40: New Manifest Format (path trie)
 
 ## Summary
 
@@ -10,9 +10,9 @@ At the moment, the manifest is formed of three components: the url_base (a strin
 
 The proposal here is two-fold:
 
-Firstly, replace the items objects with a series of nested objects forming a trie of path segments. This makes it much quicker to iterate through only specific directories, which is often enough done in a test-debug cycle.
+Firstly, replace the items objects with a series of nested objects forming a trie of path segments. This allows us to make it much quicker to iterate through only specific directories, which is often enough done in a test-debug cycle, as part of redoing the implementation of include/exclude (this is future work for this RFC).
 
-Secondly, we get rid of path_hash: we migrate the hashes into the item object, thereby getting rid of the duplication of all the paths. This almost halves the size of the JSON created, which when the small-update case was previously dominated by parsing/serializing the JSON is significant.
+Secondly, we get rid of path_hash: we migrate the hashes into the item object, thereby getting rid of the duplication of all the paths. This almost halves the size of the JSON created, which when the small-update case was previously dominated by parsing/serializing the JSON is significant. This provides a ~10% speedup running `wpt run` after modifying a single test.
 
 Additionally, we stop storing the URL if it is identical to the path; this again provides size savings but is not a critical part of this proposal.
 
