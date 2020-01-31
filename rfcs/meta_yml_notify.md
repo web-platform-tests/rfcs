@@ -23,10 +23,10 @@ This has a few problems:
 
 To address these problems, have two separate keys in `META.yml`:
 
-* `suggested_reviewers`: @wpt-pr-bot will only request review from one of these, similar to how assignee currently works.
-* `notify`: @wpt-pr-bot will add a comment (before requesting reviews) notifying everyone listed.
+* `suggested_reviewers`: @wpt-pr-bot will only request review from one of these in a round-robin fasion, similar to how assignee currently works.
+* `notify`: @wpt-pr-bot will edit the OP (before requesting reviews) notifying everyone listed.
 
-Either @wpt-pr-bot can continue to also assign the selected reviewer, or it can only request review and not assign anyone. (This should be decided before merging this RFC.)
+@wpt-pr-bot will no longer assign anyone automatically.
 
 This setup allows the following combinations:
 
@@ -36,14 +36,14 @@ This setup allows the following combinations:
 
 ## Risks
 
-Having bots add comments in wpt has been a source of contention in the past. This RFC reintroduces a comment.
+Having bots add comments in wpt has been a source of contention in the past.
 
 The known problems are:
 
 * Additional notifications. When someone is requested review, and a bot later adds a comment, it can cause a new notification.
 * Clutter the thread with bot comments.
 
-These are partially mitigated by having the bot add the comment before (or at the same time as) requesting review. The bot could further keep the comment short, and edit its first comment instead of adding more comments if the PR is updated.
+These are partially mitigated by having the bot edit the OP instead of commenting, and doing this before (or at the same time as) requesting review. The bot could further keep the text short. If the PR is updated, the OP would be edited again.
 
 ## Alternatives considered
 
