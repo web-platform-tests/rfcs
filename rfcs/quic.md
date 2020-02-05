@@ -19,7 +19,7 @@ See the [original issue][original-issue] for more background.
 
 ### Requirements
 
-1.  The QUIC server requires decent cyptography support; pure Python isn't
+1.  The QUIC server requires decent cryptography support; pure Python isn't
     sufficient.
 2.  The server needs to be scriptable, and the custom handlers should live in
     the wpt repo next to test files, so that they can be updated together.
@@ -46,10 +46,10 @@ For **test writers**: the QUIC server will support Python custom handlers
 similar to `wptserve`. The APIs will likely be different. To more easily
 distinguish the two, we add a filename flag to QUIC custom handlers
 (`.quic.py`). These handlers will be ignored by `wptserve`. Tests that require
-the QUIC server need to be marked with a meta tag (tentaively `<meta name="quic"
-content="true">` and `// META: quic=true`). This information will be extracted
-by `wpt manifest` into `MANIFEST.json`, so that `wptrunner` can skip the tests
-that require the QUIC server easily.
+the QUIC server need to be marked with a meta tag (tentatively `<meta
+name="quic" content="true">` and `// META: quic=true`). This information will be
+extracted by `wpt manifest` into `MANIFEST.json`, so that `wptrunner` can skip
+the tests that require the QUIC server easily.
 
 For **test runners**: the goal is to not introduce any observable changes to
 infrastructure maintainers not yet concerned with QUIC or WebTransport. All
@@ -95,7 +95,7 @@ startup. The server listens on port 9001 by default, which may affect services
 that start afterwards if they happen to use the same port.
 
 The change required in `wpt` is limited, and the QUIC server itself is
-standalone, so the maintenance burder will be low. The Ecosystem Infra team at
+standalone, so the maintenance burden will be low. The Ecosystem Infra team at
 Google will be responsible for maintaining this integration point.
 
 A new meta tag means a new field in the manifest JSON (only needed for tests
