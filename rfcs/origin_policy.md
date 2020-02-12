@@ -13,7 +13,7 @@ This proposal introduces new subdomains to the web platform tests serving infras
 
 An implementation of this proposal can be seen in [web-platform-tests/wpt#21705](https://github.com/web-platform-tests/wpt/pull/21705).
 
-The added subdomains are of the form `opX` for `X` from 1 through N. Our best guess for N is that it will end up on the order of 30–60, depending on how many tests are written. We propose starting with 30 but allowing increases in the future without additional RFCs, if that is found to be necessary while writing tests.
+The added subdomains are of the form `opX` for `X` from 1 through 99. We are hopeful that 99 subdomains will be enough for writing all the necessary origin policy tests; if this ends up being too few, we can do a future RFC to increase the number.
 
 The added subdomains do not contribute to the "product" subdomains (of the form `www.www1`, etc.) which were introduced in [web-platform-tests/wpt#13272](https://github.com/web-platform-tests/wpt/pull/13272).
 
