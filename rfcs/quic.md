@@ -9,10 +9,12 @@ server is used to test web APIs that rely on the QUIC protocol (e.g.
 enabled, `wptrunner` will skip the tests that rely on QUIC.
 
 QUIC custom handlers use a new filename flag `.quic` (`.quic.py`). And a meta
-tag is included by tests that require the QUIC server.
+tag is included by tests that require the QUIC server for easy filtering.
 
 This RFC focuses on the high-level architecture and dependency management to
-enable prototyping the QUIC server. The server APIs are not yet finalized.
+enable prototyping the QUIC server. The server APIs are not yet finalized, but
+we commit to filing another RFC to discuss and finalize the API design once it
+is ready.
 
 See the [original issue][original-issue] for more background.
 
@@ -50,7 +52,10 @@ custom handlers (`.quic.py`). These handlers will be ignored by `wptserve`.
 Tests that require the QUIC server need to be marked with a meta tag
 (tentatively `<meta name="quic" content="true">` and `// META: quic=true`). This
 information will be extracted by `wpt manifest` into `MANIFEST.json`, so that
-`wptrunner` can skip the tests that require the QUIC server easily.
+`wptrunner` can skip the tests that require the QUIC server easily. A lint rule
+will be added to require this meta tag if `.quic.py` appears in the file, even
+though it cannot prevent all accidental dependency of the QUIC server (e.g.
+through a resource script).
 
 For **test runners**: the goal is to not introduce any observable changes to
 users not yet concerned with QUIC or WebTransport. All existing tests will
@@ -74,9 +79,9 @@ users to use a platform supported by the prebuilt wheels from PyPI or build and
 distribute the wheels themselves (e.g. in Chromium through
 [cipd](https://chromium.googlesource.com/chromium/src/+/master/docs/cipd.md)).
 
-The Python source of the dependencies will not be vendored into
-`tools/third_party`, since they are included in wheels and we need wheels for
-native extensions anyway.
+The source code of all dependencies will also be vendored into
+`tools/third_party` to allow building from source if needed, even though we
+there is no plan for that yet.
 
 All Python dependencies are BSD-licensed.
 
