@@ -80,8 +80,7 @@ distribute the wheels themselves (e.g. in Chromium through
 [cipd](https://chromium.googlesource.com/chromium/src/+/master/docs/cipd.md)).
 
 The source code of all dependencies will also be vendored into
-`tools/third_party` to allow building from source if needed, even though we
-there is no plan for that yet.
+`tools/third_party` to allow building from source if needed.
 
 All Python dependencies are BSD-licensed.
 
