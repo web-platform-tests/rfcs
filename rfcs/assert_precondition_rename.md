@@ -18,10 +18,10 @@ technical difficulties of getting mozlog updated.
 The `assert_precondition` function and associated status
 ('PRECONDITION\_FAILED') were added in [RFC #16](assert_precondition.md).
 However there has been confusion over whether the function is meant for spec
-features that are explicitly marked OPTIONAL (i.e. its usage in
+features that are explicitly marked OPTIONAL (e.g. its usage in
 `html/semantics/embedded-content/the-video-element/resize-during-playback.html`),
 or whether it is meant as an early-out when a particular spec or feature is not
-implemented by a browser (i.e. its usage in `portals/`).
+implemented by a browser (e.g. its usage in `portals/`).
 
 The difference matters here due to the 'PRECONDITION\_FAILED' status, which has
 been interpreted by some users as a 'non-failing' status - which only makes
