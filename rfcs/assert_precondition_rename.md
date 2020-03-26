@@ -5,8 +5,8 @@
 Split the `assert_precondition` function into `assert_implements_optional` and
 `assert_implements`. The `assert_implements_optional` function will behave as
 `assert_precondition` does today; a failed assert will record a
-'PRECONDITION\_FAILED' status. The `assert_implements` function will be
-synactical sugar for `assert_true`.
+'PRECONDITION\_FAILED' status. The `assert_implements` function behaves
+similarly, but records a `FAIL` status if the assert fails.
 
 Reuse the 'PRECONDITION\_FAILED' status rather than renaming it due to the
 technical difficulties of getting mozlog updated.
@@ -30,13 +30,14 @@ sense if the failure is for truly OPTIONAL behavior.
 ### Proposal
 
 Rename the `assert_precondition` function to `assert_implements_optional`, with
-the same 'PRECONDITION\_FAILED' status produced, and add a new function`
-assert_implements` that is essentially syntactical sugar for `assert_true`.
-That is:
+the same 'PRECONDITION\_FAILED' status produced, and add a new function
+`assert_implements` that produces a 'FAIL' status if the input is not
+[truthy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy). That is:
 
 > __assert_implements(condition, description)__
 >
-> Concludes the test with a `FAIL` status if `condition` is not truthy.
+> Concludes the test with a `FAIL` status if `condition` is not
+> [truthy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy).
 > Used to avoid running unnecessary code or subtests for a feature that is not
 > implemented by the running browser.
 
