@@ -6,7 +6,7 @@ Split the `assert_precondition` function into `assert_implements_optional` and
 `assert_implements`. The `assert_implements_optional` function will behave as
 `assert_precondition` does today; a failed assert will record a
 'PRECONDITION\_FAILED' status. The `assert_implements` function behaves
-similarly, but records a `FAIL` status if the assert fails.
+similarly, but records a 'FAIL' status if the assert fails.
 
 Reuse the 'PRECONDITION\_FAILED' status rather than renaming it due to the
 technical difficulties of getting mozlog updated.
