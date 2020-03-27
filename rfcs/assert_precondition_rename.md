@@ -1,4 +1,4 @@
-# RFC 43: Split 'assert\_precondition' into optional and non-optional variants
+# RFC 48: Split 'assert\_precondition' into optional and non-optional variants
 
 ## Summary
 
