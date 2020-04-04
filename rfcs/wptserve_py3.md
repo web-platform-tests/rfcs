@@ -33,7 +33,7 @@ Roughly in the order of importance:
 
 In both Python 2 and 3, unprefixed string literals have the `str` type. However, the meaning of the `str` type has changed: in Python 2 it is a raw byte sequence, whereas in Python 3 it is a Unicode text string. The rationale behind the change was to move to a Unicode-by-default world: arguably most people who used `str` in Python 2 were probably dealing with text and should use Unicode, so this decision minimized the impact on code handling human-readable text. However in WPT we actually intended to use byte sequences (see [background](#background)).
 
-This pain is further compounded by the choice of types in some parts of the Python 3 standard library. The low-level `[http](https://docs.python.org/3/library/http.html)` library takes and returns the `str` type (i.e. Unicode string) almost everywhere except the body (see the [type](https://github.com/python/typeshed/blob/master/stdlib/3/http/client.pyi) [annotations](https://github.com/python/typeshed/blob/master/stdlib/3/http/server.pyi)). This is convenient for existing code from Python 2 but semantically different and makes it difficult to send raw bytes on the wire. On the upside, the standard library carefully and intentionally uses an 8-bit isomorphic encoding (latin-1/ISO-8859-1) when appropriate (e.g. [headers](https://github.com/python/cpython/blob/8c3ab189ae552401581ecf0b260a96d80dcdae28/Lib/http/client.py#L220)) to allow arbitrary byte sequences:
+This pain is further compounded by the choice of types in some parts of the Python 3 standard library. The low-level [`http`](https://docs.python.org/3/library/http.html) library takes and returns the `str` type (i.e. Unicode string) almost everywhere except the body (see the [type](https://github.com/python/typeshed/blob/master/stdlib/3/http/client.pyi) [annotations](https://github.com/python/typeshed/blob/master/stdlib/3/http/server.pyi)). This is convenient for existing code from Python 2 but semantically different and makes it difficult to send raw bytes on the wire. On the upside, the standard library carefully and intentionally uses an 8-bit isomorphic encoding (latin-1/ISO-8859-1) when appropriate (e.g. [headers](https://github.com/python/cpython/blob/8c3ab189ae552401581ecf0b260a96d80dcdae28/Lib/http/client.py#L220)) to allow arbitrary byte sequences:
 
 *   Getting bytes out: “encode” the return value with latin-1
 *   Passing bytes in: “decode” the byte sequence with latin-1
@@ -55,8 +55,8 @@ I would argue that the most ergonomic approach (for test authors) is to **always
 
 To achieve this, we will need some encoding magic to store arbitrary byte sequences in `str` in Python 3. This will be similar to what the standard library does, including but not limited to:
 
-*   In the request handler, we need to explicitly use latin-1 encoding for `[cgi.FieldStorage](https://github.com/web-platform-tests/wpt/blob/5eb4894a68051e04b14fe471da38dd8817e417ed/tools/wptserve/wptserve/request.py#L309)` instead of the default utf-8 encoding to allow non-UTF-8 values in Python 3. (In Python 2, this class does not have encoding.)
-*   Stop forcing the headers to be byte sequences in both [Request](https://github.com/web-platform-tests/wpt/blob/5eb4894a68051e04b14fe471da38dd8817e417ed/tools/wptserve/wptserve/request.py#L378) and [Response](https://github.com/web-platform-tests/wpt/blob/1e0302fe4048bef22ad72168bd754fee8d7f2ca5/tools/wptserve/wptserve/response.py#L320). Instead, directly pass the `str` headers from and to the standard library. The `[parse_headers()](https://github.com/python/cpython/blob/8c3ab189ae552401581ecf0b260a96d80dcdae28/Lib/http/client.py#L200)` function in Python 3 uses latin-1 so it can preserve any byte sequence.
+*   In the request handler, we need to explicitly use latin-1 encoding for [`cgi.FieldStorage`](https://github.com/web-platform-tests/wpt/blob/5eb4894a68051e04b14fe471da38dd8817e417ed/tools/wptserve/wptserve/request.py#L309) instead of the default utf-8 encoding to allow non-UTF-8 values in Python 3. (In Python 2, this class does not have encoding.)
+*   Stop forcing the headers to be byte sequences in both [Request](https://github.com/web-platform-tests/wpt/blob/5eb4894a68051e04b14fe471da38dd8817e417ed/tools/wptserve/wptserve/request.py#L378) and [Response](https://github.com/web-platform-tests/wpt/blob/1e0302fe4048bef22ad72168bd754fee8d7f2ca5/tools/wptserve/wptserve/response.py#L320). Instead, directly pass the `str` headers from and to the standard library. The [`parse_headers()`](https://github.com/python/cpython/blob/8c3ab189ae552401581ecf0b260a96d80dcdae28/Lib/http/client.py#L200) function in Python 3 uses latin-1 so it can preserve any byte sequence.
 *   [Authentication](https://github.com/web-platform-tests/wpt/blob/5eb4894a68051e04b14fe471da38dd8817e417ed/tools/wptserve/wptserve/request.py#L611) needs to decode `username` and `password` with latin-1 to make sure they are always `str`.
 *   Optionally, we might want to add additional getters and setters for headers, which are guaranteed to return and take byte sequences to provide additional clarity and control if the test author desires. Such getters and setters will use `encode("latin-1")` and `decode("latin-1")` respectively under the hood. Alternatively, we could add a type switch to the existing setters to automatically decode if `bytes` are passed in, but custom getters would always be required to receive bytes out.
 
@@ -98,9 +98,11 @@ An alternative approach would be to keep a consistent and semantically correct e
 To make it clear, I do not think the purity of the encoding model justifies the scale of the change and ongoing maintenance.
 
 
-## Side note: Stash
+## Side notes
 
-Stash is the key-value storage for custom handlers. Keys are used to [create uuid.UUID](https://github.com/web-platform-tests/wpt/blob/5eb4894a68051e04b14fe471da38dd8817e417ed/tools/wptserve/wptserve/stash.py#L150), which are expected to be `str` in both Python 2 and Python 3. Most, if not all, custom handlers use `str` keys. Values are stored directly in a Python dictionary and can be any Pickleable-type.
+**`Response`** already [handles encoding of the content explicitly](https://github.com/web-platform-tests/wpt/blob/edc6681c45e1a25e36e99dcd90dada97ce086dae/tools/wptserve/wptserve/response.py#L27).
+
+**Stash** is the key-value storage for custom handlers. Keys are used to [create uuid.UUID](https://github.com/web-platform-tests/wpt/blob/5eb4894a68051e04b14fe471da38dd8817e417ed/tools/wptserve/wptserve/stash.py#L150), which are expected to be `str` in both Python 2 and Python 3. Most, if not all, custom handlers use `str` keys. Values are stored directly in a Python dictionary and can be any Pickleable-type.
 
 
 ## References
