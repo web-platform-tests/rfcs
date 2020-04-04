@@ -87,13 +87,13 @@ An alternative approach would be to keep a consistent and semantically correct e
 #### Detailed changes
 
 *   Keep the `ensure_{str,bytes}/maybe_{encode,decode}` functions, and double check that they are used everywhere in wptserve.
-*   Prefix all string literals in custom handlers with b, which needs to be done manually. Note that we could add a hack to setters to accept both str and bytes, but on the getter side there is little we could do -- we don’t know whether the returned value will be used together with `bytes` or `str`, and things like `dict.get()` will be particularly tricky.
+*   Prefix string literals in custom handlers with `b` when necessary, which needs to be done manually (some strings should not be prefixed). Note that we could add a hack to setters to accept both `str` and `bytes`, but on the getter side there is little we could do -- we don’t know whether the returned value will be used together with `bytes` or `str`, and things like `dict.get()` will be particularly tricky.
 
 
 #### Outcomes and risks
 
 *   Printing and logging will also need to be changed in Python 3. Custom handlers need to have a special code path for Python 3 to encode the strings.
-*   We need a new coding guideline to make sure string literals are always prefixed with b to stay Python 2 and 3 compatible. A lint rule will help but won’t be foolproof.
+*   We need a new coding guideline to make sure string literals are prefixed with `b` correctly to stay Python 2 and 3 compatible. We can't simply require all strings to be prefixed with either `b` or `u`, as sometimes native strings are desired (notably some standard library APIs that take native strings in both Python 2 and 3).
 
 To make it clear, I do not think the purity of the encoding model justifies the scale of the change and ongoing maintenance.
 
