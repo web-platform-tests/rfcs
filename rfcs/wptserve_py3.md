@@ -110,4 +110,4 @@ To make it clear, I do not think the purity of the encoding model justifies the 
 For reference, here is how some popular Python libraries deal with HTTP headers:
 
 *   [Werkzeug](https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Headers) (the library used by Flask) always takes and returns `str` by default, unless ``as_bytes`` is True. If `bytes` is given to the getter, it will be encoded using latin-1 (see the changelog for v0.9). This is effectively Option A with the optional setters and getters.
-*   [Requests](https://requests.readthedocs.io/en/master/api/#behavioural-changes) enforces “native stringsâ (`str`) almost everywhere. It uses UTF-8 instead of latin-1 to automatically encode keys (header names), but the encoding doesn’t quite matter here because HTTP header names are supposed to be ASCII.
+*   [Requests](https://requests.readthedocs.io/en/master/api/#behavioural-changes) enforces “native strings” (`str`) almost everywhere. It uses UTF-8 instead of latin-1 to automatically encode keys (header names), but the encoding doesn’t quite matter here because HTTP header names are supposed to be ASCII.
