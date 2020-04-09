@@ -7,7 +7,7 @@ passes if this occurs without encountering a fatal error e.g. a crash.
 
 ## Details
 
-Load Tests are static tests typically used for cases where browsers
+Crash Tests are static tests typically used for cases where browsers
 are known to have a bug such as a crash or a leak. They differ from
 other tests such as reftests and testharness tests in that there is no
 pass condition other than the page loading successfully. In vendor
@@ -26,10 +26,10 @@ The infrastructure changes are as follows:
 
 * A new executor type with the following behaviour:
   - Load the test URL
-  - If there is no `class=wait` on the root element, mark the test as
-    passed when the load is complete, all fonts have finished loading,
-    and the rendering is stable.
- - If `class=wait` appears on the root element, mark the test as
+  - If there is no `class=test-wait` on the root element, mark the test
+    as passed when the load is complete, all fonts have finished
+    loading, and the rendering is stable.
+ - If `class=test-wait` appears on the root element, mark the test as
    complete once the previous conditions are met and that class has been
    removed.
 
