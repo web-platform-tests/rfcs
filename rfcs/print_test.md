@@ -33,7 +33,7 @@ There has been a lot of prior work here:
    added `print` starts with saying it should compare with the
    rasterized output but then it gets resolved with very different
    behaviour.)
-   
+
 * WebKit's history has two halves:
   * [#15558](https://bugs.webkit.org/show_bug.cgi?id=15558) added
     support for PDF reftests on 2008-07-09. This was then skipped for
@@ -48,14 +48,10 @@ There has been a lot of prior work here:
     separated by a horizontal rule). Part of the reason for moving
     away from PDFs was, "as it would require some amount of efforts to
     make it portable among [WebKit] ports".
-    
+
   The latter support survives in both WebKit and Blink, and is triggered by a
   call to `testRunner.setPrinting()`.
-  
-* There is [ongoing
-  work](https://github.com/w3c/webdriver/issues/1093) to add print
-  support to WebDriver.
-  
+
 We previously blocked
 [#5381](https://github.com/web-platform-tests/wpt/issues/5381) on
 stopping classifying all the existing print tests as manual, given
@@ -68,33 +64,86 @@ test type").
 
 ## Details
 
-This proposal is to add a new test type, provisionally called `print`.
+This proposal adds a new test type, called `print-reftest`.
 
-This new test type would be very similar to the existing `reftest`
-type; it would similarly use `<link rel=match>` and `<link
-rel=mismatch>`, combining in similar ways to how they do for
-reftests. It would also similarly support `reftest-wait`.
+This new test type is similar to the existing `reftest` type; it uses
+`<link rel=match>` and `<link rel=mismatch>`, combining in the same
+way as for normal reftests. It also supports `reftest-wait`. Instead
+of comparing screenshots of the viewport, a print-reftest produces a
+paginated view of the document, and compares a bitmap rendering of
+each page in the test to the corresponding page in the ref. In order
+to pass an equal comparison test must have all pages the same whereas
+a not-equal comparison test must have at least one page different.
 
-The different with the existing `reftest` type is that instead of
-taking a screenshot of the current viewport, this would render the
-document to a sequence of PDF pages. The two lists of PDF pages would
-first be compared for length (i.e., if there are different numbers of
-pages, the test fails), and then each page in turn is rasterized and
-compared with reference.
+This tests are identified by a `print` type-flag in the filename
+(i.e., "foo-print.html").
 
-This test type would be discovered by a `print` type-flag (i.e.,
-"foo-print.html").
+The paper sizes for the pagniated layout are 5 inches by 3 inches with
+0.5 inch margins on all sides. Initially this is fixed, but this could
+later be relaxed by adding a new meta property to specify the required
+dimensions.
+
+In some cases it may not be desirable to compare all pages of the
+output. To support this use case a new meta value is used; `<meta
+name="page-ranges">`. The content value of this element follows the
+form:
+```
+content = (RefPath ":")? Range ("," Range)*
+Range = Int | Int "-" Int
+Int = [0-9]+
+RefPath = /* Relative path to a reference of the current test */
+```
+Multiple `<meta name=page-ranges>` elements may be specified in a
+single test, each applying to a particular reference. A range with no
+reference specified applies to the test itself. Ranges specified in
+reference files are an error that are ignored. The `page-ranges`
+specifier for a particular document is interpreted as for the [parse a
+page range](https://www.w3.org/TR/webdriver/#dfn-parse-a-page-range)
+algorithm in the WebDriver spec.
+
+### Implementation in wptrunner
+
+The cross-browser implementation of this feature relies on two things:
+* The [print endpoint in the webdriver
+  standard](https://www.w3.org/TR/webdriver/#print)
+* pdf.js providing a cross-browser mechanism to render a PDF without
+  depending on external tools, many of which are not cross-platform or
+  have inappropriate licensing.
+
+The WebDriver-based implementation first renders the document to a
+PDF, and then computes the reftest result by rasterising the test and
+ref PDFs at 96 dpi.
+
+This stack is good enough to prove that the feature can be implemented
+in any browser that has the relevant standards support, and will be
+enough to run the feature in CI and get results on wpt.fyi. Vendors
+may wish to use a custom implementation in their own infrastructure
+for reasons of performance. Indeed if the browser is able to rasterise
+directly to the paginated form that will avoid the need to create an
+intermediate PDF.
 
 ## Risks
 
 * Browsers' rendering to PDF is non-deterministic and therefore
   identical pages won't be guaranteed to yield a PDF that is
-  graphically the same on each load.
-  
-* We don't catch non-visual differences in the PDFs, such as
-  (accessible) text content in the document.
-  
-* The system we use for rasterizing the PDFs to compare each page is
-  non-deterministic and therefore yields different PNGs (AIUI, if we
-  use ghostscript, any such case would be considered a bug in
-  ghostscript).
+  graphically the same on each load. This can be addressed with
+  appropriate fuzzy specifiers, or by using browser-specific
+  alternatives to PDF generation.
+
+* We don't catch non-visual differences in the output, such as
+  (accessible) text content in the document. This feature is supported
+  by gecko's print reftests, so we may be missing some testing
+  needs. This could be fixed by additional meta elements to either
+  mandate that the text has to match or to provide some text strings
+  that ought to be in the output file. Such a feature would prevent
+  optimisations that avoid producing a PDF entirely, but may be
+  important for ensuring that browsers don't incorrectly rasterize
+  text in their print output (although such a thing is strictly hard
+  to test in a cross browser fashion since there's no standard for the
+  internals of the produced PDF).
+
+* The default implementation rendering the PDF using pdf.js inside the
+  browser could result in a bug affecting both the test and the
+  rasterization. But these use very different codepaths and layout
+  techniques, so the chance of a bug affecting both seems small
+  compared to a bug affecting both the test and the ref.
