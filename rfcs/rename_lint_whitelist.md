@@ -10,8 +10,10 @@ guide](https://developers.google.com/style/word-list#blacklist).
 
 ## Details
 
-Primary change is just changing `lint.whitelist` in `tools/lint/lint.py` to
-`lint.ignore`. There are also some documentation changes to be done.
+Aside from renaming the file, `tools/lint/lint.py` will need minor
+modifications to look for the correct default file, and the
+[web-platform-tests.org](https://web-platform-tests.org) documentation will
+need updating.
 
 ## Risks
 
