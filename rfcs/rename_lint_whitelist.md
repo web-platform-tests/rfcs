@@ -20,6 +20,6 @@ need updating.
 Known risks:
 
 1. Downstream consumers or infrastructure may rely on the name of our lint
-   file. The level of risk here is unknown, but not expected to be high - it
-   seems unlikely the WPT lint is a critical file.
+   file. Neither Gecko and Chromium appear to rely on it, and so the risk here
+   is low.
 1. There may be some mental overhead in people adapting to the new name.
