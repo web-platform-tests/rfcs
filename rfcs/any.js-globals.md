@@ -19,3 +19,7 @@ A test supposed to run in dedicated and shared workers would use `dedicatedworke
    1. Update all remaining `*.any.js` tests that use `!` to list all the relevant globals explicitly.
    
 https://github.com/web-platform-tests/wpt/issues/23111 tracks this work.
+
+## Risks
+
+Downstream users could have reimplemented some of the infrastructure logic and end up running tests in more globals than they should (by always including the default globals).
