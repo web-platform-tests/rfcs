@@ -13,7 +13,7 @@ A test supposed to run in dedicated and shared workers would use `dedicatedworke
 
 ## Details
 
-1. Update all `*.any.js` tests that use `// META: global=` to list all the relevant globals explicitly when possible. (Some necessarily rely on `!default` or `!`.
+1. Update all `*.any.js` tests that use `// META: global=` to list all the relevant globals explicitly when possible. (Some necessarily rely on `!default` or `!`.)
 2. Atomically:
    1. Remove support for `default` and `!`.
    1. Update all remaining `*.any.js` tests that use `!` to list all the relevant globals explicitly.
