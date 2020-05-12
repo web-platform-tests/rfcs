@@ -1,4 +1,4 @@
-# RFC #17: Code of Conduct
+# RFC #54: Code of Conduct
 
 ## Summary
 
