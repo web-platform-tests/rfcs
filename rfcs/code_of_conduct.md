@@ -10,7 +10,7 @@ Publishing a code of conduct is a way "to be overt in our openness, welcoming
 all people to contribute, and pledging in return to value them as whole human
 beings and to foster an atmosphere of kindness, cooperation, and
 understanding." (via
-[contributor-covenant.org](https://www.contributor-covenant.org/)
+[contributor-covenant.org](https://www.contributor-covenant.org/))
 
 ## Details
 
