@@ -33,7 +33,7 @@ Roughly in the order of importance:
 
 ## Root problem (or; why is this hard?)
 
-In both Python 2 and 3, unprefixed string literals have the `str` type. However, the meaning of the `str` type has changed: in Python 2 it is a raw byte sequence, whereas in Python 3 it is a Unicode text string. The rationale behind the change was to move to a Unicode-by-default world: arguably most people who used `str` in Python 2 were probably dealing with text and should use Unicode, so this decision minimized the impact on code handling human-readable text. However in WPT we actually intended to use byte sequences (see [background](#background)).
+In both Python 2 and 3, unprefixed string literals have the `str` type. However, the meaning of the `str` type has changed: in Python 2 it is a raw byte sequence, whereas in Python 3 it is a Unicode text string. The rationale behind the change was to move to a Unicode-by-default world: arguably most people who used `str` in Python 2 were probably dealing with text and should use Unicode, so this decision minimized the impact on code handling human-readable text. However in wptserve we often intended to use byte sequences (see [background](#background)).
 
 This pain is further compounded by the choice of types in some parts of the Python 3 standard library. The low-level [`http`](https://docs.python.org/3/library/http.html) library takes and returns the `str` type (i.e. Unicode string) almost everywhere except the body (see the [type](https://github.com/python/typeshed/blob/master/stdlib/3/http/client.pyi) [annotations](https://github.com/python/typeshed/blob/master/stdlib/3/http/server.pyi)). This is convenient for existing code from Python 2 but semantically different and makes it difficult to send raw bytes on the wire. On the upside, the standard library carefully and intentionally uses an 8-bit isomorphic encoding (latin-1/ISO-8859-1) when appropriate (e.g. [headers](https://github.com/python/cpython/blob/8c3ab189ae552401581ecf0b260a96d80dcdae28/Lib/http/client.py#L220)) to allow arbitrary byte sequences:
 
@@ -52,15 +52,17 @@ The preferred approach of the community is to keep a consistent and semantically
 wptserve changes:
 
 *   Introduce a pair of helper functions `isomorphic_{encode,decode}` that use ISO-8859-1 under the hood and only encode/decode if necessary; both of them can accept either binary or text strings, but always return binary/text strings respectively regardless of the Python version.
-*   Most public APIs for custom handlers (including methods and properties of `Request` and `Response`) are binary, with the notable exception of the response body which can be text or binary strings.
+*   Most public APIs for custom handlers (including methods and properties of `Request` and `Response`) only accept and return binary, with the notable exception of the response body which can be text or binary strings (if a text string is given, it will be encoded with `Response.encoding` automatically).
 
-Guidelines for converting custom handlers:
+[Python file handlers](https://web-platform-tests.org/writing-tests/python-handlers/index.html?highlight=file%20handler):
 
-*   Make sure all strings are either always text or always bytes; all string literals in handlers should be prefixed with `b""` or `u""`. This will be enforced through a [lint](https://github.com/web-platform-tests/wpt/pull/23347). Existing code needs to be converted and reviewed manually ([example](https://github.com/web-platform-tests/wpt/pull/23363)). Note that we could add a hack to setters to accept both `str` and `bytes`, but on the getter side there is little we could do -- we don’t know whether the returned value will be used together with `bytes` or `str`, and things like `dict.get()` will be particularly tricky.
+*   All strings will be either always text or always bytes; all string literals in handlers should be prefixed with `b""` or `u""`.
+    * This will be enforced through a [lint](https://github.com/web-platform-tests/wpt/pull/23347).
+    * Existing code needs to be converted and reviewed manually ([example](https://github.com/web-platform-tests/wpt/pull/23363)).
 *   **Headers** on both requests and responses are always *binary strings* for both keys and values. This includes:
     * **HTTP Basic Auth**: `Request.auth.{username,password}` are binary strings.
     * **Cookies**: Names and values in cookies are always binary strings, including `Request.cookies` and `Response.{set,unset,delete}_cookie`.
-*   **Request URL/form parameters** are all *binary strings* for both keys and values, accessible via `Request.GET` or `Request.POST`.
+*   **Request URL/form parameters** are always *binary strings* for both keys and values, accessible via `Request.GET` or `Request.POST`.
 *   **Response body** can be written via `Response.writer.*` or via the [return values](https://web-platform-tests.org/tools/wptserve/docs/handlers.html#python-handlers), which can be either text or binary strings, but the two types should never be mixed and string literals must be prefixed.
     * As an exception, `Response.set_error` takes only text message strings.
 
