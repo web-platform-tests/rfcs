@@ -3,7 +3,7 @@
 
 ## Summary
 
-This is a proposal to always use the native string type `str` in wptserve APIs in both Python 2 and 3 for a smoother and more ergonomic migration towards Python 2 & 3 compatibility.
+This is a proposal to always use string types with consistent semantics (mostly `six.binary_type` with `six.text_type` in rare cases) and never the native `str` type in wptserve APIs in both Python 2 and 3.
 
 
 ## Background
@@ -24,9 +24,11 @@ This is a rough count of all Python files excluding some directories, which stil
 
 Roughly in the order of importance:
 
-1.  Everything, including wptserve and custom handlers, must continue to work in both Python 2 and 3 consistently. (This was discussed and agreed upon at TPAC 2019.)
+1.  Everything, including wptserve and custom handlers, must continue to work in both Python 2 and 3. (This was discussed and agreed upon at TPAC 2019.)
 1.  Custom handlers must continue to be able to read and write raw bytes from requests and to responses, including headers and body. wptserve must not change the byte sequences in any way; no errors should be raised if the byte sequences do not have a valid encoding.
-1.  _Optional_: minimize code change to custom handlers, and consequently minimize the burden on test authors in the future by imposing fewer new requirements. (Whether to strive for this goal will largely affect which option we choose.)
+1.  _Optional/competing_: (Which goal to prioritize largely determines which option we choose.)
+    a. Keep type semantics consistent across Python 2 and 3 (a string is either always binary or always text).
+    a. Minimize code change to custom handlers, and consequently minimize the burden on test authors in the future by imposing fewer new requirements.
 
 
 ## Root problem (or; why is this hard?)
@@ -41,15 +43,41 @@ This pain is further compounded by the choice of types in some parts of the Pyth
 
 ## Options
 
+### [Preferred] Keep the semantics: always use byte sequences
 
-### [Recommended] Keep the ergonomics: always use str
+The preferred approach of the community is to keep a consistent and semantically correct encoding model. That is to **always use byte sequences: `str` in Python 2 and `bytes` in Python 3** (with some rare exceptions below).
+
+#### Detailed changes
+
+wptserve changes:
+
+*   Introduce a pair of helper functions `isomorphic_{encode,decode}` that use ISO-8859-1 under the hood and only encode/decode if necessary; both of them can accept either binary or text strings, but always return binary/text strings respectively regardless of the Python version.
+*   Most public APIs for custom handlers (including methods and properties of `Request` and `Response`) are binary, with the notable exception of the response body which can be text or binary strings.
+
+Guidelines for converting custom handlers:
+
+*   Make sure all strings are either always text or always bytes; all string literals in handlers should be prefixed with `b""` or `u""`. This will be enforced through a [lint](https://github.com/web-platform-tests/wpt/pull/23347). Existing code needs to be converted and reviewed manually ([example](https://github.com/web-platform-tests/wpt/pull/23363)). Note that we could add a hack to setters to accept both `str` and `bytes`, but on the getter side there is little we could do -- we don’t know whether the returned value will be used together with `bytes` or `str`, and things like `dict.get()` will be particularly tricky.
+*   **Headers** on both requests and responses are always *binary strings* for both keys and values. This includes:
+    * **HTTP Basic Auth**: `Request.auth.{username,password}` are binary strings.
+    * **Cookies**: Names and values in cookies are always binary strings, including `Request.cookies` and `Response.{set,unset,delete}_cookie`.
+*   **Request URL/form parameters** are all *binary strings* for both keys and values, accessible via `Request.GET` or `Request.POST`.
+*   **Response body** can be written via `Response.writer.*` or via the [return values](https://web-platform-tests.org/tools/wptserve/docs/handlers.html#python-handlers), which can be either text or binary strings, but the two types should never be mixed and string literals must be prefixed.
+    * As an exception, `Response.set_error` takes only text message strings.
+
+#### Outcomes and risks
+
+*   Almost every line in the existing handlers will need to be modified to add prefixes to string literals. This is a huge undertaking.
+*   We need to educate test authors and reviewers about the aforementioned coding guidelines to make sure string literals are always prefixed correctly.
+*   Printing and logging will also need to be changed in Python 3. Custom handlers need to have a special code path for Python 3 to encode the strings.
+
+
+### [Alternative] Keep the ergonomics: always use str
 
 I would argue that the most ergonomic approach (for test authors) is to **always use unprefixed string literals and the `str` type** in the majority of cases regardless of Python 2 or 3 despite the different semantics for the following reasons:
 
 *   It avoids having to modify hundreds of custom handlers (most likely manually).
 *   It does not impose additional burden on test authors (e.g. remembering to prefix string literals with b even if it is a no-op in Python 2, which will still remain the default for a while). In addition, any additional requirement on types would be impossible to fully enforce in theory since Python is dynamically typed.
 *   This is what the Python community has chosen to do, so it aligns well with the standard library without additional en/decoding that depends on the version of Python. Custom handlers do not need `ensure_str`/`maybe_encode` or have different code paths for Python 2 and 3.
-
 
 #### Detailed changes
 
@@ -59,7 +87,6 @@ To achieve this, we will need some encoding magic to store arbitrary byte sequen
 *   Stop forcing the headers to be byte sequences in both [Request](https://github.com/web-platform-tests/wpt/blob/5eb4894a68051e04b14fe471da38dd8817e417ed/tools/wptserve/wptserve/request.py#L378) and [Response](https://github.com/web-platform-tests/wpt/blob/1e0302fe4048bef22ad72168bd754fee8d7f2ca5/tools/wptserve/wptserve/response.py#L320). Instead, directly pass the `str` headers from and to the standard library. The [`parse_headers()`](https://github.com/python/cpython/blob/8c3ab189ae552401581ecf0b260a96d80dcdae28/Lib/http/client.py#L200) function in Python 3 uses latin-1 so it can preserve any byte sequence.
 *   [Authentication](https://github.com/web-platform-tests/wpt/blob/5eb4894a68051e04b14fe471da38dd8817e417ed/tools/wptserve/wptserve/request.py#L611) needs to decode `username` and `password` with latin-1 to make sure they are always `str`.
 *   Optionally, we might want to add additional getters and setters for headers, which are guaranteed to return and take byte sequences to provide additional clarity and control if the test author desires. Such getters and setters will use `encode("latin-1")` and `decode("latin-1")` respectively under the hood. Alternatively, we could add a type switch to the existing setters to automatically decode if `bytes` are passed in, but custom getters would always be required to receive bytes out.
-
 
 #### Outcomes and risks
 
@@ -74,28 +101,9 @@ Note: the u prefix is needed for Unicode literals to work in Python 2
 There are two major caveats:
 
 *   Printing and logging will be largely broken for non-ASCII characters in Python 3 -- strings will need to be round-tripped before printed, e.g. `message.encode("latin-1").decode("utf-8")`).
-*   Custom handlers that currently explicitly use the b prefix for string literals will break in Python 3 -- they need to either remove the prefix or use the new getters and setters for `bytes`. There are only a handful of instances, so this seems tractable.
+*   Custom handlers that currently explicitly use the `b""` prefix for string literals will break in Python 3 -- they need to either remove the prefix or use the new getters and setters for `bytes`. There are only a handful of instances, so this seems tractable.
 
 Note that this might be confusing and counter-intuitive for those with more understanding of Python encoding as the API of wptserve will have two different semantics (bytes vs strings) depending on the version of Python. However the situation will be similar to the standard library and this quirk of coercing byte sequences to strings is a [common hack](#references) in Python 3.
-
-
-### [Alternative] Keep the semantics: always use byte sequences
-
-An alternative approach would be to keep a consistent and semantically correct encoding model. That is to **always use byte sequences: `str` in Python 2 and `bytes` in Python 3**.
-
-
-#### Detailed changes
-
-*   Keep the `ensure_{str,bytes}/maybe_{encode,decode}` functions, and double check that they are used everywhere in wptserve.
-*   Prefix string literals in custom handlers with `b` when necessary, which needs to be done manually (some strings should not be prefixed). Note that we could add a hack to setters to accept both `str` and `bytes`, but on the getter side there is little we could do -- we don’t know whether the returned value will be used together with `bytes` or `str`, and things like `dict.get()` will be particularly tricky.
-
-
-#### Outcomes and risks
-
-*   Printing and logging will also need to be changed in Python 3. Custom handlers need to have a special code path for Python 3 to encode the strings.
-*   We need a new coding guideline to make sure string literals are prefixed with `b` correctly to stay Python 2 and 3 compatible. We can't simply require all strings to be prefixed with either `b` or `u`, as sometimes native strings are desired (notably some standard library APIs that take native strings in both Python 2 and 3).
-
-To make it clear, I do not think the purity of the encoding model justifies the scale of the change and ongoing maintenance.
 
 
 ## Side notes
