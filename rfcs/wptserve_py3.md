@@ -41,13 +41,11 @@ This pain is further compounded by the choice of types in some parts of the Pyth
 *   Passing bytes in: “decode” the byte sequence with latin-1
 
 
-## Options
-
-### [Preferred] Keep the semantics: always use byte sequences
+## Proposed solution: keep the semantics: always use byte sequences
 
 The preferred approach of the community is to keep a consistent and semantically correct encoding model. That is to **always use byte sequences: `str` in Python 2 and `bytes` in Python 3** (with some rare exceptions below).
 
-#### Detailed changes
+### Detailed changes
 
 wptserve changes:
 
@@ -66,22 +64,24 @@ wptserve changes:
 *   **Response body** can be written via `Response.writer.*` or via the [return values](https://web-platform-tests.org/tools/wptserve/docs/handlers.html#python-handlers), which can be either text or binary strings, but the two types should never be mixed and string literals must be prefixed.
     * As an exception, `Response.set_error` takes only text message strings, as this message is used in the JSON response.
 
-#### Outcomes and risks
+### Outcomes and risks
 
 *   Almost every line in the existing handlers will need to be modified to add prefixes to string literals. This is a huge undertaking.
 *   We need to educate test authors and reviewers about the aforementioned coding guidelines to make sure string literals are always prefixed correctly.
 *   Printing and logging will also need to be changed in Python 3. Custom handlers need to have a special code path for Python 3 to encode the strings.
 
 
-### [Alternative] Keep the ergonomics: always use str
+## Alternative: keep the ergonomics: always use str
 
-I would argue that the most ergonomic approach (for test authors) is to **always use unprefixed string literals and the `str` type** in the majority of cases regardless of Python 2 or 3 despite the different semantics for the following reasons:
+A more ergonomic approach (for test authors) is to **always use unprefixed string literals and the `str` type** in the majority of cases regardless of Python 2 or 3 despite the different semantics for the following reasons:
 
 *   It avoids having to modify hundreds of custom handlers (most likely manually).
 *   It does not impose additional burden on test authors (e.g. remembering to prefix string literals with b even if it is a no-op in Python 2, which will still remain the default for a while). In addition, any additional requirement on types would be impossible to fully enforce in theory since Python is dynamically typed.
 *   This is what the Python community has chosen to do, so it aligns well with the standard library without additional en/decoding that depends on the version of Python. Custom handlers do not need `ensure_str`/`maybe_encode` or have different code paths for Python 2 and 3.
 
-#### Detailed changes
+However, this approach was not chosen because of the strong preference of the community for consistent semantics (see [discussions](https://github.com/web-platform-tests/rfcs/pull/49/files)).
+
+### Detailed changes
 
 To achieve this, we will need some encoding magic to store arbitrary byte sequences in `str` in Python 3. This will be similar to what the standard library does, including but not limited to:
 
@@ -90,7 +90,7 @@ To achieve this, we will need some encoding magic to store arbitrary byte sequen
 *   [Authentication](https://github.com/web-platform-tests/wpt/blob/5eb4894a68051e04b14fe471da38dd8817e417ed/tools/wptserve/wptserve/request.py#L611) needs to decode `username` and `password` with latin-1 to make sure they are always `str`.
 *   Optionally, we might want to add additional getters and setters for headers, which are guaranteed to return and take byte sequences to provide additional clarity and control if the test author desires. Such getters and setters will use `encode("latin-1")` and `decode("latin-1")` respectively under the hood. Alternatively, we could add a type switch to the existing setters to automatically decode if `bytes` are passed in, but custom getters would always be required to receive bytes out.
 
-#### Outcomes and risks
+### Outcomes and risks
 
 With this approach, most custom handlers should continue to work in both Python 2 and 3. For example, all of the following strings can be compared against `request.headers` or `request.auth`, and accepted by `response.headers` in both Python 2 and 3:
 
