@@ -64,7 +64,7 @@ wptserve changes:
     * **Cookies**: Names and values in cookies are always binary strings, including `Request.cookies` and `Response.{set,unset,delete}_cookie`.
 *   **Request URL/form parameters** are always *binary strings* for both keys and values, accessible via `Request.GET` or `Request.POST`.
 *   **Response body** can be written via `Response.writer.*` or via the [return values](https://web-platform-tests.org/tools/wptserve/docs/handlers.html#python-handlers), which can be either text or binary strings, but the two types should never be mixed and string literals must be prefixed.
-    * As an exception, `Response.set_error` takes only text message strings.
+    * As an exception, `Response.set_error` takes only text message strings, as this message is used in the JSON response.
 
 #### Outcomes and risks
 
