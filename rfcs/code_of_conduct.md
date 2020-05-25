@@ -41,7 +41,6 @@ section lays out some related guidelines.
 When handling an incident or complaint, moderators should:
 
 * Respond as promptly as possible to reports of violations.
-* Make an effort to understand both sides of the situation, whilst avoiding shifting burden of proof to the reporting party.
 * When enforcing a moderation decision, notify the person who has been moderated explaining: what rule was violated, what action has been taken, and what to expect next.
 * Recuse themselves or be excused from handling an incident if they have any conflict of interests.
 * Keep each other accountable.
