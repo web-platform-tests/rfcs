@@ -15,7 +15,7 @@ understanding." (via
 ## Details
 
 This RFC consists of two parts: ratifying the content in the [proposed
-`CODE_OF_CONDUCT.md`](https://github.com/web-platform-tests/wpt/pull/7520)
+`CODE_OF_CONDUCT.md`](https://github.com/web-platform-tests/wpt/pull/23762)
 file, and setting down guidelines for the moderation team (which exist within
 this RFC). Accepting this RFC into WPT means accepting both of these.
 
@@ -35,7 +35,7 @@ This implies having multiple independent members.
 
 The actual actions taken when handling a violation are documented in the
 'Moderation' section of the [proposed Code of
-Conduct](https://github.com/web-platform-tests/wpt/pull/7520), however this
+Conduct](https://github.com/web-platform-tests/wpt/pull/23762), however this
 section lays out some related guidelines.
 
 When handling an incident or complaint, moderators should:
