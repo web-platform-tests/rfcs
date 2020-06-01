@@ -27,11 +27,15 @@ To encourage this pattern we introduce two new methods on `Test`:
 interval=100)` and `wait_for(cond, description, timeout=3000,
 interval=100)`. In each case the function `cond` is called with no
 arguments, immediately and then every `interval` milliseonds until it
-returns a value that evaluates as `true`. If this does not happen in
-`timeout` milliseconds, an `AssertionError` is raised, using
-`description` as the error description.
+returns a value that evaluates as `true`. At this point `callback` is called.
+If this does not happen in `timeout` milliseconds, an `AssertionError` is
+raised, using `description` as the error description.
 
-These functions must methods on `Test` to allow any error that's
+`wait_for(cond, description, timeout=3000, interval=100)` works like
+`wait_for_callback` except a promise is resolved once the function
+`cond` returns true.
+
+These functions must be methods on `Test` to allow any error that's
 raised to be associated with the correct subtest.
 
 The default timeout and interval were adopted from the
