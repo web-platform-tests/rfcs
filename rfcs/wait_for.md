@@ -32,7 +32,7 @@ If this does not happen in `timeout` milliseconds, an `AssertionError` is
 raised, using `description` as the error description.
 
 `wait_for(cond, description, timeout=3000, interval=100)` works like
-`wait_for_callback` except a promise is resolved once the function
+`wait_for_callback` except it returns a promise that is resolved once the function
 `cond` returns true.
 
 These functions must be methods on `Test` to allow any error that's
