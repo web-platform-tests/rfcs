@@ -1,10 +1,10 @@
-# RFC 56: `wait_for[_callback]` methods
+# RFC 56: `step_wait*` methods
 
 ## Summary
 
-Add `wait_for` and `wait_for_callback` methods to the wpt `Test`
-object that evaluate a condition, and resolve a promise, or call a
-callback, respectively, once the condition is true.
+Add `step_wait`, `step_wait_func` and `step_wait_func_done` methods to
+the wpt `Test` object that evaluate a condition, and resolve a
+promise, or call a callback, once the condition is true.
 
 ## Details
 
@@ -21,22 +21,32 @@ waited on has occured or not. In this case the performance/robustness
 tradeoff can be improved by having a relatively long total timeout but
 polling for success to allow the test to proceed as soon as possible.
 
-To encourage this pattern we introduce two new methods on `Test`:
+To encourage this pattern we introduce three new methods on `Test`:
 
-`wait_for_callback(cond, callback, description, timeout=3000,
-interval=100)` and `wait_for(cond, description, timeout=3000,
-interval=100)`. In each case the function `cond` is called with no
+ * `step_wait_func(cond, callback, description, timeout=3000,
+ interval=100)`
+ * `step_wait_func_done(cond, callback, description, timeout=3000,
+interval=100)`
+ * `step_wait(cond, description, timeout=3000, interval=100)`
+
+In each case the function `cond` is called with no
 arguments, immediately and then every `interval` milliseonds until it
 returns a value that evaluates as `true`. At this point `callback` is called.
 If this does not happen in `timeout` milliseconds, an `AssertionError` is
 raised, using `description` as the error description.
 
-`wait_for(cond, description, timeout=3000, interval=100)` works like
-`wait_for_callback` except it returns a promise that is resolved once the function
-`cond` returns true.
+The difference between the functions is in what happens after `cond`
+evaluates to true:
 
-These functions must be methods on `Test` to allow any error that's
-raised to be associated with the correct subtest.
+ * `step_wait_func` - `callback` is called as a step on `Test`.
+ * `step_wait_func_done` - `callback` is called as a step on `Test` if
+   it's not `undefined` or `null`. After `callback` returns, or in any
+   case if it's not called, the `done` function on test is called.
+ * `step_wait` - The initial function call returns a promise, which is
+   resolved when `cond` evaluates to true.
+
+These functions must methods on `Test` to allow any error raised to be
+associated with the correct subtest.
 
 The default timeout and interval were adopted from the
 `waitForCondition`
@@ -57,4 +67,5 @@ non-zero timeout in exceptional cases.
   `setTimeout`, so it's hard to educate authors about the optimal
   pattern. Such a lint could be proposed as a followup, but our
   linting infrastructure lacks support for parsing js code, so it's
-  hard to enforce complex conditions.
+  hard to enforce complex conditions like only allowing zero-duration
+  timeouts.
