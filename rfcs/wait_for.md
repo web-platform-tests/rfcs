@@ -55,6 +55,24 @@ in Mozilla's mochitest, which implements a similar pattern, and has
 been used to support a policy of only allowing `setTimeout` with
 non-zero timeout in exceptional cases.
 
+## Examples
+
+A test which waits to check that `contentDocument` on an `iframe`
+becomes null after some action, might intially look like:
+
+```
+    t.step_timeout(() => {
+      assert_equals(frame.contentDocument, null);
+      t.done();
+    }, 2000);
+```
+
+With these APIs it can instead look like
+
+```
+    t.step_wait_func_done(() => frame.contentDocument === null);
+```
+
 ## Risks
 
 * Adding API surface to testharness.js requires long-term support or
