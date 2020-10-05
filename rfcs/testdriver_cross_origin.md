@@ -27,7 +27,7 @@ The specific proposed changes are:
   context.
 
 * Also provide a `message_test` function as a wrapper around
-  postMessge to the test context.
+  postMessage to the test context.
 
 * Add an optional `context` argument to test_driver commands that
   don't depend on a provided element, to specify the context in which
