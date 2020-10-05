@@ -41,11 +41,12 @@ The implementation details for wptrunner are as follows:
   window should be used for the request.
 
 * Ideally the context id would be the wptrunner window/frame handle
-  for the window or frame. But this is poorly supported so instead we
-  put a `__wptrunner_id` property on the window object, set it to a
-  uuid, and do a depth-first search for a frame with that id in the
-  wptrunner code when looking for the context in which to run the
-  command.
+  for the window or frame. But this is
+  [poorly supported](https://wpt.fyi/results/webdriver/tests/execute_script/json_serialize_windowproxy.py)
+  so instead we put a `__wptrunner_id` property on the window object, 
+  set it to a uuid, and do a depth-first search for a frame with that
+  id in the wptrunner code when looking for the context in which to 
+  run the command.
 
 * WebDriver is switched to the relevant context for the duration of
   the action and switched back to the test context once the action is
