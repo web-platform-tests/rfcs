@@ -1,4 +1,4 @@
-# RFC 59: Switching to "Py3-first" for WPT tests on CI
+# RFC 65: Switching to "Py3-first" for WPT tests on CI
 
 ## Summary
 
