@@ -9,9 +9,9 @@ The minimum python 3 version supported is 3.6 with main focus on 3.8+. For the f
 ## Changes on upstream CI
 
 **1. Switch the test suite runs to use Python 3**
-*    [Switch wpt run on Taskcluster to python 3 only](https://github.com/web-platform-tests/wpt/pull/26252) (specifically, Python 3.8)
+* [Switch wpt run on Taskcluster to Python 3 only](https://github.com/web-platform-tests/wpt/pull/26252) (specifically, Python 3.8)
 
-*     Use Python 3.8.x in Azure Pipelines for [Safari Preview](https://github.com/web-platform-tests/wpt/pull/25044) and [Edge Stable/Dev runs](https://github.com/web-platform-tests/wpt/pull/24952)
+* Use Python 3.8.x in Azure Pipelines for [Safari](https://github.com/web-platform-tests/wpt/pull/25044) and [Edge](https://github.com/web-platform-tests/wpt/pull/24952) runs.
 
 
 **2. Keep the current CI setup of unit tests and infrastructure tests running on both Py2 and Py3**
