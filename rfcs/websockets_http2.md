@@ -17,7 +17,7 @@ It means that it needs to be modified to:
 
 ## Risks
 
-WebSocket tests who source **websockets/constants.js** have a wss variant. We will need to add a new variant named **http2** in order to use the http2 port when opening the WebSockets. WTP server does not support insecure HTTP/2 so we don't need to expose an insecure HTTP/2 WebSocket variant.
+WebSocket tests who source **websockets/constants.js** have a wss variant. We will need to add a new variant named **http2** in order to use the http2 port when opening the WebSockets. WPT server does not support insecure HTTP/2 so we don't need to expose an insecure HTTP/2 WebSocket variant.
 
 This change needs to update hyper libraries to a more recent version.
 
