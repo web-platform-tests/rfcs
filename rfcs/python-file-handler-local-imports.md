@@ -1,4 +1,4 @@
-# RFC ??: Make local imports in Python file handlers root-relative
+# RFC 68: Make local imports in Python file handlers root-relative
 
 ## Summary
 
