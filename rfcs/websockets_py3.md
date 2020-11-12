@@ -1,4 +1,4 @@
-# RFC : Add Python3 WebSockets dependency for WebDriver Bidi tests
+# RFC 70: Add Python3 WebSockets dependency for WebDriver Bidi tests
 
 ## Summary
 
