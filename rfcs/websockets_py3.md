@@ -21,7 +21,7 @@ Note pytest-asyncio depends on later versions of pytest and pluggy so they also 
 
 ### Example usage
 
-The [patch](https://github.com/web-platform-tests/wpt/compare/master...k7z45:websockets) 
+The [patch](https://github.com/web-platform-tests/wpt/pull/26510) 
 1. Adds a simple test to verify the new capability that would enable websocket connection for Bidi communication.
 1. Upgrades existing tools/third_party dependencies which are depended by the pytest-asyncio which provides convenient markers such as
 "@pytest.mark.asyncio" for writing tests.
