@@ -10,7 +10,7 @@ Add Py3-only [WebSockets client](https://github.com/aaugustin/websockets) that u
 
 [WebDriver Bidi](https://w3c.github.io/webdriver-bidi/) builds and extends on [WebDriver](https://w3c.github.io/webdriver/).
 WebDriver Bidi uses WebSockets for bidirectional communication between remote end and local end.
-Existing pywebsocket3 library only serves as a websocket server. Therefore, a new WebSockets client dependency is needed in order to connect to WebDriver for Bidi communication.  
+Existing pywebsocket3 library only serves as a WebSockets server. Therefore, a new WebSockets client dependency is needed in order to connect to WebDriver for Bidi communication.  
 
 ### Proposal
 
