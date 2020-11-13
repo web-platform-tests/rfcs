@@ -8,7 +8,7 @@ transition will be set out in other RFCs as appropriate.
 
 ## Details
 
- 1. **November / December 2020** XXX add actual date - Python 3 becomes default on GitHub CI
+ 1. **Week of 23rd November 2020** - Python 3 becomes default on GitHub CI
 
     Details: https://github.com/web-platform-tests/rfcs/pull/65/
 
