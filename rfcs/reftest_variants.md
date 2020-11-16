@@ -1,4 +1,4 @@
-# RFC : Support adding URI fragment for reftests
+# RFC 71: Support adding URI fragment for reftests
 
 ## wpt issue
 
@@ -16,12 +16,12 @@ url.
 
 A text fragment url for highlighting text in a page can be done with fragments
 like "#:~:text=match". The browser is not allowed to navigate to such elements
-setting location.hash or clicking <a href="#:~:text=match">. One way of
+setting location.hash or clicking `<a href="#:~:text=match">`. One way of
 allowing it as part of the test is to add
-```<meta name="variant=" content="#:~:text=match">```, but that is currently
-only supported for javascript tests like testharness tests.
+`<meta name="variant=" content="#:~:text=match">`, but that is currently only
+supported for javascript tests like testharness tests.
 
-There is a pseudo-element ::target-text which can be used to style the
+There is a pseudo-element `::target-text` which can be used to style the
 highlighting of text fragments. Testing the visual output is typically done
 via reftests, and supporting variants for reftests would make it possible to
 visually test this pseudo element.
