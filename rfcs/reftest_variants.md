@@ -7,7 +7,7 @@ https://github.com/web-platform-tests/wpt/issues/26364
 ## Summary
 
 Adding URI query and fragment parts are allowed for testharness.js tests via a
-<meta name="variant"> in the test file. This is a request to add support for
+`<meta name="variant">` in the test file. This is a request to add support for
 the same meta element for reftests. Text fragment anchors are only allowed as
 top level navigations and requires support for adding a fragment to the test
 url.
