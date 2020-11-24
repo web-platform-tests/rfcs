@@ -7,7 +7,7 @@ as part of the [HTML spec](https://github.com/whatwg/html/pull/3047).
 
 ## Details
 Changing the time zone is not available via normal web APIs. To test the effect
-of changing time zone on the `ontimezonechange` event there needs to be a way
+of changing time zone on the `timezonechange` event there needs to be a way
 to instruct the browser to act as if the time zone is changing: this WebDriver
 extension provides that ability.
 
