@@ -9,14 +9,14 @@ Add Py3-only [WebSockets client](https://github.com/aaugustin/websockets) that u
 ### Background
 
 [WebDriver Bidi](https://w3c.github.io/webdriver-bidi/) builds and extends on [WebDriver](https://w3c.github.io/webdriver/).
-WebDriver Bidi uses WebSockets for bidirectional communication between remote end and local end.
-Existing pywebsocket3 library only serves as a WebSockets server. Therefore, a new WebSockets client dependency is needed in order to connect to WebDriver for Bidi communication.  
+WebDriver Bidi uses WebSockets for bidirectional communication between the remote end (acting as the server) and the local end (WPT, acting as a client).
+The existing pywebsocket3 library that is vendored into WPT only serves as a WebSockets server. Therefore, a new WebSockets client library dependency is needed in order to connect to WebDriver for Bidi communication.  
 
 ### Proposal
 
-Add Py3-only WebSockets library linked in Summary.
+Add the Py3-only WebSockets client library linked in the Summary above.
 
-Add [pytest-asyncio](https://github.com/pytest-dev/pytest-asyncio) for convenient test marker.
+Additionally, add a dependency on [pytest-asyncio](https://github.com/pytest-dev/pytest-asyncio) for its convenient test marker.
 Note pytest-asyncio depends on later versions of pytest and pluggy so they also need to upgrade to compatible versions.
 
 ### Example usage
