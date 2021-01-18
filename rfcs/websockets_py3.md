@@ -2,7 +2,7 @@
 
 ## Summary
 
-Add Py3-only [WebSockets client](https://github.com/aaugustin/websockets) that uses asyncio for WebDriver Bidi tests. 
+Add a Py3-only [WebSockets client](https://github.com/aaugustin/websockets) library that uses `asyncio`, to enable WebDriver Bidi tests. 
 
 ## Details
 
