@@ -27,10 +27,10 @@ but instead:
 
 ### Browser changes
 
-A new command-line flag (or a collection thereof) is added to each browser (it
-need not be uniform, though that would certainly help with implementation) that
-allows overriding the address space derived from specific IP addresses. For
-example:
+A new configuration surface is added to each browser (it need not be uniform,
+though that would certainly help with implementation) that allows overriding the
+address space derived from specific IP addresses. For example, this could be a
+command-line flag:
 
 ```sh
 --test-override-address-space=127.1.0.0/16:private,127.2.0.0/16:public
@@ -65,6 +65,31 @@ might have to be revisited anyway.
 
 ## Alternatives considered
 
+### Override addresses themselves
+
+This approach was suggested by @ddragana.
+
+A similar configuration mechanism is exposed by browsers by which the test
+runner can override some IP addresses, such that the browser under test will
+consider that sockets connected to IP A are in fact connected to a fake IP B.
+
+For example, as a command-line flag:
+
+```
+--test-ip-address-override=127.1.0.1:8.8.8.8,127.2.0.1:192.168.1.1
+```
+
+Would force the browser to consider sockets connected to `127.1.0.1` as instead
+being connected to `8.8.8.8` and likewise for `127.2.0.1` to `192.168.1.1`.
+
+This approach allows overriding the address space without introducing the notion
+of address spaces to the configuration surface. @ddragana argues that it is less
+failure-prone than the above proposal due to it being simpler to implement.
+
+In Chromium, however, this approach likely would require plumbing the fake IP
+address lower into the network stack than we would have to plumb a fake address
+space. Thus it seems that instead this would be harder to implement correctly.
+
 ### Use individual IP addresses
 
 Same as above, but allow overriding address spaces per IP address instead of
@@ -82,17 +107,26 @@ then... just do it!
 
 This approach would have the web platform test runner configure additional
 loopback network devices and assign them `private` and `public` IP addresses.
-Then we could configure the hosts file to resolve specific domains to those IP
-addresses, and test the whole shebang end to end.
+Alternatively, the test runner could probably reroute traffic heading for these
+IP addresses to `127.0.0.1` through some iptables magic. Then we could configure
+the hosts file to resolve specific domains to those IP addresses, and test the
+whole shebang end to end.
 
 This approach's main pro is that it truly is an end to end test of the feature,
 exercising production code to its full extent. By virtue of requiring no
 test-only hooks, it also requires no work on the part of browser developers.
 
-Its main con is that it requires the test runner to have system privileges.
+Its main con is that it requires the test runner to have system privileges. One
+could design around that by restricting system privileges to the test setup
+phase. That refactoring however would require a fair amount of work to ensure no
+setup step is broken because of the IP address hijacking.
+
 Additionally, it requires work to support for each test execution environment.
-Finally, it arguably requires the purchase of a public IP address for our use,
-in order to avoid running into conflicts someday down the road.
+
+Finally, it arguably requires the purchase of a public IP address for our use.
+If not, then we open ourselves up to esoteric failures due to the hijacking of a
+legitimate IP address for test purposes, likely in a long enough time for
+everyone to have forgotten the existence of this hack.
 
 ### Extend WebDriver
 
