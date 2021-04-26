@@ -1,4 +1,4 @@
-# Revamp idlharness.js
+# RFC #78: Revamp idlharness.js
 
 ## Summary
 
