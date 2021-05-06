@@ -3,12 +3,13 @@
 ## Summary
 
 The goal of this RFC is to enable web platform tests to cover the
-[CORS-RFC1918](https://wicg.github.io/cors-rfc1918) specification entirely.
-More specifically, to enable tests to exercise user agent behavior in the face
-of responses served from `local`, `private` and `public`
-[address spaces](https://wicg.github.io/cors-rfc1918#address-space).
+[Private Network Access](https://wicg.github.io/private-network-access)
+specification entirely. More specifically, to enable tests to exercise user
+agent behavior in the face of responses served from `local`, `private` and
+`public`
+[address spaces](https://wicg.github.io/private-network-access#ip-address-space).
 
-This is achieved by passing configuration knobs to the browser under test
+This is achieved by passing configuration parameters to the browser under test
 forcing it to artificially consider specific (IP address, port) pairs to be
 `local`, `private` or `public`.
 
@@ -134,7 +135,7 @@ per subnet.
 The marginal difficulty of overriding per subnet seems low, and provides plenty
 of test IP addresses to exercise intra-address-space, cross-ip-address requests,
 which might come in handy [in the
-future](https://github.com/WICG/cors-rfc1918/pull/1#issuecomment-721110250).
+future](https://github.com/WICG/private-network-access/pull/1#issuecomment-721110250).
 
 ### Use real IP addresses
 
