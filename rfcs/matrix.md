@@ -2,8 +2,8 @@
 
 ## Summary
 
-Move the official location for synchronous discussions to matrix, and
-retire the #testing channel on irc.w3.org.
+Move the official location for synchronous discussions to Matrix, and
+retire the `#testing` channel on irc.w3.org.
 
 The proposed channel is [wpt:matrix.org](https://app.element.io/#/room/#wpt:matrix.org).
 
@@ -12,15 +12,16 @@ The proposed channel is [wpt:matrix.org](https://app.element.io/#/room/#wpt:matr
 ### Context
 
 Since web-platform-tests has started it has primarily used IRC as a
-means for (quasi) synchronous communications ("chat"). In particular the
-#testing channel on irc.w3.org has been used to answer questions from
-test authors and collaborate on infrastructure development and
+means for (quasi) synchronous communications ("chat"). In particular
+the `#testing` channel on irc.w3.org has been used to answer questions
+from test authors and collaborate on infrastructure development and
 maintenance.
 
-IRC has been the go-to medium for web standards chat for some time,
-with W3C, TC39 and WHATWG all using IRC, as well as projects such as
-Chromium, Gecko, Servo, and WebKit either using IRC as a
-well-supported method of synchronous communication. This made it
+IRC has historically been the go-to medium for web-platform related
+chat, with W3C, TC39 and WHATWG all using IRC channels as the primary
+communication mechanism for standards work, and browser engine
+projects including Chromium, Gecko, Servo, and WebKit having IRC as a
+well-supported option for synchronous communication. This made it
 likely that web-platform-tests participants were already using IRC in
 some capacity, so an IRC channel was an obvious choice for
 web-platform-tests.
@@ -95,9 +96,10 @@ a polished user experience. Whilst the feature-set of Matrix/Element
 does not fully match that of Slack, it exceeds what's possible over
 IRC, offering per-channel history, limited rich text in messages, link
 previews, reaction emoji, etc. It also offers extensive moderation
-tools which suggest it will address some of the concerns around safety
-on IRC. Compared to Slack the focus is more on open communities, and
-specific invites are not required to join an instance.
+tools which suggests it will address some of the concerns around
+safety on IRC. Compared to Slack the focus is more on open
+communities, and specific invites are not required to join public
+channels.
 
 ### Proposal
 
