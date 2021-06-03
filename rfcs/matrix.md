@@ -51,7 +51,7 @@ choice for web-platform work. In particular:
   [chat.mozilla.org](https://chat.mozilla.org).
 
 * [WHATWG](https://app.element.io/#/room/#whatwg:matrix.org)
-  ([discussion](https://github.com/whatwg/meta/issues/210)] and
+  ([discussion](https://github.com/whatwg/meta/issues/210)) and
   [TC39](https://app.element.io/#/room/#tc39-general:matrix.org) moved
   to Matrix, hosted on [matrix.org](https://matrix.org).
 
@@ -102,7 +102,7 @@ specific invites are not required to join an instance.
 ### Proposal
 
 We set up a matrix channel,
-[wpt:matrix.org]((https://app.element.io/#/room/#wpt:matrix.org),
+[wpt:matrix.org](https://app.element.io/#/room/#wpt:matrix.org),
 hosted on matrix.org, and point to this as the official channel for
 web-platform-tests chat, fully replacing IRC.
 
