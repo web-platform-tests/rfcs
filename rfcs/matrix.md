@@ -51,7 +51,7 @@ choice for web-platform work. In particular:
   [chat.mozilla.org](https://chat.mozilla.org).
 
 * [WHATWG](https://app.element.io/#/room/#whatwg:matrix.org)
-  ([discussion](https://github.com/whatwg/meta/issues/210)) and
+  [[discussion](https://github.com/whatwg/meta/issues/210)] and
   [TC39](https://app.element.io/#/room/#tc39-general:matrix.org) moved
   to Matrix, hosted on [matrix.org](https://matrix.org).
 
