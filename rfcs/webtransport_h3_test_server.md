@@ -4,7 +4,7 @@
 
 Add a [WebTransport over HTTP/3](https://datatracker.ietf.org/doc/html/draft-ietf-webtrans-http3-01) server to wpt. The server is used to test the [WebTransport Web APIs](https://w3c.github.io/webtransport/).
 
-The server will use a new [file name flag](https://web-platform-tests.org/writing-tests/file-names.html) `.webtransport` (`.webtransport.py`) for handlers. Handlers are python scripts which are used to respond WebTransport events.
+The server will use a new [file name flag](https://web-platform-tests.org/writing-tests/file-names.html) `.wt.h3` (`.wt.h3.py`) for handlers. Handlers are python scripts which are used to respond WebTransport events.
 
 This RFC shares the same background/motivation with [RFC 42](https://github.com/web-platform-tests/rfcs/blob/master/rfcs/quic.md) but focuses on WebTransport over HTTP/3. See RFC 42 for more background.
 
@@ -68,6 +68,12 @@ TODO: Spend more time on the API design. People may prefer this alternative appr
 When the server receives an [extended CONNECT method](https://datatracker.ietf.org/doc/html/draft-ietf-webtrans-http3-01#section-3.2) for WebTransport, it looks up a corresponding handler from the directory specified by a configuration. The configuration is passed by `wptserve`. If the server finds a corresponding handler the server creates a new WebTransport session with the handler and starts passing events to the handler.
 
 The server uses `":path"` header field of an extended CONNECT request to look up a handler. For example, if `":path"` is `/echo`, the server looks up `echo.webtransport.py` from the handler directory.
+
+### File name flags
+
+A new file name flag `.wt` is used to indicate a Python script is a WebTransport handler.
+
+`.h2` and `.h3` flags indicate that the underlying protocol (HTTP/2 or HTTP/3).
 
 ### `wptserve` integration
 
