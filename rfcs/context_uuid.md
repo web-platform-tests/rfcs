@@ -72,7 +72,7 @@ to invoke testdriver actions on the remote context:
 ```
 // Use the server subn to generate a UUID
 let uuid = "{{uuid()}}"
-open(`child.html?uuid={uuid}`)
+open(`child.html?uuid=${uuid}`)
 // [...] stuff to ensure child is loaded etc.
 // In this case the context identifier is used directly
 test_driver.delete_all_cookies(uuid)
@@ -86,7 +86,7 @@ onload = () => {
   let frame = frames[0];
   test_driver.delete_all_cookies(frame)
 }
-</script.
+</script>
 ```
 
 TODO: How should this extend to other resources such as worker scripts. For
