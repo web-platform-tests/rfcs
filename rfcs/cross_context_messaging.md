@@ -2,7 +2,7 @@
 
 ## Summary
 
-Add an `send`/`poll`/`recv` methods to testdriver that can be used to
+Add `send`/`poll`/`recv` methods to testdriver that can be used to
 send messages to other browsing contexts, and receive messages for
 the current browsing context.
 
