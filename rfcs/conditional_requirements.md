@@ -35,7 +35,6 @@ A value of `conditional_requirements` would look like the following:
 
 ```json
 {
-  ...
   "conditional_requirements": {
     "commandline_flag": {
       "enable_webtransport_h3": [
@@ -50,9 +49,9 @@ A `conditional_requirements` contains key value pairs. This RFC only defines
 `commandline_flag` as a key. `commandline_flag` is examined when the
 corresponding command line flag is provided. In the above example, `wpt`
 installs requirements in `../webtransport/requirements.txt` only when the
-`--enable-webtransport-h3` command line flag is provided.
+`--enable-webtransport-h3` command line flag is provided for the subcommand.
 
-### Follow Ups
+### Follow ups
 
 This proposal could in theory generalize it to allow supporting the wptrunner
 use case for installing per-product requirements. It might look like:
