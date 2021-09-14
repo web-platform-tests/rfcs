@@ -16,8 +16,19 @@ to install its dependencies in a virtualenv environment. These dependencies are
 unconditionally installed before running the subcommand.
 
 There is a demand to install additional dependencies conditionally. For example,
-a subcommand may need a third party library only when a specific command line
-flag is specified.
+supporting conditional requirements can be helpful in the following situation:
+
+* A subcommand supports a command line flag to enable a specific feature.
+* The feature needs third party libraries.
+* These libraries also have dependencies.
+* The feature is experimental and some browser testing infrastructures may not
+  want to introduce such dependencies yet.
+
+A specific example of the above situation is
+[WebTransport over HTTP/3 support](https://github.com/web-platform-tests/rfcs/blob/master/rfcs/webtransport_h3_test_server.md).
+The WebTransport over HTTP/3 server requires
+[aioquic](https://aioquic.readthedocs.io/en/latest/) and it also has several
+dependencies.
 
 ```sh
 # This doesn’t require `aioquic` library
@@ -50,6 +61,17 @@ A `conditional_requirements` contains key value pairs. This RFC only defines
 corresponding command line flag is provided. In the above example, `wpt`
 installs requirements in `../webtransport/requirements.txt` only when the
 `--enable-webtransport-h3` command line flag is provided for the subcommand.
+
+### Alternatives considerered
+
+Conditional requirements support introduces complexity to some extent.
+Installing all potential dependencies unconditionally could be an alternative
+approach. The upside of the alternative approach is that we keep `wptrunner` as
+simple as possible. The downside is that installing unnecessary dependencies can
+also be a source of the maintenance burden.
+
+Conditional requirements support gives us a way to take an incremental approach
+to introduce dependencies suitable for each testing infrastructure.
 
 ### Follow ups
 
