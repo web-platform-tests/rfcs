@@ -37,7 +37,7 @@ browser-specific techniques.
 
 * Gecko tests able to provide cross-context communication using the
   parent (i.e. browser UI) process as an intermediary. The
-  [SpecialPowers.spwan](https://searchfox.org/mozilla-central/source/testing/specialpowers/content/SpecialPowersChild.jsm#1547-1584)
+  [SpecialPowers.spawn](https://searchfox.org/mozilla-central/source/testing/specialpowers/content/SpecialPowersChild.jsm#1547-1584)
   API available to gecko tests allows running a function in another
   context, using structured clone to pass the arguments
   ([example](https://searchfox.org/mozilla-central/source/dom/tests/browser/browser_data_document_crossOriginIsolated.js#17)).
@@ -101,7 +101,7 @@ an error to use the same UUID for multiple contexts.
 The message passing backend is based on a Python
 [Queue](https://docs.python.org/3/library/queue.html) object per
 channel, stored in the server stash. The advantage of using queues
-here is that they are designed allow blocking reads. This means we
+here is that they are designed to allow blocking reads. This means we
 don't have to use a polling API but can, on the server side, wait for
 a message to be added to a channel, and immediately forward the
 message to the client. Because the stash itself runs in a single
@@ -488,7 +488,7 @@ function closeAllChannelSockets() {}
 
 With the stash-based approach, it's important to clean up the stash
 once no channels remain. Otherwise we end up leaking queues. The
-general approach is to explicitly store a refcounf as part of the
+general approach is to explicitly store a refcount as part of the
 stash value. Each socket that connects increments the refcount, and
 decrements it once the socket is closed. Access to the stash is
 protected by a lock, so only one socket may touch the refcount at a
@@ -520,7 +520,7 @@ test.html
 
 <script>
 promise_test(async t => {
-  let remote = new RemoteContext();
+  let remote = new RemoteWindow();
   window.open(`child.html?uuid=${remote.uuid}`, "_blank", "noopener");
   let result = await remote.executeScript(id => {
     return document.getElementById(id).textContent;
@@ -612,5 +612,5 @@ contains a prototype implementation of this.
 
 <!--  LocalWords:  UUID WebDriver wptrunner testharness APIs UI
  -->
-<!--  LocalWords:  testdriver websockets bfcache refcounf
+<!--  LocalWords:  testdriver websockets bfcache
  -->
