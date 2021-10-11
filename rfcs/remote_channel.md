@@ -66,8 +66,6 @@ browser-specific techniques.
   via the main test window, make it hard to build an ergonomic
   cross-context messaging API.
 
-### Proposal
-
 All the above examples of prior art have some attractive features, and
 it's possible to combine them in a way that should provide an
 ergonomic API for web-platform-tests
@@ -83,6 +81,8 @@ ergonomic API for web-platform-tests
   makes sense for wpt. However the requirement to poll the server for
   messages, and the relatively low level API based on passing strings
   around, seem like areas for improvement.
+
+### Proposal
 
 The following subsections will set out a proposal for an API that
 combines some of these strengths.
@@ -150,7 +150,7 @@ functions shutdown when the socket is closed.
 #### Remote Object Serialization
 
 In order to allow passing complex JavaScript objects between contexts,
-a serialization format based on the [WebDriver
+a serialization format loosely based on the [WebDriver
 BiDi](https://w3c.github.io/webdriver-bidi/#type-common-RemoteValue)
 proposal is used. An object is represented using a JSON object as
 follows:
@@ -159,16 +159,16 @@ follows:
   type: Name of the object type,
   value: A representation of the object in a JSON-compatible form
          where possible,
-  objectId: A unique id assigned to the object (not for primitives)
+  objectId: A unique id assigned to the object in case of circular references.
 }
 ```
 
-So, for example, the array `[1, "foo", {"bar": null}]` is represented as:
+So, for example, an array `a` with content `[1, "foo", {"bar": null}, a]` is represented as:
 
 ```js
 {
   "type": "array",
-  "objectId": <uuid>,
+  "objectId": 0,
   "value": [
     {
       type: "number",
@@ -178,32 +178,46 @@ So, for example, the array `[1, "foo", {"bar": null}]` is represented as:
       "type": "string",
       "value": "foo"
     },
+    {
       "type": "object",
-      "objectId": <uuid>,
       "value": {
         "bar": {
           "type": null
         }
       }
+    },
+    {
+      "type": "array",
+      "objectId": 0
+    }
   ]
 }
 ```
 
-In addition to the types specified in the WebDriver-BiDi
-specification, `SendChannel` is given first class support with
-`"type": "sendchannel"` and `value` set to the UUID of the
-channel. This enables an important pattern: to receive messages from a
-remote context, you can send it a `SendChannel` object to use for
-responses.
+This supports the following types:
 
-For deserialization, primitive values are converted back to
-primitives, but complex values are represented by a `RemoteObject`
-type. In cases like arrays where there is a `value` field holding a
-container object, `RemoteObject.toLocal()` recursively converts the
-content of the container into local objects (so e.g. a `type: array` is
-converted into a local `Array` instances, and any contained `type: object`
-objects are converted into local `Object` instances, and so on through
-the full tree).
+* All JS primitive types
+* Builtin types: `Date`, `Regexp`, `Error`
+* Functions
+* Collections: `Array`, `Map`, `Set`, `Object`
+* `SendChannel`. This enables an important pattern: to receive
+  messages from a remote context, you can send it a `SendChannel`
+  object to use for responses.
+* `RemoteObject`. This enables sending an arbitrary object as a
+  reference that can be resolved in the original realm. For example an
+  `Element` named `elem` can be transferred as a
+  `RemoteObject(elem)`. If this `RemoteObject` is later transferred
+  back to the original realm it will be converted back to the original
+  object.
+
+Deserialization creates values equivalent to the original values in
+the current realm e.g. a serialized array is reconstructed as an array
+object in the realm where deserialization occurs, and similarly for
+each element in the array. `RemoteObject` differs slightly; given a
+serialized `RemoteObject` referencing some object `obj`, if `obj`
+doesn't exist in the current realm a new `RemoteObject` is created
+referencing `obj`. If `obj` does exist in that realm, it is returned
+as the result of deserialization.
 
 #### Higher Level API
 
@@ -221,11 +235,16 @@ send messages to the remote. Alternatively the `RemoteWindow` may be
 created first and its `uuid` property used when constructing the URL.
 
 Inside the remote browsing context itself, the test author has to call
-`await start_window()` in order to set up a `RecvChannel` with UUID given
-by the `uuid` parameter in `location.href`. The returned object offers
-an `addMessageHandler(callback)` API to receive messages sent with the
-`postMessage` API on `RemoteWindow`, and `async nextMessage()` to wait
-for the next message.
+`window_channel()` in order to set up a `RecvChannel` with UUID given
+by the `uuid` parameter in `location.href`. By default this is not
+connected until the `async connect()` method is called. This allows
+message handlers to be attached before processing any messages. For
+convenience `await start_window_channel()` returns an already
+connected `RecvChannel`.
+
+The `RecvChannel` object offers an `addMessageHandler(callback)` API
+to receive messages sent with the `postMessage` API on `RemoteWindow`,
+and `async nextMessage()` to wait for the next message.
 
 ##### Script Execution
 
@@ -242,20 +261,13 @@ execution results in a `Promise` value, the result of that promise is
 awaited. The final return value after the promise is resolved is sent
 back and forms the async return value of the `executeScript` call. If
 the script throws, the thrown value is provided as the result, and
-re-thrown in the originating context. In addition an `exceptionDetails`
-field provides the line/column numbers of the original exception,
-where available.
-
-In addition there is a `RemoteWindow.executeScriptNoResult(fn,
-...args)` method. This works the same way except no channel is passed,
-and so no result is returned. This can be useful in case the script
-does something like trigger a navigation, so there's no need to
-synchronize the navigation starting (which will close the socket) with
-writing the response.
+re-thrown in the originating context. In addition an
+`exceptionDetails` field on the response provides the line/column
+numbers of the original exception, where available.
 
 TODO: the naming here isn't great. In particular a `RemoteWindow`
 could actually be some other kind of global like a worker, and
-`start_window()` is a pretty nondescript method name.
+`start_window_channel()` is a pretty nondescript method name.
 
 #### Navigation and bfcache
 
@@ -374,10 +386,19 @@ class RecvChannel() {
   async next(): Promise<Object> {}
 }
 
-/**
- * Start listening for RemoteWindow messages on a channel defined by a `uuid` in `location.href`
+ /**
+ * Create an unconnected channel defined by a `uuid` in
+ * `location.href` for listening for RemoteWindow messages.
  */
-async start_window(): Promise<RemoteWindowCommandRecvChannel> {}
+async window_channel(): RemoteWindowCommandRecvChannel {}
+
+
+/**
+ * Start listening for RemoteWindow messages on a channel defined by
+ * a `uuid` in `location.href`
+ */
+async start_window_channel(): Promise<RemoteWindowCommandRecvChannel> {}
+
 
 /**
  * Handler for RemoteWindow commands
@@ -449,14 +470,6 @@ class RemoteWindow {
    * Arguments and return values are serialized as RemoteObjects.
    */
    async executeScript(fn: (args: ...any) => any, ..args: any): Promise<any> {}
-
-  /**
-   * Run the function `fn` in the remote context, passing arguments
-   * `args`, but without returning a result
-   *
-   * Arguments are serialized as RemoteObjects.
-   */
-   async executeScriptNoResult(fn: (args: ...any) => any, ..args: any) {}
 }
 
 /**
@@ -464,16 +477,25 @@ class RemoteWindow {
  */
 class RemoteObject {
   type: string;
-  value: any;
   objectId: string | undefined;
 
   /**
-   * Recursively convert the object to a local type (where possible)
-   * so eg. a remote array is converted into a local array.
-   *
-   * Objects without a meaningful local representation are passed back unchanged.
+   * Create a RemoteObject containing a handle to reference obj
    */
-  toLocal(): any {}
+  static from(obj): RemoteObject
+
+  /**
+   * Return the local object referenced by the objectId of this RemoteObject,
+   * or null if there isn't a such an object in this realm.
+   */
+  toLocal(): Object?
+
+  /**
+   * Remove the objectId from the local cache. This means that future
+   * calls to `toLocal` with the same objectId will always return
+   * `null`.
+   */
+   delete()
 }
 
 /**
@@ -536,11 +558,22 @@ child.html
 <p id="nottest">FAIL</p>
 <p id="test">PASS</p>
 <script>
-start_window();
+start_window_channel();
 </script>
 ```
 
+## Implementation Requirements
+
+The implementation only depends on wptserve and normal content js; it
+doesn't depend on testdriver or any test-only APIs. Therefore
+integration into any deployment not using wptrunner/testdriver should
+be straightforward.
+
 ## Possible Future Additions
+
+Note: Implementation of any suggestions in this section would happen
+in the context of a further RFC. This section is only to sketch some
+possibilities for further development of the API.
 
 The primitives here could be integrated more completely with
 testharness.js. For example we could use a `RemoteWindow` as a source
@@ -571,10 +604,11 @@ for websockets. By sticking close to WebDriver BiDi proposed semantics
 the transition may even be seamless.
 
 testdriver integration is possible. For example we could add
-`RemoteContext.testdriver.click` to execute a click in the remote
-context (and similarly for the remainder of the testdriver
-API). testdriver in this case would identify the target window by
-looking for a window with the appropriate `uuid` parameter in its
+`RemoteContext.testdriver.set_permission(params)` to execute a
+`set_permission` command in the remote context (and similarly for the
+remainder of the testdriver API). This would desugar to
+`testdriver.set_permission(params, uuid)` and testdriver would be
+update to identify the target window from the `uuid` parameter in its
 `location.href`.
 
 ## Risks
