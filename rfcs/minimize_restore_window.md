@@ -18,3 +18,6 @@ interact with that behavior.
 Tests that use this API might not give consistent results when running in headless mode.
 This is due to the nature of the `page visibility` API and APIs that require the browser to be
 in a particular state with regards to the OS in order to succeed.
+
+Also, some platforms (mobile)? may not support `minimize`, in which case tests using this feature
+should fail early with a precondition.
