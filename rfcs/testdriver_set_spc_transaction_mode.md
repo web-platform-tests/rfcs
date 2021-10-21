@@ -1,4 +1,4 @@
-# RFC N: Add Secure Payment Confirmation support to testdriver.js
+# RFC 101: Add Secure Payment Confirmation support to testdriver.js
 
 ## Summary
 
