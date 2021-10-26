@@ -124,17 +124,25 @@ consumers, but to message a specific browsing context. Browsing
 contexts will be able to create a `RecvChannel` with the UUID in their
 URL and use that to receive messages from other contexts.
 
+`Channel` acts approximately like an event target; consumers can call
+the `addEventListener(type, fn)` method to add a event callback
+function. The function is called with an object `{type, data}`, where
+`type` is the event type and `data` is type-specific data. All
+channels support `connect` and `close` events. Callbacks can be
+removed using `removeEventListener(type, fn)`.
+
 A `SendChannel` has a `send(obj)` method. This causes the object to be
 encoded, first using the remote object serialization (see below) and
 then as a JSON string, before being sent to the queue.
 
 A `RecvChannel` must call its async `connect()` method to start
 receiving messages. Messages are first deserialized from JSON and then
-undergo remote object serialization. Once connected, the
-`RecvChannel` acts like an event target; consumers can call the
-`addEventListener(fn)` method to add a callback function when a
-message is received. Alternatively the async `next()` function will
-return the next message to be received.
+undergo remote object serialization. They are provided as event
+callbacks with a type of `message`. A message handler function can be
+registered using `addEventListener("message", callback)`; the object
+passed to the callback function has the message in its `data` property.
+Alternatively the async `next()` function returns a promise which
+resolves to next message received.
 
 The implementation of channels is based on websockets, with one
 websocket per `Channel` object (i.e. a different websocket is used for
@@ -318,6 +326,11 @@ is only created when actually sending a message.
 */
 function channel(): [RecvChannel, SendChannel] {}
 
+interface ChannelEvent {
+  type: string,
+  data: Object | undefined
+}
+
 /**
 * Channel used to send messages
 */
@@ -339,6 +352,16 @@ class SendChannel() {
    * Close the channel and underlying websocket connection
    */
   async close() {}
+
+  /**
+   * Add a event callback funtion. Supported message types are "connect", and "close".
+   */
+  addEventListener(type: string, fn: (event: ChannelEvent) => void) {}
+
+  /**
+   * Remove an event callback function
+   */
+  removeEventListener(type: string fn: (event: ChannelEvent) => void) {}
 
   /**
    * Send a message `msg`. The message object must be JSON-serializable.
@@ -368,14 +391,14 @@ class RecvChannel() {
   async close() {}
 
   /**
-   * Add a message handler function
+   * Add a event callback funtion. Supported message types are "connect", "close", and "message".
    */
-  addEventListener(fn: (msg: Object) => void) {}
+  addEventListener(type: string, fn: (event: ChannelEvent) => void) {}
 
   /**
-   * Remove a message handler function
+   * Remove an event callback function
    */
-  removeEventListener(fn: (msg: Object) => void) {}
+  removeEventListener(type: string fn: (event: ChannelEvent) => void) {}
 
  /**
   * Wait for the next message and return it (after passing it to
