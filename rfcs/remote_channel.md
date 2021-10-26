@@ -224,9 +224,10 @@ as the result of deserialization.
 The low-level API provides required primitives, but it's difficult to
 use directly. To achieve the aim of making tests no harder to write
 than SpecialPowers-based Gecko tests, there is also a higher-level API
-initially providing two main capabilities: the ability to
-`postMessage` to a remote context, and the ability to `executeScript` so
-that the script runs in a remote context.
+initially providing two main capabilities: `postMessage` which sends a
+message to a remote global, and `call` which executes a provided
+function in the remote global with given arguments.
+
 
 This API is provided by a `RemoteGlobal` object. The `RemoteGlobal`
 object doesn't handle creating the browsing context (or other global
@@ -249,7 +250,7 @@ and async `nextMessage()` to wait for the next message.
 
 ##### Script Execution
 
-`RemoteGlobal.executeScript(fn, ...args)` serializes the function
+`RemoteGlobal.call(fn, ...args)` serializes the function
 `fn`, using `Function.prototype.toString()`. Each argument is
 serialized using the remote value serialization algorithm. Along with
 the function string and the arguments, a `SendChannel` is sent for the
@@ -260,7 +261,7 @@ responses from different commands.
 On the remote side the function is deserialized and executed. If
 execution results in a `Promise` value, the result of that promise is
 awaited. The final return value after the promise is resolved is sent
-back and forms the async return value of the `executeScript` call. If
+back and forms the async return value of the `call` call. If
 the script throws, the thrown value is provided as the result, and
 re-thrown in the originating context. In addition an
 `exceptionDetails` field on the response provides the line/column
@@ -467,7 +468,7 @@ class RemoteGlobal {
    *
    * Arguments and return values are serialized as RemoteObjects.
    */
-   async executeScript(fn: (args: ...any) => any, ...args: any): Promise<any> {}
+   async call(fn: (args: ...any) => any, ...args: any): Promise<any> {}
 }
 
 /**
@@ -533,7 +534,7 @@ test.html
 
 ```html
 <!doctype html>
-<title>executeScript example</title>
+<title>call example</title>
 <script src="/resources/testharness.js">
 <script src="/resources/testharnessreport.js">
 <script src="/resources/channel.js">
@@ -542,7 +543,7 @@ test.html
 promise_test(async t => {
   let remote = new RemoteGlobal();
   window.open(`child.html?uuid=${remote.uuid}`, "_blank", "noopener");
-  let result = await remote.executeScript(id => {
+  let result = await remote.call(id => {
     return document.getElementById(id).textContent;
   }, "test");
   assert_equals("result", "PASS");
@@ -584,7 +585,7 @@ something like:
 promise_test(t => {
   let r = new RemoteGlobal();
   window.open(`file.html?uuid=${r.uuid}`, "_blank", "noopener");
-  await r.executeScript(() => {
+  await r.call(() => {
     assert_equals(window.opener, null)
   });
 });
