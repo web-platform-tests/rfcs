@@ -22,7 +22,7 @@ the prior context. Typically in implementations each browsing context
 group is assigned a unique OS-level process.
 
 This creates some problems for testing; because testharness tests are
-running in a single browsing context, and test that involves a context
+running in a single browsing context, and tests that involves a context
 that is isolated from the context containing the test will be unable
 to communicate test results back to the harness using web platform
 APIs.
@@ -35,7 +35,7 @@ browser-specific techniques.
 
 ### Prior Art
 
-* Gecko tests able to provide cross-context communication using the
+* Gecko tests are able to provide cross-context communication using the
   parent (i.e. browser UI) process as an intermediary. The
   [SpecialPowers.spawn](https://searchfox.org/mozilla-central/source/testing/specialpowers/content/SpecialPowersChild.jsm#1547-1584)
   API available to gecko tests allows running a function in another
@@ -89,7 +89,7 @@ combines some of these strengths.
 
 #### Addressing
 
-Contexts that want to participate in messaging must have a parameter
+Contexts that want to participate in messaging must have a query parameter
 called `uuid` in their URL, with a value that's a UUID. This will be
 used to identify the channel dedicated to messages sent to that
 context. If the context is navigated the new document may reuse the
@@ -225,7 +225,7 @@ The low-level API provides required primitives, but it's difficult to
 use directly. To achieve the aim of making tests no harder to write
 than SpecialPowers-based Gecko tests, there is also a higher-level API
 initially providing two main capabilities: the ability to
-`postMessage` a remote context, and the ability to `executeScript` so
+`postMessage` to a remote context, and the ability to `executeScript` so
 that the script runs in a remote context.
 
 This API is provided by a `RemoteWindow` object. The `RemoteWindow`
@@ -237,19 +237,19 @@ created first and its `uuid` property used when constructing the URL.
 Inside the remote browsing context itself, the test author has to call
 `window_channel()` in order to set up a `RecvChannel` with UUID given
 by the `uuid` parameter in `location.href`. By default this is not
-connected until the `async connect()` method is called. This allows
+connected until the async `connect()` method is called. This allows
 message handlers to be attached before processing any messages. For
 convenience `await start_window_channel()` returns an already
 connected `RecvChannel`.
 
 The `RecvChannel` object offers an `addMessageHandler(callback)` API
 to receive messages sent with the `postMessage` API on `RemoteWindow`,
-and `async nextMessage()` to wait for the next message.
+and async `nextMessage()` to wait for the next message.
 
 ##### Script Execution
 
 `RemoteWindow.executeScript(fn, ...args)` serializes the function
-`fn`, using `Function.toString()`. Each argument is
+`fn`, using `Function.prototype.toString()`. Each argument is
 serialized using the remote value serialization algorithm. Along with
 the function string and the arguments, a `SendChannel` is sent for the
 command response (only one such channel is created per `RemoteWindow`
@@ -469,7 +469,7 @@ class RemoteWindow {
    *
    * Arguments and return values are serialized as RemoteObjects.
    */
-   async executeScript(fn: (args: ...any) => any, ..args: any): Promise<any> {}
+   async executeScript(fn: (args: ...any) => any, ...args: any): Promise<any> {}
 }
 
 /**
@@ -547,7 +547,7 @@ promise_test(async t => {
   let result = await remote.executeScript(id => {
     return document.getElementById(id).textContent;
   }, "test");
-  assert_equals("result", PASS);
+  assert_equals("result", "PASS");
 });
 </script>
 ```
@@ -608,7 +608,7 @@ testdriver integration is possible. For example we could add
 `set_permission` command in the remote context (and similarly for the
 remainder of the testdriver API). This would desugar to
 `testdriver.set_permission(params, uuid)` and testdriver would be
-update to identify the target window from the `uuid` parameter in its
+updated to identify the target window from the `uuid` parameter in its
 `location.href`.
 
 ## Risks
