@@ -94,7 +94,8 @@ called `uuid` in their URL, with a value that's a UUID. This will be
 used to identify the channel dedicated to messages sent to that
 context. If the context is navigated the new document may reuse the
 same UUID if it wants to share the same message queue. Otherwise it's
-an error to use the same UUID for multiple contexts.
+an error to use the same UUID for multiple contexts. Trying to create
+more than one simultaneous reader channel for the same UUID will fail.
 
 #### Backend
 
