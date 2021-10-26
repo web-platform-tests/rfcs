@@ -282,25 +282,26 @@ ensure that no network connections (including websockets) remain open
 at the time of navigation, otherwise the page will be excluded from
 bfcache. In the current prototype this is handled as follows:
 
-* A `pause` method on `SendChannel`. This causes a server-initiated
-  disconnect of the corresponding `RecvChannel` websocket. This is
-  pretty confusing! The idea is to allow a page to send a command that
-  will initiate a navigation, then without knowing when the navigation
-  is done, send further commands that will be processed when the
-  `RecvChannel` reconnects. If the commands are sent before the
-  navigation, but not processed, they can be buffered by the remote
-  and then lost during navigation. An alternative here would be a more
-  explicit protocol in which the remote has to send an explicit
-  message to the test page indicating that it's done navigating and
-  it's safe to send more commands. But the way the messaging works,
-  it's hard for a random page that's loaded to initiate a connection
-  to the top-level test context For example, consider a test page T
-  with a channel pair allowing communication with remote window A. If
-  A navigates to B, there's no simple mechanism for B to create a
-  channel to T. One could get around this by e.g. putting the uuid of
-  the existing `SendChannel` from A to T into the URL of B and
-  constructing it from there, but that's quite fiddly and doesn't work
-  in cases where the URL is immutable e.g. history navigation.
+* A `disconnectReader` method on `SendChannel`. This causes a
+  server-initiated disconnect of the corresponding `RecvChannel`
+  websocket. This is pretty confusing! The idea is to allow a page to
+  send a command that will initiate a navigation, then without knowing
+  when the navigation is done, send further commands that will be
+  processed when the `RecvChannel` reconnects. If the commands are
+  sent before the navigation, but not processed, they can be buffered
+  by the remote and then lost during navigation. An alternative here
+  would be a more explicit protocol in which the remote has to send an
+  explicit message to the test page indicating that it's done
+  navigating and it's safe to send more commands. But the way the
+  messaging works, it's hard for a random page that's loaded to
+  initiate a connection to the top-level test context For example,
+  consider a test page T with a channel pair allowing communication
+  with remote window A. If A navigates to B, there's no simple
+  mechanism for B to create a channel to T. One could get around this
+  by e.g. putting the uuid of the existing `SendChannel` from A to T
+  into the URL of B and constructing it from there, but that's quite
+  fiddly and doesn't work in cases where the URL is immutable
+  e.g. history navigation.
 
 * A `closeAllChannelSockets()` method. This just closes all the
   open websockets associated with channels in the context in which
@@ -371,7 +372,7 @@ class SendChannel() {
  /**
   * Disconnect the RecvChannel, if any, on the server side
   */
-  async pause() {}
+  async disconnectReader() {}
 }
 
 /**
@@ -477,7 +478,7 @@ class RemoteGlobal {
    * Disconnect the RecvChannel running in the remote context, if any,
    * on the server side
    */
-   async pause() {}
+   async disconnectReader() {}
 
   /**
    * Post the object msg to the remote, using JSON serialization
