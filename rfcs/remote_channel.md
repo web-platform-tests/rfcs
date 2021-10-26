@@ -228,31 +228,32 @@ initially providing two main capabilities: the ability to
 `postMessage` to a remote context, and the ability to `executeScript` so
 that the script runs in a remote context.
 
-This API is provided by a `RemoteWindow` object. The `RemoteWindow`
-object doesn't handle creating the browsing context, but given the
-UUID for the remote window, creates a `SendChannel` which is able to
-send messages to the remote. Alternatively the `RemoteWindow` may be
-created first and its `uuid` property used when constructing the URL.
+This API is provided by a `RemoteGlobal` object. The `RemoteGlobal`
+object doesn't handle creating the browsing context (or other global
+object), but given the UUID for the remote, creates a `SendChannel`
+which is able to send messages to the remote. Alternatively the
+`RemoteGlobal` may be created first and its `uuid` property used when
+constructing the URL.
 
 Inside the remote browsing context itself, the test author has to call
-`window_channel()` in order to set up a `RecvChannel` with UUID given
+`global_channel()` in order to set up a `RecvChannel` with UUID given
 by the `uuid` parameter in `location.href`. By default this is not
 connected until the async `connect()` method is called. This allows
 message handlers to be attached before processing any messages. For
-convenience `await start_window_channel()` returns an already
+convenience `await start_global_channel()` returns an already
 connected `RecvChannel`.
 
 The `RecvChannel` object offers an `addMessageHandler(callback)` API
-to receive messages sent with the `postMessage` API on `RemoteWindow`,
+to receive messages sent with the `postMessage` API on `RemoteGlobal`,
 and async `nextMessage()` to wait for the next message.
 
 ##### Script Execution
 
-`RemoteWindow.executeScript(fn, ...args)` serializes the function
+`RemoteGlobal.executeScript(fn, ...args)` serializes the function
 `fn`, using `Function.prototype.toString()`. Each argument is
 serialized using the remote value serialization algorithm. Along with
 the function string and the arguments, a `SendChannel` is sent for the
-command response (only one such channel is created per `RemoteWindow`
+command response (only one such channel is created per `RemoteGlobal`
 for efficiency reasons), and a command id is sent to disambiguate
 responses from different commands.
 
@@ -264,10 +265,6 @@ the script throws, the thrown value is provided as the result, and
 re-thrown in the originating context. In addition an
 `exceptionDetails` field on the response provides the line/column
 numbers of the original exception, where available.
-
-TODO: the naming here isn't great. In particular a `RemoteWindow`
-could actually be some other kind of global like a worker, and
-`start_window_channel()` is a pretty nondescript method name.
 
 #### Navigation and bfcache
 
@@ -388,23 +385,24 @@ class RecvChannel() {
 
  /**
  * Create an unconnected channel defined by a `uuid` in
- * `location.href` for listening for RemoteWindow messages.
+ * `location.href` for listening for RemoteGlobal messages.
  */
-async window_channel(): RemoteWindowCommandRecvChannel {}
+async global_channel(): RemoteGlobalCommandRecvChannel {}
 
 
 /**
- * Start listening for RemoteWindow messages on a channel defined by
+ * Start listening for RemoteGlobal messages on a channel defined by
  * a `uuid` in `location.href`
  */
-async start_window_channel(): Promise<RemoteWindowCommandRecvChannel> {}
+async start_global_channel(): Promise<RemoteGlobalCommandRecvChannel> {}
 
 
 /**
- * Handler for RemoteWindow commands
+ * Handler for RemoteGlobal commands. This can't be constructed directly
+ * but must be onbtained from `global_channel()` or `start_global_channel()`.
  */
 
-class RemoteWindowCommandRecvChannel {
+class RemoteGlobalCommandRecvChannel {
   /**
    * Connect to the channel and start handling messages.
    */
@@ -432,9 +430,9 @@ class RemoteWindowCommandRecvChannel {
   async nextMessage(): Promise<Object> {}
 }
 
-class RemoteWindow {
+class RemoteGlobal {
   /**
-   * Create a RemoteWindow. The dest parameter is either a
+   * Create a RemoteGlobal. The dest parameter is either a
    `SendChannel` object or the UUID for the channel. If ommitted a new
    UUID is generated.
    */
@@ -542,7 +540,7 @@ test.html
 
 <script>
 promise_test(async t => {
-  let remote = new RemoteWindow();
+  let remote = new RemoteGlobal();
   window.open(`child.html?uuid=${remote.uuid}`, "_blank", "noopener");
   let result = await remote.executeScript(id => {
     return document.getElementById(id).textContent;
@@ -576,7 +574,7 @@ in the context of a further RFC. This section is only to sketch some
 possibilities for further development of the API.
 
 The primitives here could be integrated more completely with
-testharness.js. For example we could use a `RemoteWindow` as a source
+testharness.js. For example we could use a `RemoteGlobal` as a source
 of tests in `fetch_tests_from_window`. Alternatively, or in addition
 to that, we could integrate asserts with script execution, so that a
 remote context could include a minimal testharness.js and enable
@@ -584,7 +582,7 @@ something like:
 
 ```js
 promise_test(t => {
-  let r = new RemoteWindow();
+  let r = new RemoteGlobal();
   window.open(`file.html?uuid=${r.uuid}`, "_blank", "noopener");
   await r.executeScript(() => {
     assert_equals(window.opener, null)
