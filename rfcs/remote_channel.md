@@ -141,9 +141,9 @@ receiving messages. Messages are first deserialized from JSON and then
 undergo remote object serialization. They are provided as event
 callbacks with a type of `message`. A message handler function can be
 registered using `addEventListener("message", callback)`; the object
-passed to the callback function has the message in its `data` property.
-Alternatively the async `next()` function returns a promise which
-resolves to next message received.
+passed to the callback function has the message in its `data`
+property.  Alternatively the async `nextMessage()` function returns a
+promise which resolves to next message received.
 
 The implementation of channels is based on websockets, with one
 websocket per `Channel` object (i.e. a different websocket is used for
@@ -406,7 +406,7 @@ class RecvChannel() {
   * Wait for the next message and return it (after passing it to
   * existing handlers)
   */
-  async next(): Promise<Object> {}
+  async nextMessage(): Promise<Object> {}
 }
 
  /**
