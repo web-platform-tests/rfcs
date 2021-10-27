@@ -501,7 +501,7 @@ class RemoteGlobal {
  */
 class RemoteObject {
   type: string;
-  objectId: string | undefined;
+  objectId: string;
 
   /**
    * Create a RemoteObject containing a handle to reference obj
