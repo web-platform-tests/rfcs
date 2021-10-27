@@ -526,8 +526,6 @@ class RemoteObject {
  * Close all websockets in the current global that are being used for channels.
  */
 function closeAllChannelSockets() {}
-
-///
 ```
 
 ### Resource Management
