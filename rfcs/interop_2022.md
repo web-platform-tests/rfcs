@@ -22,7 +22,7 @@ The proposed timeline is:
 - Nov 8 – Nov 21: Browser vendors and others interested in contributing to the effort review the areas and suggest changes to scope, tests, etc. Ranking the proposals by internal priority could also be helpful.
 - Nov 22 – Nov 28: Interested parties and the [WPT core team](https://github.com/orgs/web-platform-tests/teams/wpt-core-team/) meet to discuss, seeking to identify 3-7 areas that everyone would be happy to include.
 - Nov 29: This RFC is updated and a final call for comments is made.
-- Dec 6 – Dec 19: Depending feedback, the RFC is either accepted or rejected.
+- Dec 6 – Dec 19: Depending on feedback, the RFC is either accepted or rejected.
 
 ### How to nominate an area
 
