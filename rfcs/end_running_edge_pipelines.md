@@ -1,4 +1,4 @@
-#RFC ADDNUMBER
+#RFC 102
 
 ## Summary
 We at Microsoft are considering disabling Microsoft Edge runs on Windows as part of this WPT.FYI effort. 
