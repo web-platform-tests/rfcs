@@ -8,6 +8,8 @@ When Edge was built as EdgeHTML, there were very real concerns about interoperab
 
 Now that we have shipped Edge Stable to Linux, what we would prefer to have happen is a change to begin a more "apples to apples" interop test by running Edge on Linux along with Chrome on Linux. An alternative would be to run Chromium on Linux, but we're not convinced that would return the same value to web developers because it would not expose places in the platform where browsers might be intentionally different.
 
+This is not meant to propose any changes to the current runs of Safari via Azure Pipelines.
+
 ## Risks
 One of the biggest risks is that we will miss some large interop gap present on Windows that is not present on Linux. However, that is mitigated by the browser vendors running WPT in their own internal CI/CD systems where they catch regressions. In addition, any large gap like that would be present in both Edge and Chrome and would likely not present an interop issue in the web platform, but rather in the platforms themselves.
 
