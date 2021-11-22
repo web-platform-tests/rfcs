@@ -158,16 +158,16 @@ functions shutdown when the socket is closed.
 
 #### Remote Object Serialization
 
-In order to allow passing complex JavaScript objects between contexts,
+In order to allow passing complex JavaScript values between contexts,
 a serialization format loosely based on the [WebDriver
 BiDi](https://w3c.github.io/webdriver-bidi/#type-common-RemoteValue)
 proposal is used. An object is represented using a JSON object as
 follows:
 ```js
 {
-  type: Name of the object type,
-  value: A representation of the object in a JSON-compatible form
-         where possible,
+  type: Name of the value type,
+  value: A JSON-compatiable representation of the value. Nested values are themselves
+         represented using this serialization.
   objectId: A unique id assigned to the object in case of circular references.
 }
 ```
