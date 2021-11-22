@@ -295,7 +295,7 @@ bfcache. In the current prototype this is handled as follows:
   explicit message to the test page indicating that it's done
   navigating and it's safe to send more commands. But the way the
   messaging works, it's hard for a random page that's loaded to
-  initiate a connection to the top-level test context For example,
+  initiate a connection to the top-level test context. For example,
   consider a test page T with a channel pair allowing communication
   with remote window A. If A navigates to B, there's no simple
   mechanism for B to create a channel to T. One could get around this
