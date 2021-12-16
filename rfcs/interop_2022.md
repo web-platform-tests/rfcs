@@ -14,16 +14,6 @@ While Compat 2021 was discussed among all major browser vendors, it didn't follo
 
 No organization is required to make any public commitments.
 
-### Timeline
-
-The proposed timeline is:
-
-- Oct 7 – Nov 7: Anyone can propose an area as an [issue in the Interop 2022 repo](https://github.com/web-platform-tests/interop-2022/issues), ideally with signals of its importance and a proposed list of tests.
-- Nov 8 – Nov 21: Browser vendors and others interested in contributing to the effort review the areas and suggest changes to scope, tests, etc. Ranking the proposals by internal priority could also be helpful.
-- Nov 22 – Nov 28: Interested parties and the [WPT core team](https://github.com/orgs/web-platform-tests/teams/wpt-core-team/) meet to discuss, seeking to identify 3-7 areas that everyone would be happy to include.
-- Nov 29: This RFC is updated and a final call for comments is made.
-- Dec 6 – Dec 19: Depending on feedback, the RFC is either accepted or rejected.
-
 ### How to nominate an area
 
 To propose an area for inclusion Interop 2022, comment on the [pull request](https://github.com/web-platform-tests/rfcs/pull/99) and provide as much as possible of the following information:
