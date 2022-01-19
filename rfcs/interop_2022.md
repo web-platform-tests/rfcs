@@ -2,9 +2,11 @@
 
 ## Summary
 
-Identify focus areas and a list of tests for Interop 2022, a public effort and benchmark around which browser vendors can collaborate to improve browser compatibility in areas believed to be important to web developers.
+Interop 2022 is a public effort and benchmark around which browser vendors can collaborate to improve interoperability in areas believed to be important to web developers. 10 new focus areas have been selected, and 5 have been carried forward from Interop 2021.
 
-Proposed focus areas are tracked in the dedicated [Interop 2022 repo](https://github.com/web-platform-tests/interop-2022).
+For each area, a set of tests have been identified, and progress is tracked with scores for each area as well as for the overall effort. There will be a dashboard for this at https://wpt.fyi/interop-2022.
+
+See the [Interop 2022 repo](https://github.com/web-platform-tests/interop-2022) for all of the proposals and discussions that led to the current set of areas.
 
 ## Details
 
