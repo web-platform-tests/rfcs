@@ -14,66 +14,56 @@ See the [Interop 2022 repo](https://github.com/web-platform-tests/interop-2022) 
 
 ### Cascade Layers
 
-Proposal: https://github.com/web-platform-tests/interop-2022/issues/5
-
+Proposal: https://github.com/web-platform-tests/interop-2022/issues/5  
 Tests: [`interop-2022-cascade`](https://wpt.fyi/results/?label=master&label=experimental&product=chrome&product=firefox&product=safari&aligned&q=label%3Ainterop-2022-cascade)
 
 ### Color Spaces & CSS Color Functions
 
-Proposal: https://github.com/web-platform-tests/interop-2022/issues/20
-
+Proposal: https://github.com/web-platform-tests/interop-2022/issues/20  
 Tests: [`interop-2022-color`](https://wpt.fyi/results/?label=master&label=experimental&product=chrome&product=firefox&product=safari&aligned&q=label%3Ainterop-2022-color)
 
 ### Containment
 
-Proposal: https://github.com/web-platform-tests/interop-2022/issues/19
-
+Proposal: https://github.com/web-platform-tests/interop-2022/issues/19  
 Tests: [`interop-2022-contain`](https://wpt.fyi/results/?label=master&label=experimental&product=chrome&product=firefox&product=safari&aligned&q=label%3Ainterop-2022-contain)
 
 
 ### `<dialog>` and `::backdrop`
 
-Proposal: https://github.com/web-platform-tests/interop-2022/issues/12
-
+Proposal: https://github.com/web-platform-tests/interop-2022/issues/12  
 Tests: [`interop-2022-dialog`](https://wpt.fyi/results/?label=master&label=experimental&product=chrome&product=firefox&product=safari&aligned&q=label%3Ainterop-2022-dialog)
 
 ### Form Controls
 
-Proposal: https://github.com/web-platform-tests/interop-2022/issues/11
-
+Proposal: https://github.com/web-platform-tests/interop-2022/issues/11  
 Tests: [`interop-2022-forms`](https://wpt.fyi/results/?label=master&label=experimental&product=chrome&product=firefox&product=safari&aligned&q=label%3Ainterop-2022-forms)
 
 
 ### Scrolling
 
-Proposals: https://github.com/web-platform-tests/interop-2022/issues/14 + https://github.com/web-platform-tests/interop-2022/issues/21
-
+Proposals: https://github.com/web-platform-tests/interop-2022/issues/14 + https://github.com/web-platform-tests/interop-2022/issues/21  
 Tests: [`interop-2022-scrolling`](https://wpt.fyi/results/?label=master&label=experimental&product=chrome&product=firefox&product=safari&aligned&q=label%3Ainterop-2022-scrolling)
 
 ### Subgrid
 
-Proposal: https://github.com/web-platform-tests/interop-2022/issues/1
-
+Proposal: https://github.com/web-platform-tests/interop-2022/issues/1  
 Tests: [`interop-2022-subgrid`](https://wpt.fyi/results/?label=master&label=experimental&product=chrome&product=firefox&product=safari&aligned&q=label%3Ainterop-2022-subgrid)
 
 ### Text
 
-Proposal: https://github.com/web-platform-tests/interop-2022/issues/13
-
+Proposal: https://github.com/web-platform-tests/interop-2022/issues/13  
 Tests: [`interop-2022-text`](https://wpt.fyi/results/?label=master&label=experimental&product=chrome&product=firefox&product=safari&aligned&q=label%3Ainterop-2022-text)
 
 ### New Viewport Units
 
-Proposal: https://github.com/web-platform-tests/interop-2022/issues/4
-
+Proposal: https://github.com/web-platform-tests/interop-2022/issues/4  
 Tests: `interop-2022-viewport` (TODO)
 
 See also the [Viewport Investigation project](https://github.com/web-platform-tests/interop-2022/issues/41) which is part of the Interop 2022 effort, but not part of the metric.
 
 ### Web Compat
 
-Proposal: https://github.com/web-platform-tests/interop-2022/issues/9
-
+Proposal: https://github.com/web-platform-tests/interop-2022/issues/9  
 Tests: [`interop-2022-webcompat`](https://wpt.fyi/results/?label=master&label=experimental&product=chrome&product=firefox&product=safari&aligned&q=label%3Ainterop-2022-webcompat)
 
 ### Interop 2021
