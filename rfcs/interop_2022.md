@@ -78,6 +78,10 @@ The 5 focus areas from Interop 2021 are carried forward and included in the metr
 
 [Query for `interop-2021-*`](https://wpt.fyi/results/?label=master&label=experimental&product=chrome&product=firefox&product=safari&aligned&q=label%3Ainterop-2021-aspect-ratio%20or%20label%3Ainterop-2021-flexbox%20or%20label%3Ainterop-2021-grid%20or%20label%3Ainterop-2021-position-sticky%20or%20label%3Ainterop-2021-transforms)
 
+### Updating the tests
+
+No test suite is perfect, and there will likely be a need to add, remove or rewrite tests during the course of the year. To suggest such non-trivial changes that would benefit from review, file an issue on the [interop-2022 repo](https://github.com/web-platform-tests/interop-2022). The [interop-2022 team](https://github.com/orgs/web-platform-tests/teams/interop-2022) will discuss at least monthly, and make decisions based on consensus. Anyone who would like to contribute to the Interop 2022 effort is welcome to join this team.
+
 ### Metrics
 
 Scores (between 0% and 100%) will be computed from test suite pass rates for each focus area and the effort as a whole. In total there are 15 focus areas, of which 5 are carried forward from Interop 2021. All areas are given equal weight, meaning that the new areas make up 2/3 of the score and the old ones 1/3 of the score.
@@ -101,16 +105,6 @@ A public dashboard tracking the metrics over time will be available at https://w
 - A brief description of each focus area, with links to specs, tests on wpt.fyi, and documentation on MDN.
 
 Additional features might be added, see https://github.com/web-platform-tests/interop-2022/issues/45 for discussion.
-
-### How to nominate an area
-
-_The time to nominate areas has already passed._
-
-To propose an area for inclusion Interop 2022, comment on the [pull request](https://github.com/web-platform-tests/rfcs/pull/99) and provide as much as possible of the following information:
-
-- How widely used is this feature? For example, [use counters](https://www.chromestatus.com/metrics/feature/popularity), [HTTP Archive](https://httparchive.org/) and [State of CSS](https://2020.stateofcss.com/en-US/features/) can help.
-- Is this area a problem for web developers? For example, survey data and browser bug counts can help.
-- Current test results on wpt.fyi
 
 ## Background
 
