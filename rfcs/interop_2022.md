@@ -94,6 +94,8 @@ Scoring in detail:
 
 The [Compat 2021 metrics code](https://github.com/Ecosystem-Infra/wpt-results-analysis/tree/main/compat-2021) can be a starting point, but the eventual code will be in a repository in the web-platform-tests GitHub org.
 
+Note: There are multiple ways of scoring testharness.js tests that have a non-OK harness status but one or more passing subtests. The Compat 2021 metrics simply ignored the harness status. When the subtests run differ between browsers it's also difficult to score the results. When such situations arise for Interop 2022, metrics generation will fail until the problem is fixed or deemed acceptable. The precise details of this may be changed with the consensus of the [interop-2022 team](https://github.com/orgs/web-platform-tests/teams/interop-2022).
+
 ### Dashboard
 
 A public dashboard tracking the metrics over time will be available at https://wpt.fyi/interop-2022. The dashboard will include at least:
