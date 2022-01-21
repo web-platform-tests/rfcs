@@ -57,7 +57,7 @@ Tests: [`interop-2022-text`](https://wpt.fyi/results/?label=master&label=experim
 ### New Viewport Units
 
 Proposal: https://github.com/web-platform-tests/interop-2022/issues/4  
-Tests: `interop-2022-viewport` (TODO)
+Tests: `interop-2022-viewport` (tests forthcoming)
 
 See also the [Viewport Investigation project](https://github.com/web-platform-tests/interop-2022/issues/41) which is part of the Interop 2022 effort, but not part of the metric.
 
