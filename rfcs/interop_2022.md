@@ -10,7 +10,7 @@ See the [Interop 2022 repo](https://github.com/web-platform-tests/interop-2022) 
 
 ## Details
 
-10 new focus areas are part of Interop 2022, as well as 5 from Interop 2022.
+10 new focus areas are part of Interop 2022, as well as 5 from Interop 2021.
 
 ### Cascade Layers
 
@@ -88,13 +88,11 @@ Scores (between 0% and 100%) will be computed from test suite pass rates for eac
 
 Scoring in detail:
 
-- Every test is scored between 0 and 1. For tests with subtests, the score is the number of passes divided by the number of subtests. This avoids tests with many subtests being given much larger weight than for example reftests.
-- Every area is scored between 0 and 1, adding up the scores and dividing by the number of tests.
+- Every test is scored between 0% and 100%. For tests with subtests, the score is the proportion of passing subtests. This avoids tests with many subtests being given much larger weight than for example reftests.
+- Every area is scored between 0% and 100%, adding up the scores and dividing by the number of tests.
 - The overall score is the sum of area scores divided by the number of areas (15).
 
-Scores are presented as percentages.
-
-TODO: decide on floating point vs. integer vs. rational numbers
+The [Compat 2021 metrics code](https://github.com/Ecosystem-Infra/wpt-results-analysis/tree/main/compat-2021) can be a starting point, but the eventual code will be in a repository in the web-platform-tests GitHub org.
 
 ### Dashboard
 
