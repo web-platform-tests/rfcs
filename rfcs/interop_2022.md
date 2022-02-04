@@ -82,15 +82,26 @@ The 5 focus areas from Interop 2021 are carried forward and included in the metr
 
 No test suite is perfect, and there will likely be a need to add, remove or rewrite tests during the course of the year. To suggest such non-trivial changes that would benefit from review, file an issue on the [interop-2022 repo](https://github.com/web-platform-tests/interop-2022). The [interop-2022 team](https://github.com/orgs/web-platform-tests/teams/interop-2022) will discuss at least monthly, and make decisions based on consensus. Anyone who would like to contribute to the Interop 2022 effort is welcome to join this team.
 
+### Investigation efforts
+
+3 areas of investigation have been selected, where the test suites are not yet good enough to score progress, but where manual testing, spec work, and writing new tests can help improve the interoperability of the feature. They are:
+
+- [Viewport Measurement](https://github.com/web-platform-tests/interop-2022/issues/4)
+- [Editing, contentEditable and execCommand](https://github.com/web-platform-tests/interop-2022/issues/17)
+- [Pointer Events](https://github.com/web-platform-tests/interop-2022/issues/15) + [MouseEvent.layerX/layerY](https://github.com/web-platform-tests/interop-2022/issues/37)
+
+There will be a group working on each area and reporting progress over the course of the year.
+
 ### Metrics
 
-Scores (between 0% and 100%) will be computed from test suite pass rates for each focus area and the effort as a whole. In total there are 15 focus areas, of which 5 are carried forward from Interop 2021. All areas are given equal weight, meaning that the new areas make up 2/3 of the score and the old ones 1/3 of the score.
+Scores (between 0% and 100%) will be computed from test suite pass rates for each focus area and the effort as a whole. 90% of the total score is determined by the test results of the 15 focus areas. All areas are given equal weight, meaning each contributes 6% to the total score. 10% of the total score is determined by the progress in the 3 areas of investigation. Each of the 3 investigation efforts are given equal weight, meaning each contributes 3⅓% to the total score.
 
 Scoring in detail:
 
 - Every test is scored between 0% and 100%. For tests with subtests, the score is the proportion of passing subtests. This avoids tests with many subtests being given much larger weight than for example reftests.
 - Every area is scored between 0% and 100%, adding up the scores and dividing by the number of tests.
-- The overall score is the sum of area scores divided by the number of areas (15).
+- Every investigation effort is scored between 0% and 100%, as recommended by the groups working on each and approved by the [interop-2022 team](https://github.com/orgs/web-platform-tests/teams/interop-2022).
+- The overall score is given by up to 6% per focus area and up to 3⅓% per investigation effort.
 
 The [Compat 2021 metrics code](https://github.com/Ecosystem-Infra/wpt-results-analysis/tree/main/compat-2021) can be a starting point, but the eventual code will be in a repository in the web-platform-tests GitHub org.
 
