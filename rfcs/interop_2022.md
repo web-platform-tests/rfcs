@@ -83,7 +83,7 @@ The 5 focus areas from Interop 2021 are carried forward and included in the metr
 
 ### Updating the tests
 
-No test suite is perfect, and there will likely be a need to add, remove or rewrite tests during the course of the year. To suggest such non-trivial changes that would benefit from review, file an issue on the [interop-2022 repo](https://github.com/web-platform-tests/interop-2022). The [interop-2022 team](https://github.com/orgs/web-platform-tests/teams/interop-2022) will discuss at least monthly, and make decisions based on consensus. Anyone who would like to contribute to the Interop 2022 effort is welcome to join this team.
+No test suite is perfect, and there will likely be a need to add, remove or rewrite tests during the course of the year. To suggest such non-trivial changes that would benefit from review, file an issue on the [Interop 2022 repo](https://github.com/web-platform-tests/interop-2022). The [Interop 2022 team](https://github.com/orgs/web-platform-tests/teams/interop-2022) will discuss at least monthly, and make decisions based on consensus. The core team will nominate the initial participants to the Interop 2022 team; thereafter the team will be able to set its own criteria for membership and participation, subject to the [WPT code of conduct](https://github.com/web-platform-tests/wpt/blob/master/CODE_OF_CONDUCT.md).
 
 ### Investigation efforts
 
@@ -103,12 +103,12 @@ Scoring in detail:
 
 - Every test is scored between 0% and 100%. For tests with subtests, the score is the proportion of passing subtests. This avoids tests with many subtests being given much larger weight than for example reftests.
 - Every area is scored between 0% and 100%, adding up the scores and dividing by the number of tests.
-- Every investigation effort is scored between 0% and 100%, as recommended by the groups working on each and approved by the [interop-2022 team](https://github.com/orgs/web-platform-tests/teams/interop-2022).
+- Every investigation effort is scored between 0% and 100%, as recommended by the groups working on each and approved by the [Interop 2022 team](https://github.com/orgs/web-platform-tests/teams/interop-2022).
 - The overall score is given by up to 6% per focus area and up to 3⅓% per investigation effort.
 
 The [Compat 2021 metrics code](https://github.com/Ecosystem-Infra/wpt-results-analysis/tree/main/compat-2021) can be a starting point, but the eventual code will be in a repository in the web-platform-tests GitHub org.
 
-Note: There are multiple ways of scoring testharness.js tests that have a non-OK harness status but one or more passing subtests. The Compat 2021 metrics simply ignored the harness status. When the subtests run differ between browsers it's also difficult to score the results. When such situations arise for Interop 2022, metrics generation will fail until the problem is fixed or deemed acceptable. The precise details of this may be changed with the consensus of the [interop-2022 team](https://github.com/orgs/web-platform-tests/teams/interop-2022).
+Note: There are multiple ways of scoring testharness.js tests that have a non-OK harness status but one or more passing subtests. The Compat 2021 metrics simply ignored the harness status. When the subtests run differ between browsers it's also difficult to score the results. When such situations arise for Interop 2022, metrics generation will fail until the problem is fixed or deemed acceptable. The precise details of this may be changed with the consensus of the [Interop 2022 team](https://github.com/orgs/web-platform-tests/teams/interop-2022).
 
 ### Dashboard
 
