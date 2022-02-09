@@ -90,7 +90,7 @@ No test suite is perfect, and there will likely be a need to add, remove or rewr
 3 areas of investigation have been selected, where the test suites are not yet good enough to score progress, but where manual testing, spec work, and writing new tests can help improve the interoperability of the feature. They are:
 
 - [Viewport Measurement](https://github.com/web-platform-tests/interop-2022/issues/4)
-- [Editing, contentEditable and execCommand](https://github.com/web-platform-tests/interop-2022/issues/17)
+- [Editing, contenteditable and execCommand](https://github.com/web-platform-tests/interop-2022/issues/17)
 - [Pointer Events](https://github.com/web-platform-tests/interop-2022/issues/15) + [MouseEvent.layerX/layerY](https://github.com/web-platform-tests/interop-2022/issues/37)
 
 There will be a group working on each area and reporting progress over the course of the year.
