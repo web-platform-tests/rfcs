@@ -101,9 +101,9 @@ Scores (between 0% and 100%) will be computed from test suite pass rates for eac
 
 Scoring in detail:
 
-- Every test is scored between 0% and 100%. For tests with subtests, the score is the proportion of passing subtests. This avoids tests with many subtests being given much larger weight than for example reftests.
-- Every area is scored between 0% and 100%, adding up the scores and dividing by the number of tests.
-- Every investigation effort is scored between 0% and 100%, as recommended by the groups working on each and approved by the [Interop 2022 team](https://github.com/orgs/web-platform-tests/teams/interop-2022).
+- For each browser, every test is scored between 0% and 100%. For tests with subtests, the score is the proportion of passing subtests. This avoids tests with many subtests being given much larger weight than for example reftests.
+- For each browser, every area is scored between 0% and 100%, adding up the scores and dividing by the number of tests.
+- Every investigation effort is scored between 0% and 100%, as recommended by the groups working on each and approved by the [Interop 2022 team](https://github.com/orgs/web-platform-tests/teams/interop-2022). Unlike test results, these scores are _not_ per-browser scores, and contributes the same to each browser's overall score.
 - The overall score is given by up to 6% per focus area and up to 3⅓% per investigation effort.
 
 The [Compat 2021 metrics code](https://github.com/Ecosystem-Infra/wpt-results-analysis/tree/main/compat-2021) can be a starting point, but the eventual code will be in a repository in the web-platform-tests GitHub org.
