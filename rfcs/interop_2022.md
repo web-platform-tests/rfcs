@@ -2,9 +2,12 @@
 
 ## Summary
 
-Interop 2022 is a public effort and benchmark around which browser vendors can collaborate to improve interoperability in areas believed to be important to web developers. 10 new focus areas have been selected, and 5 have been carried forward from Interop 2021.
+Interop 2022 is a public effort and benchmark around which browser vendors can collaborate to improve interoperability in areas believed to be important to web developers. It is composed of two parts:
 
-For each area, a set of tests have been identified, and progress is tracked with scores for each area as well as for the overall effort. There will be a dashboard for this at https://wpt.fyi/interop-2022.
+- 15 focus areas on which implementations will be scored according to their pass rate on selected tests. This comprises 10 newly selected areas, plus the 5 areas from Interop 2021.
+- 3 "investigate" areas which are important to web compatibility but where collaborative effort is required to find the path to interoperable implementations. These will be scored according to assessed progress in the individual areas.
+
+90% of the overall score will come from the test pass rate in the focus areas, and 10% from progress on the investigate areas. There will be a dashboard for this at https://wpt.fyi/interop-2022.
 
 See the [Interop 2022 repo](https://github.com/web-platform-tests/interop-2022) for all of the proposals and discussions that led to the current set of areas.
 
@@ -59,7 +62,7 @@ Tests: [`interop-2022-text`](https://wpt.fyi/results/?label=master&label=experim
 Proposal: [interop-2022/#4](https://github.com/web-platform-tests/interop-2022/issues/4)  
 Tests: [`interop-2022-viewport`](https://wpt.fyi/results/?label=master&label=experimental&product=chrome&product=firefox&product=safari&aligned&q=label%3Ainterop-2022-viewport)
 
-See also the [Viewport Investigation project](https://github.com/web-platform-tests/interop-2022/issues/41) which is part of the Interop 2022 effort, but not part of the metric.
+See also the [Viewport Investigation project](https://github.com/web-platform-tests/interop-2022/issues/41) which is also part of the Interop 2022 effort.
 
 ### Web Compat
 
