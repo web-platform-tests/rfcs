@@ -1,4 +1,4 @@
-# RFC 106: Move wpt.fyi metrics generation into WPT org
+# RFC 106: Move wpt.fyi metrics generation into the WPT org
 
 ## Summary
 
@@ -17,3 +17,7 @@ wpt-results-analysis depends on wpt-results, a highly compressed form of all ful
 ## Risks
 
 wpt-results-analysis depends on nodegit, which only works on Node.js 14.
+
+## Alternatives
+
+We could merge the metrics generation code into the wpt.fyi repository, but the wpt-results would still need to be standalone.
