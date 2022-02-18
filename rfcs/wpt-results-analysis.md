@@ -1,4 +1,4 @@
-# RFC: Move wpt.fyi metrics generation into WPT org
+# RFC 106: Move wpt.fyi metrics generation into WPT org
 
 ## Summary
 
