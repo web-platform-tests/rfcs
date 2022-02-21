@@ -16,7 +16,7 @@ wpt-results-analysis depends on wpt-results, a highly compressed form of all ful
 
 ## Risks
 
-wpt-results-analysis depends on nodegit, which only works on Node.js 14.
+wpt-results-analysis depends on nodegit, which only works on Node.js 14, see https://github.com/nodegit/nodegit/issues/1840.
 
 ## Alternatives
 
