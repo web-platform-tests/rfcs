@@ -18,6 +18,8 @@ wpt-results-analysis depends on wpt-results, a highly compressed form of all ful
 
 wpt-results-analysis depends on nodegit, which only works on Node.js 14, see https://github.com/nodegit/nodegit/issues/1840.
 
+The wpt.fyi frontend fetches data from https://raw.githubusercontent.com/Ecosystem-Infra/wpt-results-analysis/gh-pages/data/interop-2022/interop-2022-experimental.csv and similar URLs. Those URLs will break when the wpt-results-analysis repo is transferred, and the [HTML redirect method](https://gist.github.com/domenic/1f286d415559b56d725bee51a62c24a7) will not work. To avoid this, the data files should be hosted in a storage bucket instead of on GitHub pages, and wpt.fyi needs to start using that storage bucket before the repository is moved.
+
 ## Alternatives
 
 We could merge the metrics generation code into the wpt.fyi repository, but the wpt-results would still need to be standalone.
