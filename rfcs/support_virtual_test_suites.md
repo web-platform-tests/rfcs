@@ -1,4 +1,4 @@
-# RFC 109: support virtual test suites in wptrunner
+# RFC 110: support virtual test suites in wptrunner
 
 ## Summary
 
