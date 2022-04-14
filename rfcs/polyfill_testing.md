@@ -17,41 +17,67 @@ when developers are determining whether they can rely on it, just as they would
 use this information to know whether they could rely on the feature in the
 browser.
 
-There are a few methods by which we could support this but each of them
-ultimately is some mechanism for running the polyfill script before running
-tests.
+In order to support testing a polyfill, a runtime argument is added which
+when used specifies a single local Javascript file to be injected into
+responses. The contents of the file will be added as a classic script (to ensure
+the polyfill runs before any tests) automatically to responses with a
+`text/html` MIME type after the `doctype` but before the first tag in the
+document.
+
+In order to reduce visible effects on running tests, the script is inlined (to
+prevent an external resource load which would show up in the resource timing
+API) and the script will remove itself from the DOM to ensure that tests which
+assume the shape of the DOM is unchanged will still function correctly (e.g.
+`document.getElementsByTagName('script')[0]` will still return the first script
+in the original test).
+
+E.g. when running `wpt run --inject-script=script.js [browser] [test]` or
+`wpt serve --inject-script=script.js` and loading the following html page:
+```html
+<!doctype html>
+<div></div>
+<script>
+<!-- contents of test -->
+</script>
+```
+
+The response will be modified to the following:
+```html
+<!doctype html>
+<script>
+/** Contents of script.js **/
+// Remove the injected script tag from the DOM.
+document.currentScript.parentNode.removeChild(document.currentScript);
+</script>
+<div></div>
+<script>
+<!-- contents of test -->
+</script>
+```
+
+This transparent injection of the polyfill script allows the injected script to
+run before any tests, and on all loaded html documents including ref tests which
+often don't include any script resources without requiring any modification to
+existing test files. It also supports testing in a local browser as `wpt serve`
+responses are similarly modified.
 
 ## Risks
 
-Depending on the method used there are various risks around how easily existing
-tests can be run and observable side effects of having the polyfill injected
-that could affect the test outcome.
+There are a few risks or downsides with the approach that may lead to false
+test failures or failure to inject the polyfill.
 
-### Rewriting the response
+* While it should not be possible to observe the script removal in the main
+  frame, it may be possible to observe it with a MutationObserver on a loading
+  subframe.
+* Line numbers in failure messages will not match their original source as they
+  will include injected content. We could mitigate this in the future by
+  stripping newlines and injecting the entire polyfill into a single
+  pre-existing line.
+* The polyfill is not injected on pages served from python response handlers
+  which write directly to the output response stream. This could be supported
+  with future modifications.
 
-Rewriting the response is a fairly minimal change to the infrastructure. The
-wpt server can insert the polyfill script into the files it serves before the
-test content.
-
-Advantages:
-* Polyfill is transparently inserted across all existing tests (including ref
-  tests).
-* This is the same way that a polyfill would likely be loaded in a real
-  scenario.
-* As no modification is required, can easily switch mechanisms later.
-
-Concerns:
-* An extra script tag would affect tests which assume a static page structure,
-  e.g. `document.getElementsByTagName('script')[2]` would no longer refer to the
-  same script. We can mitigate this concern by having the injected polyfill
-  script remove itself from the DOM.
-* Loaded resources would show up in resource timing APIs. By inlining the
-  polyfill script it will not be an external resource load.
-* Loaded HTML no longer matches original test resource. This means line numbers
-  from test failures will not correspond to original line numbers. We could
-  mitigate this by ensuring the injected content does not introduce any new
-  newlines to the output, however with the polyfill script inlined this could
-  make debugging failures more difficult.
+## Alternatives considered
 
 ### Adding a canonical resource which includes the polyfill
 
