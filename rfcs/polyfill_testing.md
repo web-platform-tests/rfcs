@@ -37,7 +37,7 @@ E.g. when running `wpt run --inject-script=script.js [browser] [test]` or
 <!doctype html>
 <div></div>
 <script>
-<!-- contents of test -->
+/** contents of test **/
 </script>
 ```
 
@@ -51,7 +51,7 @@ document.currentScript.parentNode.removeChild(document.currentScript);
 </script>
 <div></div>
 <script>
-<!-- contents of test -->
+/** contents of test **/
 </script>
 ```
 
