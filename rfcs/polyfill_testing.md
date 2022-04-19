@@ -21,8 +21,9 @@ In order to support testing a polyfill, a runtime argument is added which
 when used specifies a single local Javascript file to be injected into
 responses. The contents of the file will be added as a classic script (to ensure
 the polyfill runs before any tests) automatically to responses with a
-`text/html` MIME type after the `doctype` and `html` and `head` opening tags
-(if they exist) but before any other tags in the document.
+`text/html` or `application/xhtml+xml` MIME type after the `doctype` and `html`
+and `head` opening tags (if they exist) but before any other tags in the
+document.
 
 In order to reduce visible effects on running tests, the script is inlined (to
 prevent an external resource load which would show up in the resource timing
@@ -141,7 +142,7 @@ Concerns:
 ## Conclusion
 
 Rewriting the responses from the wpt server is a solution that is available now,
-supports all existing tests, and supports testing both via wpt run and by
+supports html and xhtml tests, and supports testing both via wpt run and by
 visiting the served pages from an external browser. While there are
 observability concerns they can largely be mitigated by removing the artifacts
 added to the page in the injected script. Since injecting a polyfill is not the
