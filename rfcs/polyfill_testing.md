@@ -21,8 +21,8 @@ In order to support testing a polyfill, a runtime argument is added which
 when used specifies a single local Javascript file to be injected into
 responses. The contents of the file will be added as a classic script (to ensure
 the polyfill runs before any tests) automatically to responses with a
-`text/html` MIME type after the `doctype` but before the first tag in the
-document.
+`text/html` MIME type after the `doctype` and `html` and `head` opening tags
+(if they exist) but before any other tags in the document.
 
 In order to reduce visible effects on running tests, the script is inlined (to
 prevent an external resource load which would show up in the resource timing
