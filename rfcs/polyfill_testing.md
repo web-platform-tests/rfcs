@@ -47,7 +47,7 @@ The response will be modified to the following:
 <script>
 /** Contents of script.js **/
 // Remove the injected script tag from the DOM.
-document.currentScript.parentNode.removeChild(document.currentScript);
+document.currentScript.remove();
 </script>
 <div></div>
 <script>
@@ -56,7 +56,7 @@ document.currentScript.parentNode.removeChild(document.currentScript);
 ```
 
 This transparent injection of the polyfill script allows the injected script to
-run before any tests, and on all loaded html documents including ref tests which
+run before any tests, and on all loaded HTML documents including reftests which
 often don't include any script resources without requiring any modification to
 existing test files. It also supports testing in a local browser as `wpt serve`
 responses are similarly modified.
@@ -94,7 +94,7 @@ Advantages:
 * Page structure and loaded resources are not modified.
 
 Concerns:
-* All tests which don't already include one of these resources (e.g. ref tests)
+* All tests which don't already include one of these resources (e.g. reftests)
   would need to be modified to include them. This would represent an ongoing
   maintenance burden to ensure that new tests add these resources and failure to
   do so wouldn't be caught by existing tests. Likely this would result in a
@@ -109,8 +109,7 @@ https://github.com/w3c/webdriver-bidi/issues/65). This would allow the polyfill
 to be transparently injected into tests.
 
 Advantages:
-* Polyfill is transparently inserted across all existing tests (including ref
-  tests).
+* Polyfill is transparently inserted across all existing tests (including reftests).
 * Served files would match original test files.
 * As no modification is required, can easily switch mechanisms later.
 
@@ -127,8 +126,7 @@ into the main script isolate, this would likely require injecting a script tag
 into the main document.
 
 Advantages:
-* Polyfill is transparently inserted across all existing tests (including ref
-  tests).
+* Polyfill is transparently inserted across all existing tests (including reftests).
 * As no modification is required, can easily switch mechanisms later.
 
 Concerns:
