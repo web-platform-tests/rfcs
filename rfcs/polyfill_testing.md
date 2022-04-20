@@ -141,7 +141,7 @@ Concerns:
 ## Conclusion
 
 Rewriting the responses from the wpt server is a solution that is available now,
-supports html tests, and supports testing both via wpt run and by
+supports HTML tests, and supports testing both via `wpt run` and by
 visiting the served pages from an external browser. While there are
 observability concerns they can largely be mitigated by removing the artifacts
 added to the page in the injected script. Since injecting a polyfill is not the
