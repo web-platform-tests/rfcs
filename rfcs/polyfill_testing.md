@@ -32,7 +32,7 @@ assume the shape of the DOM is unchanged will still function correctly (e.g.
 in the original test).
 
 E.g. when running `wpt run --inject-script=script.js [browser] [test]` or
-`wpt serve --inject-script=script.js` and loading the following html page:
+`wpt serve --inject-script=script.js` and loading the following HTML page:
 ```html
 <!doctype html>
 <div></div>
