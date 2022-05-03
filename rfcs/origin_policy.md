@@ -1,5 +1,7 @@
 # RFC #44: Testing origin policy
 
+Note: This was reverted in [RFC #113](https://github.com/web-platform-tests/rfcs/pull/113).
+
 ## Summary
 
 [Origin policy](https://wicg.github.io/origin-policy/) is a proposed web platform feature that applies origin-wide settings. Writing web platform tests for origin policy is complicated, because:
