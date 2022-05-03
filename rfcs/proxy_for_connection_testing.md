@@ -19,8 +19,7 @@ preconnect eliminates those delays.
 
 Other use cases are listed [here](web-platform-tests/wpt#13465). In essence, specs that rely on
 caching based on [network partition keys](https://fetch.spec.whatwg.org/#network-partition-keys)
-can be tested more reliably if an arbitrary fresh [registrable domain](https://url.spec.whatwg.org/#host-registrable-domain) is created on the fly and can simulate a situation where a cold network
-partition is accessed.
+can be tested more reliably if an arbitrary fresh [registrable domain](https://url.spec.whatwg.org/#host-registrable-domain) is created on the fly and can simulate a situation where a cold network partition is accessed. Note that tests that require ad-hoc registrable domains will be non-secure, as the certificate cannot be generated on the fly.
 
 In addition, this can help test behavior on default ports, as PAC files can reroute fetches to
 given ports.
@@ -38,3 +37,4 @@ file would have to run in a separate browser session.
 * Introducing delays inside PAC can theoretically cause browsers to ignore it, need to pay attention to this.
 * Testing timing information is sensitive to raciness, but that's the nature of the feature and
   not directly related to proxies.
+* More a limitation than a risk - by generating ad-hoc registrable domains we won't be able to use the certificate, which would limit that kind of test to   non-secure only.
