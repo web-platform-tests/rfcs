@@ -1,6 +1,6 @@
 # RFC #44: Testing origin policy
 
-Note: This was reverted in [RFC #113](https://github.com/web-platform-tests/rfcs/pull/113).
+Note: This was reverted in [RFC #113](origin_policy.md).
 
 ## Summary
 
