@@ -27,21 +27,41 @@ This will create new "virtual" tests of the form
 under `css/css-pseudo` and `css/css-highlight-api`, respectively,
 and pass `--enable-features=css-highlight` to the browser when they are run.
 
+## Implementations
+
+### Integration with Manifests
+
+Virtual tests are built on top of real tests, and will have their own test
+identities by prepending 'virtual/<prefix>/' to the identities of the
+corresponding real tests. There is no need to add virtual tests into
+Manifest.json as that will unnecessarily increase the size of the file. Instead we
+can load virtual tests after the real tests are loaded from Manifest.json.
+
+### Running virtual tests
+
+As virtual tests have their own test identities, virtual tests can be sharded the
+same way as the real tests. When running the test, we will need to check if the
+running browser instance is started with the desired command line arguments. We
+need to restart the browser if the command line arguments do not match. We should
+arrange the virtual tests properly to minimize the possibility that a restart is
+needed.
+
+When sending the url to browser, we should strip 'virtual/<prefix>/' from the
+test url so that the browser can load the correct resources for testing.
+
 ### Managing test expectations
 
-Virtual tests will have their own expectation files (.ini) at
-virtual/prefix/..., and fall back to its non-virtual variants.
+Virtual tests can have their own expectation files (.ini) at
+virtual/<prefix>/..., and fall back to its non-virtual variants.
+
+### Test reports
+
+Test reports can be generated the same way as before, as virtual tests have
+their own test identities. Test results for virtual tests generally should not be
+published on wpt.fyi, as virtual tests are deemed vendor specific.
 
 ## Risks
 
 It would be pretty easy to add a huge virtual test suite, and subsequently cause
 a test bloat. It is up to each vendor to control the size of their virtual test
 suites.
-
-## Standarlized virtual test suites
-
-We consider virtual test suites are mostly vendor specific. There could be a
-need to compare virtual test results accoss browsers. In such case we need to
-use the same prefix for all browsers. We consider this topic out of scope of
-this RFC, but we need to reserve a name space for standarlized virtual test
-suites if we can foretell there will be such use cases.
