@@ -1,6 +1,6 @@
 # RFC #44: Testing origin policy
 
-Note: This was reverted in [RFC #113](origin_policy.md).
+Note: This was reverted in [RFC #113](origin_policy_revert.md).
 
 ## Summary
 
