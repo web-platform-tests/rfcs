@@ -52,10 +52,19 @@ Passing percentage for a single test = `passing subtests / total subtests`
 Passing percentage for directories containing multiple tests =
 `sum of passing percentages of tests in directory / total number of tests in directory`
 
+This will be implemented by adding a new query parameter, `view`. This can have
+two valid values: `subtest` and `interop`. `subtest` will represent the current
+view that exists on wpt.fyi and will be enabled by default. `interop` will
+display a view that more closely mirrors the Interop-20** scores.
+
+**Note**: In the interest of avoiding scored comparisons being visible outside
+the tests that have been agreed upon for Interop-20**, this `interop` view will
+only be available when viewing tests with an `Interop-20**` test label. The
+`interop` view will not function outside of results without this label.
+
 ## Risks
-* This change will cause a net loss in the percentage of passing
-tests/subtests, as the harness status passing has been artificially inflating
-some subtest numbers.
-* This change will require a rework of the current process for aggregating and
-summarizing test results, so older test runs will still be aggregated with the
-harness status and display inflated passing percentages.
+* This change will cause a discrepancy in the number of subtests when comparing
+runs with old summary files and new summary files together, as the harness
+status passing has been artificially inflating some subtest numbers. This is a
+rework of the current process for aggregating and summarizing test results,
+so older test runs will still be aggregated with the harness status.
