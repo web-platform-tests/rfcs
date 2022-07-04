@@ -37,7 +37,7 @@ visual notice that this a harness error occurred. This is to signify that
 the results should not be taken at face value and engineers should investigate
 the test further.
 
-### 3. Interop-20** scores will display more accurate scores.
+### 3. Implement optional display of Interop-20xx scores for labelled tests
 
 Currently, wpt.fyi displays a fraction of the number of subtests that pass and
 the number of subtests that exist for each test or every test that exists in a
