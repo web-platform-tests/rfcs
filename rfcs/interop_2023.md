@@ -1,0 +1,84 @@
+# RFC 116: Interop 2023
+
+## Summary
+
+Interop 2023 is an effort to improve interoperability in areas believed to be important to web developers and users. This is the next iteration of [Interop 2022](https://github.com/web-platform-tests/interop-2022), an effort which is still ongoing at the time of this RFC.
+
+The focus areas will be selected by a proposals period followed by a proposals review and selection process. The [Interop 2023 team](https://github.com/orgs/web-platform-tests/teams/interop-2023) will manage this process and make decisions based on consensus, see [governance](#governance).
+
+There will be a dashboard at https://wpt.fyi/interop-2023.
+
+## Details
+
+### Timeline
+
+During 2022:
+
+- September 15 to October 15: Proposals period.
+- October 16 to October 30: Proposal discussion/refinement. (New proposals no longer accepted.)
+- November 1 to November 30: Proposal selection. (The team must reach consensus no later than November 30.)
+- December 1 to December 16:
+  - Start review of tests. Write needed tests.
+  - Start involving PR teams. Write rough drafts of announcements. Begin creating dashboard.
+
+During 2023:
+
+- January 9 to January 20:
+  - Finalize test selection.
+  - Complete announcement plans. Prepare dashboard for launch.
+- January 23 to January 27: Launch.
+
+If necessary, additional changes to the test lists can be made throughout the year with the consensus of the team, see [updating the tests](#updating-the-tests).
+
+### Governance
+
+The [Interop 2023 team](https://github.com/orgs/web-platform-tests/teams/interop-2023) will manage the overall Interop 2023 effort. The team will be formed with the same initial membership as the [’22 team](https://github.com/orgs/web-platform-tests/teams/interop-2022).
+
+The team will meet regularly, with agenda issues created in the repo at least 48 hours in advance, and meeting minutes posted in the issue.
+
+The team makes decisions based on consensus, which is defined as support from at least two participating organizations and no objections. Additionally, during the [proposal selection](#proposal-selection) process, the positions of implementers in each browser engine are used to determine whether a proposal will be accepted, to ensure that the proposal is on track to interoperability across browser engines.
+
+The Interop 2023 effort is subject to the [WPT code of conduct](https://github.com/web-platform-tests/wpt/blob/master/CODE_OF_CONDUCT.md).
+
+The [WPT core team](https://github.com/orgs/web-platform-tests/teams/wpt-core-team/) is not expected to be involved beyond this RFC, but could in exceptional cases intervene via the RFC process to amend the governance.
+
+### Proposals
+
+During the proposals period (September 15 to October 15), proposals are submitted as issues in the [Interop 2023 repo](https://github.com/web-platform-tests/interop-2023). A proposal should be as specific as reasonably possible, but multiple proposals may be grouped later in the selection process.
+
+The following information should be provided:
+
+- Standard/specification for this feature
+- Current test results on wpt.fyi
+- How widely used is this feature? For example, [use counters](https://www.chromestatus.com/metrics/feature/popularity), [HTTP Archive](https://httparchive.org/) and [State of CSS](https://2021.stateofcss.com/en-US/features/) can help.
+- Is this area a problem for web developers? For example, survey data and browser bug counts can help.
+- Is this area a problem for users?
+
+A proposals template will be created to help with this.
+
+### Proposal selection
+
+Proposal selection (November 1 to November 30) will be done using a positions process similar to [Interop 2022](https://github.com/web-platform-tests/interop-2022/issues/38) but with some changes. The process is:
+
+- Each participating organization takes one of 3 positions on each proposal: support, neutral, or oppose.
+- A proposal is accepted if there is implementer support coming from at least 2 browser engines, and no opposition.
+- The team reviews the accepted proposals and can decide to group multiple proposals, or to drop proposals. Both actions require team consensus.
+- The final list of accepted proposals is decided by team consensus no later than November 30.
+
+The purpose of the second round of grouping and optionally dropping proposals is to avoid sub-proposals as in the Interop 2022 process. Instead, proposals will be as specific as reasonably possible, and can be grouped into themes afterwards. The expectation is that proposals will only be dropped if there is consensus that they don't make sense in light of which other proposals were accepted.
+
+### Updating the tests
+
+No test suite is perfect, and there will likely be a need to add, remove or rewrite tests during the course of the year. To suggest changes, file an issue on the [Interop 2023 repo](https://github.com/web-platform-tests/interop-2023). The team will make decisions based on consensus, see [governance](#governance).
+
+### Metrics
+
+Per-area and overall metrics will be defined in a similar fashion to [Interop 2022](https://github.com/web-platform-tests/rfcs/blob/master/rfcs/interop_2022.md#metrics). The number of areas and their contribution to the total score will be decided in the proposal selection phase.
+
+### Dashboard
+
+A public dashboard tracking the metrics over time will be available at https://wpt.fyi/interop-2023.
+
+## Risks
+
+No set of tests is without flaws, and trying to improve a metric based on test results can lead to bad outcomes such as shallow implementations that pass the tests but still isn't usable in practice. The main mitigation for this is a careful review of the tests for the proposed areas, and to include only tests that are judged to be high quality. Also, the tests are not frozen but can be updated or even removed during the year as issues are uncovered.
