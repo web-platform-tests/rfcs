@@ -26,7 +26,7 @@ parsing seems like the right way to go.
 
 ## Risks
 
-As mentioned, cookie serialization isn't fully defined (tough loosely agreed
+As mentioned, cookie serialization isn't fully defined (though loosely agreed
 upon) yet. However, an initial attempt at implementation might actually
 significantly help inform and speed up the serialization question, so I think
 this is a good thing.
