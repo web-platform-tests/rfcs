@@ -3,7 +3,7 @@
 ## Summary
 
 The aggregate scoring that is displayed in the results view of wpt.fyi is
-inaccurate in some aspects. This proposal will describe a change to the way
+suboptimal in some aspects. This proposal will describe a change to the way
 that test results are aggregated, as well as a change to how those results are
 displayed for Interop 2022 scoring purposes.
 
