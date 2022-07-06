@@ -15,8 +15,8 @@ commits. This will be documented.
 
 ## Risks
 
-The `./wpt rev-list` depends on the `merge_pr_*` tags, but the CI job that
-creates them is not 100% reliable, see
+The `./wpt rev-list` command depends on the `merge_pr_*` tags, but the CI job
+that creates them is not 100% reliable, see
 [wpt#23426](https://github.com/web-platform-tests/wpt/issues/23426). If the tags
 are missing but later backfilled, what `./wpt rev-list` lists can change, so
 that the commits listed aren't the ones that were pushed to `epochs/*` branches.
