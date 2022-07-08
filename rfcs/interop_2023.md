@@ -40,8 +40,6 @@ The team makes decisions based on consensus, which is defined as support from at
 
 The Interop 2023 effort is subject to the [WPT code of conduct](https://github.com/web-platform-tests/wpt/blob/master/CODE_OF_CONDUCT.md).
 
-The [WPT core team](https://github.com/orgs/web-platform-tests/teams/wpt-core-team/) is not expected to be involved beyond this RFC, but could in exceptional cases intervene via the RFC process to amend the governance.
-
 ### Proposals
 
 During the proposals period (September 15 to October 15), proposals are submitted as issues in the [Interop 2023 repo](https://github.com/web-platform-tests/interop-2023). A proposal should be as specific as reasonably possible, but multiple proposals may be grouped later in the selection process.
