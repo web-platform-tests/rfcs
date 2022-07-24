@@ -44,15 +44,31 @@ The Interop 2023 effort is subject to the [WPT code of conduct](https://github.c
 
 During the proposals period (September 15 to October 15), proposals are submitted as issues in the [Interop 2023 repo](https://github.com/web-platform-tests/interop-2023). A proposal should be as specific as reasonably possible, but multiple proposals may be grouped later in the selection process.
 
-The following information should be provided:
+There are two kinds of proposals: focus areas where progress is measured using test results, and investigation efforts where progress is measuring against a task list. For both kinds of proposals, finishing them should meaningfully advance the state of interoperability for the web platform.
 
-- Standard/specification for this feature
-- Current test results on wpt.fyi
-- How widely used is this feature? For example, [use counters](https://www.chromestatus.com/metrics/feature/popularity), [HTTP Archive](https://httparchive.org/) and [State of CSS](https://2021.stateofcss.com/en-US/features/) can help.
+#### Focus areas
+
+These proposals are for existing web platform features with good a spec and test suite which can be used to improve interoperability. Progress is measured by test results on wpt.fyi.
+
+The following information should be provided in a proposal:
+
 - Is this area a problem for web developers? For example, survey data and browser bug counts can help.
 - Is this area a problem for users?
+- How widely used is this feature? For example, [use counters](https://www.chromestatus.com/metrics/feature/popularity), [HTTP Archive](https://httparchive.org/) and [State of CSS](https://2021.stateofcss.com/en-US/features/) can help.
+- Standard/specification for this feature.
+- A list of tests on wpt.fyi which will be used to score progress towards interoperability on the feature.
 
-A proposals template will be created to help with this.
+#### Investigation efforts
+
+If an area doesn't have a good spec and test suite it's not possible to use wpt.fyi test results to judge progress. Instead, some other work is needed to bring the area to state where test results can be used.
+
+The following information should be provided in a proposal:
+
+- Is this area a problem for web developers? For example, survey data and browser bug counts can help.
+- Is this area a problem for users?
+- How widely used is this feature? For example, [use counters](https://www.chromestatus.com/metrics/feature/popularity), [HTTP Archive](https://httparchive.org/) and [State of CSS](https://2021.stateofcss.com/en-US/features/) can help.
+- Standard/specification for this feature, if any.
+- A list of tasks which should be completed as part of the effort. This could be producing a report for a working group, a list of spec bugs which should be resolved, or tests/infrastructure which need to be created. A completed investigation effort should unblock the feature for inclusion as a regular focus area in the future.
 
 ### Proposal selection
 
