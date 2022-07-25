@@ -36,7 +36,7 @@ The [Interop 2023 team](https://github.com/orgs/web-platform-tests/teams/interop
 
 The team will meet regularly, with agenda issues created in the repo at least 48 hours in advance, and meeting minutes posted in the issue.
 
-The team makes decisions based on consensus, which is defined as support from at least two participating organizations and no objections. Additionally, during the [proposal selection](#proposal-selection) process, the positions of implementers in each browser engine are used to determine whether a proposal will be accepted, to ensure that the proposal is on track to interoperability across browser engines.
+The team makes decisions based on consensus, which is defined as support from at least two participating organizations and no opposition.
 
 The Interop 2023 effort is subject to the [WPT code of conduct](https://github.com/web-platform-tests/wpt/blob/master/CODE_OF_CONDUCT.md).
 
@@ -75,7 +75,7 @@ The following information should be provided in a proposal:
 Proposal selection (November 1 to November 30) will be done using a positions process similar to [Interop 2022](https://github.com/web-platform-tests/interop-2022/issues/38) but with some changes. The process is:
 
 - Each participating organization takes one of 3 positions on each proposal: support, neutral, or oppose.
-- A proposal is accepted if there is implementer support coming from at least 2 browser engines, and no opposition.
+- A proposal is accepted if there is consensus, meaning support from at least two participating organizations and no opposition.
 - The team reviews the accepted proposals and can decide to group multiple proposals, or to drop proposals. Both actions require team consensus.
 - The final list of accepted proposals is decided by team consensus no later than November 30.
 
