@@ -2,13 +2,15 @@
 
 ## Summary
 
-Interop 2023 is an effort to improve interoperability in areas believed to be important to web developers and users. This is the next iteration of [Interop 2022](https://github.com/web-platform-tests/interop-2022), an effort which is still ongoing at the time of this RFC.
+Interop 2023 is an effort to improve interoperability in areas believed to be important to web developers and users. This is the next iteration of [Interop 2022](./interop_2022.md), an effort which is still ongoing at the time of this RFC.
 
-The focus areas will be selected by a proposals period followed by a proposals review and selection process. The [Interop 2023 team](https://github.com/orgs/web-platform-tests/teams/interop-2023) will manage this process and make decisions based on consensus, see [governance](#governance).
+The focus areas will be selected by a proposals period followed by a proposals review and selection process. The [Interop team](https://github.com/orgs/web-platform-tests/teams/interop-2022) will manage this process and make decisions based on consensus, see [governance](#governance).
 
 There will be a dashboard at https://wpt.fyi/interop-2023.
 
 ## Details
+
+The Interop 2022 [repo](https://github.com/web-platform-tests/interop-2022) and [team](https://github.com/orgs/web-platform-tests/teams/interop-2022) will be renamed to omit the year and used for this effort as well.
 
 ### Timeline
 
@@ -32,7 +34,7 @@ If necessary, additional changes to the test lists can be made throughout the ye
 
 ### Governance
 
-The [Interop 2023 team](https://github.com/orgs/web-platform-tests/teams/interop-2023) will manage the overall Interop 2023 effort. The team will be formed with the same initial membership as the [’22 team](https://github.com/orgs/web-platform-tests/teams/interop-2022).
+The [Interop team](https://github.com/orgs/web-platform-tests/teams/interop) will manage the overall Interop 2023 effort. The team will be formed by renaming the [’22 team](https://github.com/orgs/web-platform-tests/teams/interop-2022).
 
 The team will meet regularly, with agenda issues created in the repo at least 48 hours in advance, and meeting minutes posted in the issue.
 
@@ -42,7 +44,7 @@ The Interop 2023 effort is subject to the [WPT code of conduct](https://github.c
 
 ### Proposals
 
-During the proposals period (September 15 to October 15), proposals are submitted as issues in the [Interop 2023 repo](https://github.com/web-platform-tests/interop-2023). A proposal should be as specific as reasonably possible, but multiple proposals may be grouped later in the selection process.
+During the proposals period (September 15 to October 15), proposals are submitted as issues in the [Interop repo](https://github.com/web-platform-tests/interop). A proposal should be as specific as reasonably possible, but multiple proposals may be grouped later in the selection process.
 
 There are two kinds of proposals: focus areas where progress is measured using test results, and investigation efforts where progress is measuring against a task list. For both kinds of proposals, finishing them should meaningfully advance the state of interoperability for the web platform.
 
@@ -83,11 +85,11 @@ The purpose of the second round of grouping and optionally dropping proposals is
 
 ### Updating the tests
 
-No test suite is perfect, and there will likely be a need to add, remove or rewrite tests during the course of the year. To suggest changes, file an issue on the [Interop 2023 repo](https://github.com/web-platform-tests/interop-2023). The team will make decisions based on consensus, see [governance](#governance).
+No test suite is perfect, and there will likely be a need to add, remove or rewrite tests during the course of the year. To suggest changes, file an issue on the [Interop repo](https://github.com/web-platform-tests/interop). The team will make decisions based on consensus, see [governance](#governance).
 
 ### Metrics
 
-Per-area and overall metrics will be defined in a similar fashion to [Interop 2022](https://github.com/web-platform-tests/rfcs/blob/master/rfcs/interop_2022.md#metrics). The number of areas and their contribution to the total score will be decided in the proposal selection phase.
+Per-area and overall metrics will be defined in a similar fashion to [Interop 2022](./interop_2022.md#metrics). The number of areas and their contribution to the total score will be decided in the proposal selection phase.
 
 ### Dashboard
 
