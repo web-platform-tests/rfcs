@@ -57,7 +57,7 @@ The following information should be provided in a proposal:
 - Is this area a problem for web developers? For example, survey data and browser bug counts can help.
 - Is this area a problem for users?
 - How widely used is this feature? For example, [use counters](https://www.chromestatus.com/metrics/feature/popularity), [HTTP Archive](https://httparchive.org/) and [State of CSS](https://2021.stateofcss.com/en-US/features/) can help.
-- Standard/specification for this feature.
+- Specification for this feature.
 - A list of tests on wpt.fyi which will be used to score progress towards interoperability on the feature.
 
 #### Investigation efforts
