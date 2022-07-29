@@ -50,7 +50,7 @@ There are two kinds of proposals: focus areas where progress is measured using t
 
 #### Focus areas
 
-These proposals are for existing web platform features with good a spec and test suite which can be used to improve interoperability. Progress is measured by test results on wpt.fyi.
+These proposals are for existing web platform features with good a spec and automated test suite which can be used to improve interoperability. Progress is measured by test results on wpt.fyi.
 
 The following information should be provided in a proposal:
 
