@@ -69,7 +69,7 @@ The following information should be provided in a proposal:
 - Is this area a problem for web developers? For example, survey data and browser bug counts can help.
 - Is this area a problem for users?
 - How widely used is this feature? For example, [use counters](https://www.chromestatus.com/metrics/feature/popularity), [HTTP Archive](https://httparchive.org/) and [State of CSS](https://2021.stateofcss.com/en-US/features/) can help.
-- Standard/specification for this feature, if any.
+- Specification for this feature, if any.
 - A list of tasks which should be completed as part of the effort. This could be producing a report for a working group, a list of spec bugs which should be resolved, or tests/infrastructure which need to be created. A completed investigation effort should unblock the feature for inclusion as a regular focus area in the future.
 
 ### Proposal selection
