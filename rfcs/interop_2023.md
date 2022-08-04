@@ -89,7 +89,7 @@ No test suite is perfect, and there will likely be a need to add, remove or rewr
 
 ### Metrics
 
-Per-area and overall metrics will be defined in a similar fashion to [Interop 2022](./interop_2022.md#metrics). The number of areas and their contribution to the total score will be decided in the proposal selection phase.
+Per-area and overall metrics will be defined in a similar (but not necessarily identical) fashion to [Interop 2022](./interop_2022.md#metrics). The number of areas and their contribution to the total score will be decided in the proposal selection phase.
 
 ### Dashboard
 
