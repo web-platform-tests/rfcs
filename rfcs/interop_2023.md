@@ -10,7 +10,7 @@ There will be a dashboard at https://wpt.fyi/interop-2023.
 
 ## Details
 
-The Interop 2022 [repo](https://github.com/web-platform-tests/interop-2022) and [team](https://github.com/orgs/web-platform-tests/teams/interop-2022) will be renamed to omit the year and used for this effort as well.
+The Interop 2022 [repo](https://github.com/web-platform-tests/interop-2022) and [team](https://github.com/orgs/web-platform-tests/teams/interop-2022) will be renamed to omit the year and used for this effort as well. Proposals from different years will be distinguished by labels or milestones.
 
 ### Timeline
 
@@ -36,17 +36,19 @@ If necessary, additional changes to the test lists can be made throughout the ye
 
 The [Interop team](https://github.com/orgs/web-platform-tests/teams/interop) will manage the overall Interop 2023 effort. The team will be formed by renaming the [’22 team](https://github.com/orgs/web-platform-tests/teams/interop-2022).
 
-The team will meet regularly, with agenda issues created in the repo at least 48 hours in advance, and meeting minutes posted in the issue.
-
 The team makes decisions based on consensus, which is defined as support from at least two participating organizations and no opposition.
+
+The team will meet regularly, with agenda issues created in the repo at least 48 hours in advance, and meeting minutes posted in the issue. Decisions can be made both in meetings and in the repository, as long as consensus can be established.
 
 The Interop 2023 effort is subject to the [WPT code of conduct](https://github.com/web-platform-tests/wpt/blob/master/CODE_OF_CONDUCT.md).
 
 ### Proposals
 
-During the proposals period (September 15 to October 15), proposals are submitted as issues in the [Interop repo](https://github.com/web-platform-tests/interop). A proposal should be as specific as reasonably possible, but multiple proposals may be grouped later in the selection process.
+During the proposals period (September 15 to October 15), proposals are submitted in the [Interop repo](https://github.com/web-platform-tests/interop). A proposal should be as specific as reasonably possible, but multiple proposals may be grouped later in the selection process.
 
-There are two kinds of proposals: focus areas where progress is measured using test results, and investigation efforts where progress is measuring against a task list. For both kinds of proposals, finishing them should meaningfully advance the state of interoperability for the web platform.
+To make proposal scope unambiguous, accepted proposals should be fully documented in the repository. To this end, and to make proposal review easier, the team may require that proposals are submitted as pull requests. Whether and how discussions, issues and pull requests are used in the proposals process is left to the team to decide before the proposal period begins.
+
+There are two kinds of proposals: focus areas where progress is measured using test results, and investigation efforts where progress is measuring against a task list.
 
 #### Focus areas
 
@@ -77,8 +79,8 @@ The following information should be provided in a proposal:
 Proposal selection (November 1 to November 30) will be done using a positions process similar to [Interop 2022](https://github.com/web-platform-tests/interop-2022/issues/38) but with some changes. The process is:
 
 - Each participating organization takes one of 3 positions on each proposal: support, neutral, or oppose.
-- A proposal is accepted if there is consensus, meaning support from at least two participating organizations and no opposition.
-- The team reviews the accepted proposals and can decide to group multiple proposals, or to drop proposals. Both actions require team consensus.
+- A proposal is tentatively accepted if there is consensus, meaning support from at least two participating organizations and no opposition.
+- The team reviews the proposals and can decide to group multiple proposals, or to drop proposals. Proposals that got only neutral positions can also be included. All changes at this point require team consensus; by default the outcome of the previous step stands.
 - The final list of accepted proposals is decided by team consensus no later than November 30.
 
 The purpose of the second round of grouping and optionally dropping proposals is to avoid sub-proposals as in the Interop 2022 process. Instead, proposals will be as specific as reasonably possible, and can be grouped into themes afterwards. The expectation is that proposals will only be dropped if there is consensus that they don't make sense in light of which other proposals were accepted.
