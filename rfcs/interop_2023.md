@@ -4,7 +4,7 @@
 
 Interop 2023 is an effort to improve interoperability in areas believed to be important to web developers and users. This is the next iteration of [Interop 2022](./interop_2022.md), an effort which is still ongoing at the time of this RFC.
 
-The focus areas will be selected by a proposals period followed by a proposals review and selection process. The [Interop team](https://github.com/orgs/web-platform-tests/teams/interop-2022) will manage this process and make decisions based on consensus, see [governance](#governance).
+The focus areas will be selected by a proposals period followed by a proposals-review-and-selection process. The [Interop team](https://github.com/orgs/web-platform-tests/teams/interop-2022) will manage this process and make decisions based on consensus; see [governance](#governance).
 
 There will be a dashboard at https://wpt.fyi/interop-2023.
 
