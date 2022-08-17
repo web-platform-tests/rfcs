@@ -99,4 +99,4 @@ A public dashboard tracking the metrics over time will be available at https://w
 
 ## Risks
 
-No set of tests is without flaws, and trying to improve a metric based on test results can lead to bad outcomes such as shallow implementations that pass the tests but still isn't usable in practice. The main mitigation for this is a careful review of the tests for the proposed areas, and to include only tests that are judged to be high quality. Also, the tests are not frozen but can be updated or even removed during the year as issues are uncovered.
+No set of tests is without flaws, and trying to improve a metric based on test results can lead to bad outcomes such as shallow implementations that pass the tests but still aren't usable in practice. The main mitigation for this is a careful review of the tests for the proposed areas, and to include only tests that are judged to be high quality. Also, the tests are not frozen but can be updated or even removed during the year as issues are uncovered.
