@@ -36,7 +36,7 @@ If necessary, additional changes to the test lists can be made throughout the ye
 
 The [Interop team](https://github.com/orgs/web-platform-tests/teams/interop) will manage the overall Interop 2023 effort. The team will be formed by renaming the [’22 team](https://github.com/orgs/web-platform-tests/teams/interop-2022).
 
-The team makes decisions based on consensus, which is defined as support from at least two participating organizations and no opposition.
+The team makes decisions based on consensus, which is defined as support from at least two participating organizations, and no opposition.
 
 The team will meet regularly, with agenda issues created in the repo at least 48 hours in advance, and meeting minutes posted in the issue. Decisions can be made both in meetings and in the repository, as long as consensus can be established.
 
