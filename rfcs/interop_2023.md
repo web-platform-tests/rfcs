@@ -30,7 +30,7 @@ During 2023:
   - Complete announcement plans. Prepare dashboard for launch.
 - January 23 to January 27: Launch.
 
-If necessary, additional changes to the test lists can be made throughout the year with the consensus of the team, see [updating the tests](#updating-the-tests).
+If necessary, additional changes to the test lists can be made throughout the year with the consensus of the team; see [updating the tests](#updating-the-tests).
 
 ### Governance
 
