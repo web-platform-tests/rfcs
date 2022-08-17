@@ -64,7 +64,7 @@ The following information should be provided in a proposal:
 
 #### Investigation efforts
 
-If an area doesn't have a good spec and test suite it's not possible to use wpt.fyi test results to judge progress. Instead, some other work is needed to bring the area to state where test results can be used.
+If an area doesn't have a good spec and test suite, then it's not possible to use wpt.fyi test results to judge progress. Instead, some other work is needed to bring the area to state where test results can be used.
 
 The following information should be provided in a proposal:
 
