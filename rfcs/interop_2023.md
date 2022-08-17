@@ -48,7 +48,7 @@ During the proposals period (September 15 to October 15), proposals are submitte
 
 To make proposal scope unambiguous, accepted proposals should be fully documented in the repository. To this end, and to make proposal review easier, the team may require that proposals are submitted as pull requests. Whether and how discussions, issues and pull requests are used in the proposals process is left to the team to decide before the proposal period begins.
 
-There are two kinds of proposals: focus areas where progress is measured using test results, and investigation efforts where progress is measuring against a task list.
+There are two kinds of proposals: focus areas where progress is measured using test results, and investigation efforts where progress is measured against a task list.
 
 #### Focus areas
 
