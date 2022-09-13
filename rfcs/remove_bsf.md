@@ -1,10 +1,11 @@
-# RFC : Remove browser specific failures from wpt.fyi
+# RFC 122: Remove browser specific failures from wpt.fyi
 
 ## Summary
 
-wpt.fyi currently shows a chart of "browser specific failures"; a
-score of tests that are failing only in a single browser. This RFC
-proposes entirely removing that graph from wpt.fyi.
+[wpt.fyi](https://wpt.fyi) currently shows a chart of "browser
+specific failures"; a score of tests that are failing only in
+a single browser. This RFC proposes entirely removing that graph
+from wpt.fyi.
 
 ## Details
 
