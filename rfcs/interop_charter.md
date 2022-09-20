@@ -10,7 +10,7 @@ The [team charter](https://github.com/web-platform-tests/interop/pull/102) is ma
 
 The Interop Team can define additional public efforts/metrics beyond Interop 2022 and 2023. The process for doing that is decided by the Interop Team, may evolve over time, and is not defined by this RFC.
 
-The Interop Team also maintains the "Browser Specific Failures" metric on [wpt.fyi](https://wpt.fyi/).
+The Interop team will take ownership of the existing Browser Specific Failures metric, and manage it according to the rules in its charter.
 
 ## Risks
 
