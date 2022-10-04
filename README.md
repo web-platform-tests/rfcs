@@ -21,6 +21,7 @@ or users of web-platform-tests. Examples of where it is likely to be useful:
 Cases where the RFC process need *not* be used:
 
  - Introducing a new top-level directory for a new specification.
+ - Extending testdriver.js with a method that closely matches a [WebDriver](https://w3c.github.io/webdriver/) endpoint. To notify maintainers of testdriver.js vendor integration, label the pull request `testdriver.js`.
  - Minor changes in behavior in where all call sites are known and accounted
    for.
  - Behavior-preserving refactoring with a low risk of regressions.
