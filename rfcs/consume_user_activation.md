@@ -1,4 +1,4 @@
-# RFC: Consume user activation 
+# RFC 128: Consume user activation 
 
 Editor: Marcos Caceres, Apple Inc.
 
