@@ -9,7 +9,7 @@ Some of these means are non-standard in as far as they are not specified to cons
 
 The workarounds being used are as follows, with several drawbacks:
 
-* Using Fullscreen API: non-standard, takes significant time to put an element into fullscreen. 
+* Using Fullscreen API: it takes significant time to put an element into fullscreen. 
 * Using window.open() and window.close() - non-standard, not mobile friendly. 
 * Using Payment Request API - not widely implemented (e.g., not exposed in Gecko). 
 
