@@ -32,7 +32,7 @@ This prposal has several advantages:
  * it's lightweight - it doesn't create new browsing contexts.
  * it's mobile friendly - as above.  
  * it's build for purpose - no more using other APIs to indirectly achieve the desired outcome.
- * It's really simple - it compliments `.bless()` and other user activaton functionality already available.  
+ * It's really simple - it complements `.bless()` and other user activation functionality already available.  
 
 [An implementation](https://github.com/WebKit/WebKit/pull/6539) is available in WebKit.  
 
