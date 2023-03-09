@@ -18,7 +18,7 @@ which unblocks updating to that version.
 
 Practically this requires several manual changes:
 
- * Change the CI jobs running under Python 3.7 to instead use 3.7.
+ * Change the CI jobs running under Python 3.6 to instead use 3.7.
  * Update any outdated vendored dependencies that are being held back
    due to lack of 3.6 support.
  * Retrigger CI runs for dependabot PRs. Hopefully this allow many
