@@ -3,15 +3,15 @@
 ## Summary
 
 The goal of this RFC is to enable web platform tests to cover the
-[Private Network Access](https://wicg.github.io/private-network-access)
+[Local Network Access](https://wicg.github.io/local-network-access)
 specification entirely. More specifically, to enable tests to exercise user
-agent behavior in the face of responses served from `local`, `private` and
+agent behavior in the face of responses served from `loopback`, `local` and
 `public`
-[address spaces](https://wicg.github.io/private-network-access#ip-address-space).
+[address spaces](https://wicg.github.io/local-network-access#ip-address-space).
 
 This is achieved by passing configuration parameters to the browser under test
 forcing it to artificially consider specific (IP address, port) pairs to be
-`local`, `private` or `public`.
+`loopback`, `local` or `public`.
 
 This RFC aims to fix
 [web-platform-tests/wpt#26166](https://github.com/web-platform-tests/wpt/issues/26166).
@@ -26,7 +26,7 @@ address space derived from specific (IP address, port) endpoints. For example,
 this could be a command-line flag:
 
 ```sh
---ip-address-space-overrides=127.0.0.1:8000=private,127.0.0.1:8001=public
+--ip-address-space-overrides=127.0.0.1:8000=local,127.0.0.1:8001=public
 ```
 
 Test-only code wires this command-line flag to the code in the browser under
@@ -34,16 +34,16 @@ test that determines the address space of a network endpoint.
 
 ### Test environment changes
 
-New ports are introduced on which to serve artificially-`private` and
+New ports are introduced on which to serve artificially-`local` and
 artificially-`public` resources. These are named after the existing protocols
-with `-private` and `-public` suffixes. Concretely, the server `Config` object
+with `-local` and `-public` suffixes. Concretely, the server `Config` object
 sees its `ports` field extended with entries like the following:
 
 ```python
 {
-  "http-private": [8002],
+  "http-local": [8002],
   "http-public": [8003],
-  "https-private": [8445],
+  "https-local": [8445],
   "https-public": [8446],
 }
 ```
@@ -58,7 +58,7 @@ that the browsers implement the custom address space mapping described above
 during tests.
 
 This allows web platform tests to exercise browser behavior in the face of
-`private` and `public` IP addresses, simply by targeting the above ports.
+`local` and `public` IP addresses, simply by targeting the above ports.
 
 For example, a JS test wishing to make a request to a `public` server can
 make use of the server-side substitution feature of `wptserve` to do so:
@@ -88,7 +88,7 @@ of other IP addresses than 127.0.0.1 to run `wptserve` on.
 The following IP addresses see their IP address space overridden:
 
 ```
-127.1.0.1: private
+127.1.0.1: local
 127.2.0.1: public
 ```
 
@@ -97,7 +97,7 @@ is otherwise very similar to that described in the proposal above.
 
 The WPT infrastructure is modified to run new servers on these IP addresses, by
 the way of two new domains: `public-web-platform.test` and
-`private-web-platform.test`. These are added to the system hosts file. All
+`local-web-platform.test`. These are added to the system hosts file. All
 subdomains and protocols are supported on these new domains.
 
 See web-platform-tests/wpt#28768 for an abandoned experimental implementation.
@@ -135,7 +135,7 @@ per subnet.
 The marginal difficulty of overriding per subnet seems low, and provides plenty
 of test IP addresses to exercise intra-address-space, cross-ip-address requests,
 which might come in handy [in the
-future](https://github.com/WICG/private-network-access/pull/1#issuecomment-721110250).
+future](https://github.com/WICG/local-network-access/pull/1#issuecomment-721110250).
 
 ### Use real IP addresses
 
@@ -143,7 +143,7 @@ If we need to test user agent behavior in the face of a variety of IP addresses,
 then... just do it!
 
 This approach would have the web platform test runner configure additional
-loopback network devices and assign them `private` and `public` IP addresses.
+loopback network devices and assign them `local` and `public` IP addresses.
 Alternatively, the test runner could probably reroute traffic heading for these
 IP addresses to `127.0.0.1` through some iptables magic. Then we could configure
 the hosts file to resolve specific domains to those IP addresses, and test the
