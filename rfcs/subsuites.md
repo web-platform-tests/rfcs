@@ -1,4 +1,4 @@
-# RFC 137: support subsuites in wptrunner
+# RFC 138: support subsuites in wptrunner
 
 ## Summary
 
