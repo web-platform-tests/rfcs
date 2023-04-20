@@ -17,6 +17,8 @@ These lint rules will be removed:
 
 The MISSING-LINK ("Testcase file must have a link to a spec") rule which also applies only to `css/` will _not_ be removed, as it isn't only used by the build system, but is also a matter of style and preference. This may be revisited later.
 
+This RFC will be implemented by https://github.com/web-platform-tests/wpt/pull/38976.
+
 ## Risks
 
 Reviving http://test.csswg.org/suites/ becomes harder with this removal, so if that system has important functionality, it will require more work to meet those needs again. However, the web-platform-tests project remains open to contributions to support missing use cases, should the need arise.
