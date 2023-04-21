@@ -3,8 +3,9 @@
 ## Summary
 
 The wpt-chrome-dev-stability job on WPT fails quite frequently and it's
-impacting developer productivity. The job should be disabled since it is not
-providing enough value or at least change to non-blocking.
+impacting developer productivity. The job should be changed to non-blocking
+since it is not providing enough value, while keeping a record of potential
+flakiness introductions that could be useful in further investigations.
 
 ## Details
 
@@ -12,7 +13,7 @@ Stability jobs in principle help us ensure that new and modified tests aren't
 flaky, wasting engineering time down the road as they block landing unrelated
 PRs. We currently run stability jobs for Firefox and Chrome, but not when
 [merging export PRs from their own repositories](https://github.com/web-platform-tests/wpt/issues/29737).
-The reason is that browser engineers usually have better tools in their
+The reason is that browser engineers usually have better tools or processes in their
 internal CI to deal with flaky tests, so if they were to introduce flakiness
 for their browser runs, it would be caught and fixed downstream.
 
@@ -26,9 +27,8 @@ productivity by blocking the timely landing of unrelated PRs, often from other
 browser vendors (e.g. [1](https://github.com/web-platform-tests/wpt/pull/38046#event-8332522292),
 [2](https://github.com/web-platform-tests/wpt/pull/38034)).
 
-Keeping the job but making it non-blocking would also avoid the impact on
-developer productivity, while keeping a record of potential flakiness
-introductions that could be useful in further investigations.
+Disabling the job entirely would also avoid the impact on developer productivity,
+which can be considered in the future.
 
 ## Risks
 
