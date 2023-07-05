@@ -1,4 +1,4 @@
-# RFC #{Placeholder}: Add feature meta tag to web-platform-tests meta data
+# RFC #157: Add feature meta tag to web-platform-tests meta data
 
 Author: @jcscottiii
 
