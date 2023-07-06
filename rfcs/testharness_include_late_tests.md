@@ -10,28 +10,28 @@ This RFC proposes that testharness should now include them.
 
 Conside the following test:
 
-```
-\<script>
+```html
+<script>
 window.onload = () => {
   test((t) => { ... }, 'test 1');
   test((t) => { ... }, 'test 2');
   test((t) => { ... }, 'test 3');
 };
-\</script>
+</script>
 ```
 
 Currently, only test 1 will be run. The issue is that the testharness
-immediately adds a window load handler that marks all_loaded = true,
+immediately adds a window load handler that marks `all_loaded = true`,
 and that ends the tests as soon as the first result from the first test
 is processed. (The test runner waits for the first test because
-Tests.prototype.all_done() also waits until this.tests.length > 0.)
+`Tests.prototype.all_done()` also waits until `this.tests.length > 0`.)
 There were various mitigating corner cases, such as if you started
-the list of tests with a promise_test(), that would increment a
+the list of tests with a `promise_test()`, that would increment a
 counter that kept the rest of the tests alive. Etc.
 
-The proposal is to change testharness window.onload handler to run
-with a setTimeout(0) so that all_loaded is only set to true after all of
-the tests are loaded by any window.onload handler.
+The proposal is to change testharness `window.onload` handler to run
+with a `setTimeout(0)` so that all_loaded is only set to true after all of
+the tests are loaded by any `window.onload` handler.
 
 ## Risks
 
