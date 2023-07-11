@@ -1,4 +1,4 @@
-# RFC XXX: Variant name should be a non-zero length string
+# RFC 158: Variant name should be a non-zero length string
 
 ## Summary
 
