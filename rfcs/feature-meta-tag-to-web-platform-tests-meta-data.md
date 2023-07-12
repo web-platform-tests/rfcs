@@ -75,3 +75,32 @@ One alternative considered was to add specific web platform tests to each featur
 There are two steps that need to happen:  
 1. Annotate the META.yml files with the "feature" key that corresponds to the feature-set entry. This can be done gradually and not all at once.
 2. Create a wpt script that generates a Feature manifest. Similar to the [SPEC_MANIFEST.json](https://github.com/web-platform-tests/wpt/pull/40655). For more details, check the diagram attached to the pull request for this RFC.
+
+# Changes for WPT Contributors
+
+The metadata tag is not mandatory. WPT contributions will not be blocked if contributors do not add the metadata tag to the META.yml files or test files.
+
+# Populating and maintaining the metadata tags
+
+As the [feature-set](https://github.com/web-platform-dx/feature-set) repository is populated with feature-set definitions, feature-set contributors will begin populating the metadata in WPT.
+
+In the event a feature's key in feature-set changes, a feature-set contributor will update the tag in WPT.
+
+In the event the 1) META.yml file with a `feature` key or 2) test file containing feature-set metadata is moved or deleted in the WPT repository, it is currently outside the scope of WPT to ensure data correctness for the feature-set metadata.
+
+# Roll back of this RFC
+
+The following steps will allow the community to roll back this RFC in the event it is deemed unnecessary:
+
+1. Remove all annotations in the META.yml files
+  - ```sh
+    # Remove all the lines that start with feature
+    find . -name META.yml -type f -print0 | xargs -0 sed -i '/^feature/d'
+    # If the "feature" key was the only key in the file, remove the whole file.
+    find . -name META.yml -type f -empty -delete
+    ```
+2. Remove all lines in the test files
+  - ```sh
+    # In case there are any spacing or ordering differences.
+    find . -type f -print0 | xargs -0 sed -i '/^.*<meta.*name.*=.*"feature"/d'
+    ```
