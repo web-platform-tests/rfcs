@@ -48,8 +48,9 @@ names.
 ### Alternatives Considered
 
 It is possible we update wptrunner to accept `path/to/test.html?` as the
-url for the empty name variants, but this requires wptrunner side change
-and it is not user friendly.
+url for the empty name variants, but such changes would be hard to implement
+and it will be surprising to the developers. Meanwhile making people name
+each variant does add a little extra documentation.
 
 Alternatively we can add `/` at the beginning of a test name, to denote
 the parameter is an url instead of a path. This deviates further from
