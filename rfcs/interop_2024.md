@@ -11,8 +11,6 @@ Proposals from different years will be distinguished by labels or milestones.
 
 ### Timeline
 
-During 2023:
-
 - September 15, 2023 to October 13, 2023 - Proposal submission period
 - October 15, 2023 to November 9, 2023 - [Interop team](https://github.com/orgs/web-platform-tests/teams/interop) will discuss proposals and provide suggestions for refinement
 - October 15, 2023 to November 30, 2023 - Final selection of proposals by the team, based on consensus
