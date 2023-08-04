@@ -11,9 +11,8 @@ Proposals from different years will be distinguished by labels or milestones.
 
 ### Timeline
 
-- September 15, 2023 to October 13, 2023 - Proposal submission period
-- October 15, 2023 to November 9, 2023 - [Interop team](https://github.com/orgs/web-platform-tests/teams/interop) will discuss proposals and provide suggestions for refinement
-- October 15, 2023 to November 30, 2023 - Final selection of proposals by the team, based on consensus
+- September 14, 2023 to October 13, 2023 - Proposal submission period
+- October 15, 2023 to November 30, 2023 - [Interop team](https://github.com/orgs/web-platform-tests/teams/interop) will discuss and select proposals based on consensus. The team will also provide suggestions for refinement, as needed
 - December 1, 2023 to December 16, 2023 - Proposal grouping and initial test selection
 - January 11, 2024 to January 25, 2024 - Finalize test selection. Feedback on proposals communicated to proposal authors
 - January 30, 2024 - Proposed launch date for Interop 2024
@@ -54,7 +53,7 @@ The following information should be provided in a proposal:
 
 If an area doesn't have a good spec and test suite, then it's not possible to use wpt.fyi test results to judge progress. Instead, some other work is needed to bring the area to state where test results can be used.
 
-The following information should be provided in a proposal:
+An updated template for submitting a focus area proposal will be published once the proposal window is open. In general, the following information should be provided in a proposal:
 
 - Is this area a problem for web developers? For example, survey data and browser bug counts can help.
 - Is this area a problem for users?
