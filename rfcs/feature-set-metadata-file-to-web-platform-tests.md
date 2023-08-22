@@ -1,4 +1,4 @@
-# RFC #: Add feature_set metadata file to web-platform-tests
+# RFC #163: Add feature_set metadata file to web-platform-tests
 
 Author: @jcscottiii
 
