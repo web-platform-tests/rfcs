@@ -24,8 +24,8 @@ enable the linkage between WPT and feature-set.
 The proposed change includes:
 
 1. Introduce a new metadata file, FEATURE_SET.yml
-2. Adjust the wpt-pr-bot to handle reviews of the changes
-3. Create a script to generate a manifest
+2. Create a script to generate a manifest
+3. Adjust the wpt-pr-bot to handle reviews of the changes
 
 Below are the details for each step.
 
@@ -40,13 +40,22 @@ This file is expected to be in the same places developers would expect a META.ym
 
 ### File examples
 
+Typical example:
+
 ```
 parser_version: v1
-apply_mode: RECURSIVE
 feature_set: subgrid
+```
+
+An example using all of the fields
+```
+parser_version: v1
+apply_mode: FORCE_RECURSIVE
+feature_set: feature1
 overrides:
 - file_name: name.txt
   feature_set: feature2
+  override_mode: REPLACE
 ```
 
 ### Schema
@@ -92,7 +101,6 @@ overrides:
             "required": [
                 "feature_set",
                 "parser_version",
-                "apply_mode"
             ],
             "title": "Main"
         },
