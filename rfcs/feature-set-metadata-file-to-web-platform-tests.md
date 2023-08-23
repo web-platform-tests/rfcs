@@ -43,13 +43,12 @@ This file is expected to be in the same places developers would expect a META.ym
 Typical example:
 
 ```
-parser_version: v1
 feature_set: subgrid
 ```
 
-An example using all of the fields
+An example using all of the fields:
+
 ```
-parser_version: v1
 apply_mode: FORCE_RECURSIVE
 feature_set: feature1
 overrides:
@@ -69,10 +68,6 @@ overrides:
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "parser_version": {
-                    "type": "string",
-                    "description": "version of the parser"
-                },
                 "feature_set": {
                     "type": "string",
                     "description": "The feature set key"
@@ -99,8 +94,7 @@ overrides:
                 }
             },
             "required": [
-                "feature_set",
-                "parser_version",
+                "feature_set"
             ],
             "title": "Main"
         },
