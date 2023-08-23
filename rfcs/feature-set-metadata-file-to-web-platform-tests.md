@@ -5,7 +5,7 @@ Author: @jcscottiii
 # Introduction
 
 The web-platform-tests (WPT) project is a valuable resource for testing web
-platform features and contains valuable metadata such as feature specs.
+platform features and contains valuable metadata such as feature spec links.
 Recently, the [WebDX Community Group](https://www.w3.org/community/webdx/)
 began creating the [feature-set](https://github.com/web-platform-dx/feature-set)
 repository. That repository serves as a basic shared catalog of feature
@@ -15,7 +15,7 @@ are part of [Baseline](https://web.dev/baseline/). However, there's a great
 opportunity to connect the WPT ecosystem to the feature-set catalog. By doing
 this, it would enable users of wpt.fyi to filter by feature-set grouping, which
 is similar to
-[the ability to filter by spec](https://github.com/web-platform-tests/wpt.fyi/issues/1489).
+[the ability to filter by spec links](https://github.com/web-platform-tests/wpt.fyi/issues/1489).
 The RFC proposes the addition of a FEATURE_SET.yml metadata file which would
 enable the linkage between WPT and feature-set.
 
