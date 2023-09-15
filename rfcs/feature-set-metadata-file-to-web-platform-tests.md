@@ -7,17 +7,17 @@ Author: @jcscottiii
 The web-platform-tests (WPT) project is a valuable resource for testing web
 platform features and contains valuable metadata such as feature spec links.
 Recently, the [WebDX Community Group](https://www.w3.org/community/webdx/)
-began creating the [feature-set](https://github.com/web-platform-dx/feature-set)
+began creating the [web-features](https://github.com/web-platform-dx/web-features)
 repository. That repository serves as a basic shared catalog of feature
-definitions of the web platform. Feature-set itself doesn't intend to produce
+definitions of the web platform. The repository itself doesn't intend to produce
 data but rather link to existing data that will inform audiences which features
 are part of [Baseline](https://web.dev/baseline/). However, there's a great
-opportunity to connect the WPT ecosystem to the feature-set catalog. By doing
-this, it would enable users of wpt.fyi to filter by feature-set grouping, which
+opportunity to connect the WPT ecosystem to the web-features catalog. By doing
+this, it would enable users of wpt.fyi to filter by web-features grouping, which
 is similar to
 [the ability to filter by spec links](https://github.com/web-platform-tests/wpt.fyi/issues/1489).
 The RFC proposes the addition of a WEB_FEATURE.yml metadata file which would
-enable the linkage between WPT and feature-set.
+enable the linkage between WPT and web-features.
 
 # Proposed change
 
@@ -165,9 +165,9 @@ Currently, the wpt-pr-bot builds a list of PR reviewers by:
 ### Proposed changes
 
 Have the wpt-pr-bot filter the WEB_FEATURE.yml file changes to only request
-reviews from feature-set contributors.
+reviews from web-features contributors.
 
-This will reduce the amount of unneeded reviews from non feature-set contributors.
+This will reduce the amount of unneeded reviews from non web-features contributors.
 
 ---
 
@@ -204,11 +204,11 @@ contributors do not add the metadata tag to the WEB_FEATURE.yml files or test fi
 
 ## Populating and maintaining the metadata files
 
-As the [feature-set](https://github.com/web-platform-dx/feature-set) repository
-is populated with feature-set definitions, feature-set contributors will begin
+As the [web-features](https://github.com/web-platform-dx/web-features) repository
+is populated with web-features definitions, web-features contributors will begin
 populating the metadata in WPT.
 
-In regards to maintaining the metadata files, feature-set contributors will be
+In regards to maintaining the metadata files, web-features contributors will be
 responsible for the mitigation options
 described above. 
 # Roll back of this RFC
