@@ -24,8 +24,9 @@ enable the linkage between WPT and web-features.
 The proposed change includes:
 
 1. Introduce a new metadata file, WEB_FEATURE.yml
-2. Create a script to generate a manifest
-3. Adjust the wpt-pr-bot to handle reviews of the changes
+2. Add linting functionality
+3. Create a script to generate a manifest
+4. Adjust the wpt-pr-bot to handle reviews of the changes
 
 Below are the details for each step.
 
@@ -135,9 +136,16 @@ overrides:
 }
 ```
 
-The next section describes the manifest generation process section.
+## Step 2. Add linting functionality
 
-## Step 2. Create a script to generate a manifest
+There exists a potential risk of putting all the information in WEB_FEATURE.yml:
+the overrides which are linked to the file can go out of sync as test files are moved,
+renamed, or deleted.
+
+As a result, this RFC also proposes a lint command to detect this. The code for
+this will reside in `tools/lint/lint.py`.
+
+## Step 3. Create a script to generate a manifest
 
 A command will be created in the `tools/manifest` folder to generate the
 WEB_FEATURE_MANIFEST.json file. While it is in that folder, its logic will
@@ -152,7 +160,7 @@ By using the same format, wpt.fyi can use it to allow filtering by web feature.
 The rules of the generation are described in the file schema above by the
 directory level `apply_mode` flag and the per file `override_mode`.
 
-## Step 3. Adjust the wpt-pr-bot to handle reviews of the changes
+## Step 4. Adjust the wpt-pr-bot to handle reviews of the changes
 
 ### Current State of wpt-pr-bot
 
@@ -173,27 +181,14 @@ This will reduce the amount of unneeded reviews from non web-features contributo
 
 # Risks
 
-As a result of putting all the information in WEB_FEATURE.yml, the overrides
-which are linked to the file can go out of sync as test files are moved,
-renamed, or deleted.
+A set of new linting cases (mentioned in Step 2.) could confuse existing
+developers.
 
-## Short Term Mitigation
+## Mitigation
 
-While desired, there is no anticipated percentage of tests that will use the
-override functionality. As a result, an outside process could alert when there
-is some issue with the data. The web feature team will be responsible for that.
-
-If it becomes a problem to manage, one of the following future mitigation options
-in the next section can solve it.
-
-## Future Mitigation
-
-This RFC does not cover the a long term mitigation plan for the risk. However,
-a possible mitigation could be one of the following:
-- A new GitHub Action that can prevent a PR from being merged if a user
-  modifies a overridden test without modifying the WEB_FEATURE.yml, or
-- Expand on the wpt-pr-bot changes to require a WEB_FEATURE reviewer if it
-  detects a overridden test has changed (even if WEB_FEATURE.yml has not).
+Ways to mitigate this include:
+- Informative logging
+- Additional documentation to describe why this linting exists.
 
 # Other Notes
 
@@ -221,3 +216,5 @@ The following steps will allow the community to roll back this RFC in the event 
     ```
 2. Remove the new web_feature.py and reference in commands.json
   - This will likely happen by reverting the PRs in the tools/manifest folder.
+3. Remove the lint code in tools/lint/lint.py.
+    - This will likely happen by reverting the PRs in the tools/lint/lint.py file.
