@@ -1,4 +1,4 @@
-# RFC 158: Support expected-fail-message in test metadata for subtests
+# RFC 165: Support expected-fail-message in test metadata for subtests
 
 ## Summary
 
