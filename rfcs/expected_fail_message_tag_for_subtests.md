@@ -40,7 +40,7 @@ One example metadata file will look like below:
 ### Implementations
 
 The current implementation for test metadata parser is flexible enough to
-understand any addtional tag. The changes needed is 1) wpttest.Test to have one
+understand any additional tag. The changes needed is 1) wpttest.Test to have one
 additional member function to return "expected-fail-message",
 2)testrunner.TestRunnerManager.test_ended to have additional logic to turn
 expected FAIL or PRECONDITION_FAILED to unexpected failures per the rule
