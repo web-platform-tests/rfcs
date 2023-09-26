@@ -61,7 +61,7 @@ maintanance headache, and are rejected consequently.
 ## Risks
 
 "expected-fail-message" will only take effect when it presents in the metadata
-file. when not presented, the test will behave exactly the same way as before.
+file. When not presented, the test will behave exactly the same way as before.
 It would be at developers' own discretion to use this feature or not. There is a
 chance this could be abused, but as the metadata file sits in each vendor's
 repository, the impact should be limited.
