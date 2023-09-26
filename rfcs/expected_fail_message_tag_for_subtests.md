@@ -46,7 +46,7 @@ additional member function to return "expected-fail-message",
 expected FAIL or PRECONDITION_FAILED to unexpected failures per the rule
 discribed above.
 
-A lint rule is also needed to prevent dangling "expected-fail-message", i.e. a
+A lint rule might be needed to prevent dangling "expected-fail-message", i.e. a
 subtest has expected-fail-message but FAIL or PRECONDITION_FAILED is not an
 expected result.
 
