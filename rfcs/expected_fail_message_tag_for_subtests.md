@@ -7,7 +7,7 @@ a subtest fails.
 
 ## Details
 
-In Chromium developers are using baselines to track expected output message
+In Chromium developers are using [baselines](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/web_tests/external/wpt/editing/event-expected.txt) to track expected output message
 for testharness tests. While the output message for a pass subtest is
 generally not interesting, the output message for a failed subtest tracks
 how a subtest fails, and a change in how a test fails could be unintended
@@ -46,10 +46,13 @@ additional member function to return "expected-fail-message",
 expected FAIL or PRECONDITION_FAILED to unexpected failures per the rule
 discribed above.
 
+How to add "expected-fail-message" to test metadata is out of scope of this RFC.
+Usually this tag can be added manually by developers after carefully review the
+test results and implementations.
+
 A lint rule might be needed to prevent dangling "expected-fail-message", i.e. a
 subtest has expected-fail-message but FAIL or PRECONDITION_FAILED is not an
 expected result.
-
 
 ### Alternatives Considered
 
