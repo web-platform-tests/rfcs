@@ -1,4 +1,4 @@
-# RFC #163: Add web_feature metadata file to web-platform-tests
+# RFC #163: Add web_features metadata file to web-platform-tests
 
 Author: @jcscottiii
 
@@ -16,21 +16,21 @@ opportunity to connect the WPT ecosystem to the web-features catalog. By doing
 this, it would enable users of wpt.fyi to filter by web-features grouping, which
 is similar to
 [the ability to filter by spec links](https://github.com/web-platform-tests/wpt.fyi/issues/1489).
-The RFC proposes the addition of a WEB_FEATURE.yml metadata file which would
+The RFC proposes the addition of a WEB_FEATURES.yml metadata file which would
 enable the linkage between WPT and web-features.
 
 # Proposed change
 
 The proposed change includes:
 
-1. Introduce a new metadata file, WEB_FEATURE.yml
+1. Introduce a new metadata file, WEB_FEATURES.yml
 2. Add linting functionality
 3. Create a script to generate a manifest
 4. Adjust the wpt-pr-bot to handle reviews of the changes
 
 Below are the details for each step.
 
-## Step 1. Introduce a new metadata file, WEB_FEATURE.yml
+## Step 1. Introduce a new metadata file, WEB_FEATURES.yml
 
 Originally, there was a RFC that proposed adding these details to the existing
 META.yml. During the August 01, 2023 Monthly WPT
@@ -162,7 +162,7 @@ features:
 
 ## Step 2. Add linting functionality
 
-There exists a potential risk of putting all the information in WEB_FEATURE.yml:
+There exists a potential risk of putting all the information in WEB_FEATURES.yml:
 the overrides which are linked to the file can go out of sync as test files are moved,
 renamed, or deleted.
 
@@ -172,7 +172,7 @@ this will reside in `tools/lint/lint.py`.
 ## Step 3. Create a script to generate a manifest
 
 A command will be created in the `tools/manifest` folder to generate the
-WEB_FEATURE_MANIFEST.json file. While it is in that folder, its logic will
+WEB_FEATURES_MANIFEST.json file. While it is in that folder, its logic will
 be independent of the existing manifest logic. (As discussed in the August 01,
 2023 Monthly WPT
 [Meeting](https://github.com/web-platform-tests/wpt-notes/blob/master/minutes/2023-08-01.md#rfc-157---add-feature-meta-tag-to-web-platform-tests-meta-data),
@@ -196,7 +196,7 @@ Currently, the wpt-pr-bot builds a list of PR reviewers by:
 
 ### Proposed changes
 
-Have the wpt-pr-bot filter the WEB_FEATURE.yml file changes to only request
+Have the wpt-pr-bot filter the WEB_FEATURES.yml file changes to only request
 reviews from web-features contributors.
 
 This will reduce the amount of unneeded reviews from non web-features contributors.
@@ -219,7 +219,7 @@ Ways to mitigate this include:
 ## Changes for WPT Contributors
 
 The metadata tag is not mandatory. WPT contributions will not be blocked if
-contributors do not add the metadata tag to the WEB_FEATURE.yml files or test files.
+contributors do not add the metadata tag to the WEB_FEATURES.yml files or test files.
 
 ## Populating and maintaining the metadata files
 
@@ -236,9 +236,9 @@ The following steps will allow the community to roll back this RFC in the event 
 
 1. Remove all the new metadata files
     - ```sh
-        find . -name WEB_FEATURE.yml -type f -delete
+        find . -name WEB_FEATURES.yml -type f -delete
         ```
-2. Remove the new web_feature.py and reference in commands.json
+2. Remove the new web_features.py and reference in commands.json
     - This will likely happen by reverting the PRs in the tools/manifest folder.
 3. Remove the lint code in tools/lint/lint.py.
     - This will likely happen by reverting the PRs in the tools/lint/lint.py file.
