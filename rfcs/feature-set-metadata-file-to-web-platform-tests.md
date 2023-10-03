@@ -41,22 +41,55 @@ This file is expected to be in the same places developers would expect a META.ym
 
 ### File examples
 
-Typical example:
+#### Example 1: Default
 
-```
-web_feature: subgrid
+```yaml
+features:
+   - name: feature1
+     files: "**"
 ```
 
-An example using all of the fields:
+#### Example 2: A directory which has multiple features:
 
+```yaml
+features:
+- name: test-2
+  files:
+  - test-2-01.html
+  - test-2-02.html
+- name: test-1
+  files:
+  - test-1-01.html
 ```
-apply_mode: FORCE_RECURSIVE
-web_feature: feature1
-overrides:
-- file_name: name.txt
-  web_feature: feature2
-  override_mode: REPLACE
+
+#### Example 3: Ignore parent features
+
+```yaml
+apply_mode: IGNORE_PARENT
+features:
+- name: reset-test-1
+  files: "**"
 ```
+
+#### Example 4: Ignore parent features and listing out explicit files
+
+```yaml
+apply_mode: IGNORE_PARENT
+features:
+- name: reset-test-2
+  files:
+  - reset-test-2-01.html
+- name: reset-test-1
+  files:
+  - reset-test-2-01.html
+```
+
+### Evidence for the above examples:
+- Example 2 is necessary for directories such as
+  https://wpt.fyi/results/css/selectors which has tests for multiple features.
+- Examples 3 and 4 are necessary to support marking up all of
+  https://wpt.fyi/results/css/css-grid *except* the masonry/ and subgrid/
+  subdirectories as being part of the grid feature.
 
 ### Schema
 
@@ -69,68 +102,59 @@ overrides:
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "web_feature": {
-                    "type": "string",
-                    "description": "The web feature key"
+                "features": {
+                    "type": "array",
+                    "description": "List of features",
+                    "items": {
+                        "$ref": "#/definitions/FeatureEntry"
+                    }
                 },
                 "apply_mode": {
                     "type": "string",
                     "anyOf": [
                     	{
-                            "const": "DEFAULT",
-                            "description": "Applies recursively until the presence of another WEB_FEATURE.yml in a subdirectory."
-                        },
-                    	{
-                            "const": "FORCE_RECURSIVE",
-                            "description": "Applies recursively throughout the all sub-directories. Useful if web_feature hierarchy exactly matches wpt directory structure."
+                            "const": "IGNORE_PARENT",
+                            "description": "Ignores features from previous parent directories."
                         }
-                    ],
-                    "default": "DEFAULT"
-                },
-                "overrides": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Override"
-                    }
+                    ]
                 }
             },
             "required": [
-                "web_feature"
+                "features"
             ],
             "title": "Main"
         },
-        "Override": {
+        "FeatureEntry": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "file_name": {
-                    "type": "string",
-                    "description": " The file name of the test in the same directory as this file."
-                },
-                "web_feature": {
+                "name": {
                     "type": "string",
                     "description": "The web feature key"
                 },
-                "override_mode": {
-                    "type": "string",
-                    "anyOf": [
-                    	{
-                            "const": "APPEND",
-                            "description": "Append to the current web_feature key(s) for the given file"
+                "files": {
+                    "oneOf": [
+                        {
+                            "const": "**",
+                            "description": "All files recursively",
+                            "title": "Files"
                         },
-                    	{
-                            "const": "REPLACE",
-                            "description": "Replace the current web_feature key(s) for the given file"
-                        },
-                    ],
-                    "default": "APPEND"
-                },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "description": "A specific file within the current directory"
+                            }
+                        }
+
+                    ]
+                }
             },
             "required": [
-                "web_feature",
-                "file_name"
+                "name",
+                "files"
             ],
-            "title": "Override"
+            "title": "FeatureEntry"
         }
     }
 }
@@ -158,7 +182,7 @@ do is generate data in the same structure.
 By using the same format, wpt.fyi can use it to allow filtering by web feature.
 
 The rules of the generation are described in the file schema above by the
-directory level `apply_mode` flag and the per file `override_mode`.
+directory level `apply_mode` flag.
 
 ## Step 4. Adjust the wpt-pr-bot to handle reviews of the changes
 
@@ -211,10 +235,10 @@ described above.
 The following steps will allow the community to roll back this RFC in the event it is deemed unnecessary:
 
 1. Remove all the new metadata files
-  - ```sh
-    find . -name WEB_FEATURE.yml -type f -delete
-    ```
+    - ```sh
+        find . -name WEB_FEATURE.yml -type f -delete
+        ```
 2. Remove the new web_feature.py and reference in commands.json
-  - This will likely happen by reverting the PRs in the tools/manifest folder.
+    - This will likely happen by reverting the PRs in the tools/manifest folder.
 3. Remove the lint code in tools/lint/lint.py.
     - This will likely happen by reverting the PRs in the tools/lint/lint.py file.
