@@ -50,10 +50,6 @@ How to add "expected-fail-message" to test metadata is out of scope of this RFC.
 Usually this tag can be added manually by developers after carefully review the
 test results and implementations.
 
-A lint rule might be needed to prevent dangling "expected-fail-message", i.e. a
-subtest has expected-fail-message but FAIL or PRECONDITION_FAILED is not an
-expected result.
-
 ### Alternatives Considered
 
 Various alternatives have been considered, e.g. writing a new test to assert the
@@ -68,6 +64,13 @@ file. When not presented, the test will behave exactly the same way as before.
 It would be at developers' own discretion to use this feature or not. There is a
 chance this could be abused, but as the metadata file sits in each vendor's
 repository, the impact should be limited.
+
+The existence of this feature should not be used as an implication that subtest
+output messages are expected to be stable. When a subtest output message is found
+to be not stable, "expected-fail-message" should simply not be used, or if a
+vendor still want to assert on the output message, they can choose to revise
+the test without sacrifice the usefulness of the test. The original test author
+bears no responsibility of this.
 
 This feature will not have any impact to the results presented at wpt.fyi, as
 this only changes if a FAIL is expected or not, but not the actual result
