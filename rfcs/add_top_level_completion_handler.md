@@ -1,4 +1,4 @@
-# RFC XXX: add a `add_top_level_completion_handler` to testharness.js
+# RFC 168: add a `add_top_level_completion_handler` to testharness.js
 
 ## Summary
 
