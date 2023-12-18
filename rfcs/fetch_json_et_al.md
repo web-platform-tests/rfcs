@@ -1,4 +1,4 @@
-# RFC _NNN_: `fetch_json` and other `ShadowRealm` facilities
+# RFC 177: `fetch_json` and other `ShadowRealm` facilities
 
 ## Summary
 
