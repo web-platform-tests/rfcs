@@ -1,8 +1,8 @@
-# RFC 178: Skipping a reftest when preconditions are not met
+# RFC 178: Signaling when preconditions are not met on a reftest
 
 ## Summary
 
-This is a proposal to add a way to make a reftest neither fail nor pass, but instead get skipped. This is useful if some precondition of the normative statement we want to test is not satisfied.
+This is a proposal to add a way to make a reftest neither fail nor pass, but return `PRECONDITION_FAILED`. This is useful if some precondition of the normative statement we want to test is not satisfied.
 
 ## Details
 
@@ -18,7 +18,7 @@ Note: I'm not talking about the case where you cannot detect whether the precond
 
 From a logical point of you, you could set up all these tests to pass, since the UA has violated no normative requirement. However, this would give a false sense of comfort: for example, UAs that have not even implemented the feature at all would pass the test when you run them in the right (i.e. wrong) environment.
 
-It'd be a lot more accurate to report that the test was skipped, rather than passed or failed. So far, there's no way to signal that.
+It'd be a lot more accurate to return `PRECONDITION_FAILED`, rather than passed or failed. So far, there's no way to signal that.
 
 ## Proposed solution: use a waiting reftest and add a class on the root
 
@@ -33,8 +33,8 @@ function skipTest() {
 }
 ```
 
-This would be picked up by the test runner, which would then report a skipped test, rather than a failed or passed one.
+This would be picked up by the test runner, which would then report the `PRECONDITION_FAILED` statust, rather than a failed or passed one.
 
 ### Risks
 
-None identified.
+Tests that return `PRECONDITION_FAILED` cannot be included in interop stats because it's not clear how they should be counted.
