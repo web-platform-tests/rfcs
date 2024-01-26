@@ -27,7 +27,7 @@ If a reftest is setup with `class="reftest-wait"` on the root, the harness will 
 We could add a convenience method , similar to `takeScreenshot()` to `/common/reftest-wait.js`:
 
 ```js
-function skipTest() {
+function preconditionFailed() {
     document.documentElement.classList.add("precondition-failed");
     document.documentElement.classList.remove("reftest-wait");
 }
