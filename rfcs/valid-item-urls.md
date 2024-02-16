@@ -29,7 +29,7 @@ gsnedders@gsnedders-marsha web-platform-tests % find . -name '* *'
 
 Only the last three of these are test files, which generate three test items.
 
-One question here is whether we should disallow test file paths that allow spaces, or whether we should just escape these in the URL.
+One question here is whether we should disallow test file paths that contain spaces, or whether we should just escape these in the URL.
 
 ## Risks
 
