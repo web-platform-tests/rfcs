@@ -1,4 +1,4 @@
-# RFC 182: Add WebDriver BiDi support to testdriver.js
+# RFC 185: Add WebDriver BiDi support to testdriver.js
 ## Summary
 Add “testdriver.js” support for [WebDriver BiDi](https://w3c.github.io/webdriver-bidi/) events and actions. To support WebDriver BiDi, the following parts are required:
 * **Wptrunner support for asynchronous actions.** WebDriver BiDi commands are asynchronous. To implement them, the test runner must support asynchronous actions. It should support concurrent actions as well. This means all async actions can be concurrent.

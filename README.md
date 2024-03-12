@@ -21,7 +21,7 @@ or users of web-platform-tests. Examples of where it is likely to be useful:
 Cases where the RFC process need *not* be used:
 
  - Introducing a new top-level directory for a new specification.
- - Extending testdriver.js with a method that closely matches a [WebDriver](https://w3c.github.io/webdriver/) endpoint. To notify maintainers of testdriver.js vendor integration, label the pull request `testdriver.js`. (This exemption was introduced by [RFC 127](https://github.com/web-platform-tests/rfcs/blob/master/rfcs/rfc_exemption_testdriver_method.md).)
+ - Extending testdriver.js with a method that closely matches a [WebDriver Classic](https://w3c.github.io/webdriver/) or [WebDriver BiDi](https://w3c.github.io/webdriver-bidi) endpoints. To notify maintainers of testdriver.js vendor integration, label the pull request `testdriver.js`. (This exemption was introduced by [RFC 127](https://github.com/web-platform-tests/rfcs/blob/master/rfcs/rfc_exemption_testdriver_method.md) and [RFC 185](https://github.com/web-platform-tests/rfcs/blob/master/rfcs/testdriver_bidi.md).)
  - Minor changes in behavior in where all call sites are known and accounted
    for.
  - Behavior-preserving refactoring with a low risk of regressions.
