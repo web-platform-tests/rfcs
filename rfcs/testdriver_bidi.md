@@ -12,7 +12,7 @@ Add “testdriver.js” support for [WebDriver BiDi](https://w3c.github.io/webdr
 
 The “testdriver.js” framework (or testdriver for simplicity) is based on the one-directional WebDriver Classic protocol and lacks the ability to receive events from the browser via wptrunner, limiting our ability to test event-based functionalities such as console events in WPT (e.g. many [console log tests](https://github.com/web-platform-tests/wpt/tree/master/console) are [manual](https://github.com/web-platform-tests/wpt/blob/master/console/console-timing-logging-manual.html)!). To overcome this limitation, this RFC proposes using the [WebDriver BiDi](https://w3c.github.io/webdriver-bidi) protocol, an extension for WebDriver Classic offering bidirectional communication between the test and the browser.
 
-This document presents changes in testdriver and wptrunner so that it incorporates both WebDriver Classic and WebDriver BiDi functionalities, demonstrating the addition of tests for console events as an [example](https://github.com/web-platform-tests/wpt/pull/44649).
+This RFC presents changes in testdriver and wptrunner so that it incorporates both WebDriver Classic and WebDriver BiDi functionalities, demonstrating the addition of tests for console events as an [example](https://github.com/web-platform-tests/wpt/pull/44649).
 
 ## Details
 
