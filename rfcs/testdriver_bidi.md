@@ -107,7 +107,9 @@ Analogous to `actions`, introduce an async_actions which will support asynchrono
 
 ##### Introduce `AsyncCallbackHandler`
 
-Add a `AsyncCallbackHandler`, which is an extension of `CallbackHandler` with support for async actions. It requires an event loop, in which it will schedule the tasks. Async action processing is done in the same way as CallbackHandler is done, but in the dedicated task. This would not allow raising unexpected exceptions in wptrunner. Testdriver will still be notified about those unexpected exceptions. [Example](https://github.com/web-platform-tests/wpt/pull/44649/files#diff-3de439d55203876d452599a1a14968409df69e5869b16918ceec378a6b3345a4R813) implementation.
+Add a `AsyncCallbackHandler`, which is an extension of `CallbackHandler` with support for async actions. It requires an event loop, in which it will schedule the tasks. Async action processing has the following differences from `CallbackHandler`:
+* Async action is processed in a dedicated task. This would not allow raising unexpected exceptions in wptrunner. Testdriver will still be notified about those unexpected exceptions. [Example](https://github.com/web-platform-tests/wpt/pull/44649/files#diff-3de439d55203876d452599a1a14968409df69e5869b16918ceec378a6b3345a4R813) implementation.
+* Async action does not need an  `ActionContext`, as BiDi commands can be sent to any browsing context, not only the currently active one.
 
 ##### Extend `WebDriverProtocol`
 
