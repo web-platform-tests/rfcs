@@ -26,17 +26,12 @@ This RFC presents changes in testdriver and wptrunner so that it incorporates bo
 
 Here is an [example](https://github.com/sadym-chromium/wpt/blob/sadym/testdriver-bidi/console/console-log-logged.html) of a test using the proposed `test_driver.bidi` API for testing console log events.
 ```javascript
-promise_test(async (test) => {
+promise_test(async () => {
     const some_message = "SOME MESSAGE";
     // Subscribe to `log.entryAdded` BiDi events. This will not add a listener to the page.
     await test_driver.bidi.log.entry_added.subscribe();
-    test.add_cleanup(async function() {
-        // Unsubscribe from `log.entryAdded` BiDi events.
-        await test_driver.bidi.log.entry_added.unsubscribe();
-    });
     // Add a listener for the log.entryAdded event. This will not subscribe to the event, so the subscription is
-    // required before. After the event is received, the subscription will not be removed, so the cleanup is
-    // required.
+    // required before. The cleanup is done automatically after the test is finished.
     const log_entry_promise = test_driver.bidi.log.entry_added.once();
     // Emit a console.log message.
     console.log(some_message)
@@ -76,10 +71,9 @@ The BiDi actions are functionally equivalent to the classic actions. They are pl
 ###### Events
 
 The exposed events API in `test_driver` provides the following methods for each event:
-* `test_driver.bidi.{module}.{event}.subscribe(): Promise<void>`. The async method subscribes to the given WebDriver BiDi event, but does not add event listeners yet.
-* `test_driver.bidi.{module}.{event}.unsubscribe(): Promise<void>`. The async method unsubscribes from the given WebDriver BiDi event.
+* `test_driver.bidi.{module}.{event}.subscribe(): Promise<void>`. The async method subscribes to the given WebDriver BiDi event, but does not add event listeners yet. The unsubscription is done by the wptrunner after each test.
 * `test_driver.bidi.{module}.{event}.on(handler: (event)=>void): ()=>void`. The method makes the handler be called each time the event emitted. The callback argument is the event params. It returns a handle for removing this listener.
-* (optional) `test_driver.bidi.{module}.{event}.once(): Promise<event>`. Creates a listener and returns a promise, which will be resolved after the required event is emitted for the first time. Removes the listener after the first event. This method is not required, but allows easier writing of some tests (e.g. it is used in the example above). It can be easily implemented via the `on` method. Note: this wrapper does not unsubscribe from the event.
+* (optional) `test_driver.bidi.{module}.{event}.once(): Promise<event>`. Creates a listener and returns a promise, which will be resolved after the required event is emitted for the first time. Removes the listener after the first event. This method is not required, but allows easier writing of some tests (e.g. it is used in the example above). It can be easily implemented via the `on` method.
 
 ###### Alternatives
 
@@ -90,7 +84,7 @@ The exposed events API in `test_driver` provides the following methods for each 
 
 ##### Event processing
 
-The proposal extends the event processing implemented in [`testdriver-extra.js`](https://github.com/web-platform-tests/wpt/blob/master/tools/wptrunner/wptrunner/testdriver-extra.js) with a new message type [“testdriver-event”](https://github.com/web-platform-tests/wpt/pull/44649/files#diff-46aeeb40b0a0c13031b151392ca70a17614295533d3e890c0cb4360cb3b91542R43). This message is sent by the wptrunner to notify the testdriver about new events. It uses the `message` field to store JSON-serialized `params` and `method`. The `testdriver-extra.js` script overrides `window.test_driver_internal.bidi.{modules}.{event}` object methods `subscribe`, `unsubscribe`, and `on`.
+The proposal extends the event processing implemented in [`testdriver-extra.js`](https://github.com/web-platform-tests/wpt/blob/master/tools/wptrunner/wptrunner/testdriver-extra.js) with a new message type [“testdriver-event”](https://github.com/web-platform-tests/wpt/pull/44649/files#diff-46aeeb40b0a0c13031b151392ca70a17614295533d3e890c0cb4360cb3b91542R43). This message is sent by the wptrunner to notify the testdriver about new events. It uses the `message` field to store JSON-serialized `params` and `method`. The `testdriver-extra.js` script overrides `window.test_driver_internal.bidi.{modules}.{event}` object methods `subscribe`, and `on`.
 
 #### Wptrunner
 
@@ -156,7 +150,10 @@ If `BidiEventsProtocolPart` is available, wptrunner sets a callback via [`add_ev
 
 ###### `BidiEventsProtocolPart`
 
-To provide events from wptrunner to testdriver, the [`BidiEventsProtocolPart`](https://github.com/web-platform-tests/wpt/pull/44649/files#diff-47192f72de48b834a50992ada793229686299b5165612c2d97af6811764514c7R325) implements [`add_event_listener`](https://github.com/web-platform-tests/wpt/pull/44649/files#diff-47192f72de48b834a50992ada793229686299b5165612c2d97af6811764514c7R345). `TestExecutor` will subscribe and forward events to testdriver.
+[`BidiEventsProtocolPart`](https://github.com/web-platform-tests/wpt/pull/44649/files#diff-47192f72de48b834a50992ada793229686299b5165612c2d97af6811764514c7R325) is responsible for subscribing to events, forwarding them to testdriver, and cleaning up the subscription state between test runs. It implements the following methods:
+* [`add_event_listener`](https://github.com/web-platform-tests/wpt/pull/44649/files#diff-47192f72de48b834a50992ada793229686299b5165612c2d97af6811764514c7R345). `TestExecutor` will subscribe and forward events to testdriver using this method.
+* [`subscribe(events, contexts)`](https://github.com/web-platform-tests/wpt/pull/44649/files#diff-e5a8911dd97e0352b1b26d8ce6ef0a92b25378f7c9e79371a1eb1b1834bc9a8dR123). Subscribe to BiDi events.
+* [`unsubscribe_all`](https://github.com/web-platform-tests/wpt/pull/44649/files#diff-e5a8911dd97e0352b1b26d8ce6ef0a92b25378f7c9e79371a1eb1b1834bc9a8dR128). This method removes all the subscriptions that were added before. `TestExecutor` will call it between tests.
 
 ###### `BidiScriptProtocolPart`
 
@@ -248,13 +245,11 @@ In this alternative, the `test_driver.bidi.{module}.{event}.subscribe()` method 
 ### Use `EventTarget`-like events API
 
 In this alternative, an [`EventTarget`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget)-like API is exposed for BiDi events:
-`addEventListener(type, listener, options)`.
-Options:
-* `once: bool` Optional. A boolean value indicating that the listener should be invoked at most once after being added. If true, the listener would be automatically removed when invoked. If not specified, defaults to false.
-* `subscribe: bool` indicates if the subscription should be set, if not yet. Defaults to `true`.
-* `removeEventListener(type, listener, options)`.
+* `addEventListener(type, listener, options)`.
   Options:
-  * `unsubscribe: bool` indicates if the subscription should be stopped. Defaults to `true`.
+  * `once: bool` Optional. A boolean value indicating that the listener should be invoked at most once after being added. If true, the listener would be automatically removed when invoked. If not specified, defaults to false.
+  * `subscribe: bool` indicates if the subscription should be set, if not yet. Defaults to `true`.
+* `removeEventListener(type, listener, options)`.
 
 This API is more common. However, more workarounds are required for it to be used in tests. Also, the subscription handling is harder and less explicit. The alternative was declined in order to prioritize test driver ergonomics.
 
