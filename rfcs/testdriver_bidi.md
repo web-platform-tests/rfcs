@@ -32,7 +32,9 @@ promise_test(async () => {
     await test_driver.bidi.log.entry_added.subscribe();
     // Add a listener for the log.entryAdded event. This will not subscribe to the event, so the subscription is
     // required before. The cleanup is done automatically after the test is finished.
-    const log_entry_promise = test_driver.bidi.log.entry_added.once();
+    let on_log_entry;
+    const log_entry_promise = new Promise(r => on_log_entry = r);
+    test_driver.bidi.log.entry_added.on(on_log_entry);
     // Emit a console.log message.
     console.log(some_message)
     // Wait for the log.entryAdded event to be received.
@@ -73,7 +75,6 @@ The BiDi actions are functionally equivalent to the classic actions. They are pl
 The exposed events API in `test_driver` provides the following methods for each event:
 * `test_driver.bidi.{module}.{event}.subscribe(): Promise<void>`. The async method subscribes to the given WebDriver BiDi event, but does not add event listeners yet. The unsubscription is done by the wptrunner after each test.
 * `test_driver.bidi.{module}.{event}.on(handler: (event)=>void): ()=>void`. The method makes the handler be called each time the event emitted. The callback argument is the event params. It returns a handle for removing this listener.
-* (optional) `test_driver.bidi.{module}.{event}.once(): Promise<event>`. Creates a listener and returns a promise, which will be resolved after the required event is emitted for the first time. Removes the listener after the first event. This method is not required, but allows easier writing of some tests (e.g. it is used in the example above). It can be easily implemented via the `on` method.
 
 ###### Alternatives
 
@@ -227,14 +228,17 @@ As an alternative, the event is encapsulated within a class to enhance usability
 ```javascript
 promise_test(async () => {
     const some_message = "SOME MESSAGE";
-    // Get `log.entryAdded` BiDi event handler.
-    const entry_added_event_handler = await test_driver.bidi.log.entry_added.activate();
-    // Clean the `entry_added_event_handler`, as it can contain buffered events.
-    entry_added_event_handler.clean();
+    // Subscribe to `log.entryAdded` BiDi events in the current window. This will not add a listener to the page.
+    await test_driver.bidi.log.entry_added.subscribe({contexts: [window]});
+    // Add a listener for the log.entryAdded event. This will not subscribe to the event, so the subscription is
+    // required before. The cleanup is done automatically after the test is finished.
+    let on_log_entry;
+    const log_entry_promise = new Promise(r => on_log_entry = r);
+    test_driver.bidi.log.entry_added.on(on_log_entry);
     // Emit a console.log message.
     console.log(some_message)
     // Wait for the log.entryAdded event to be received.
-    const event = await entry_added_event_handler.next();
+    const event = await log_entry_promise;
     // Assert the log.entryAdded event has the expected message.
     assert_equals(event.args.length, 1);
     const event_message = event.args[0];
@@ -276,7 +280,9 @@ In this alternative, the `test_driver.session.subscribe` method is exposed in th
 
 In this alternative, the `test_driver.bidi.{module}.{event}.subscribe()` method is not exposed in the testdriver API. Instead, each `on` handler subscribes to the required event. The API becomes simpler, as test writers would not require care about the concept of WebDriver BiDi subscriptions at all. Nonetheless, this option was rejected because:
 * Event enabling API in BiDi is done pre-session. Meaning if `event.on()` is called twice, and after that the first listener is removed, should the subscription be removed as well?
-* The `once` handler cannot be implemented since subscription is an asynchronous process.
+* The API is less explicit, as the subscription is done silently.
+* It's unclear how to handle the subscription properties.
+* It's unclear how to handle event buffer (events are emitted before the `subscribe` command is done).
 
 ### Use `EventTarget`-like events API
 
