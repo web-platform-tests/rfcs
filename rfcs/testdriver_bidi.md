@@ -77,6 +77,7 @@ The exposed events API in `test_driver` provides the following methods for each 
 
 ###### Alternatives
 
+* [Wrap event into a class](#wrap-event-into-a-class).
 * [Make generic event emitting in testdriver](#make-generic-event-emitting-in-testdriver).
 * [Expose generic  `session.subscribe` method in `test_driver` instead of `test_driver.bidi.{module}.{event}.subscribe()`](#expose-generic--sessionsubscribe-method-in-test_driver-instead-of-test_driverbidimoduleeventsubscribe)
 * [Do not expose `test_driver.bidi.{module}.{event}.subscribe()`, do it silently in the `on` method](#do-not-expose-test_driverbidimoduleeventsubscribe-do-it-silently-in-the-onmethod)
@@ -219,6 +220,41 @@ No need in introducing a new namespace, and continue using the established patte
 * Potential for name clashes: If a new WebDriver BiDi action or event has the same name as an existing WebDriver Classic action or event, it could cause conflicts.
 * Harder to determine if a specific testdriver method requires WebDriver BiDi support: Developers may need to consult the documentation or code to determine if a particular method requires WebDriver BiDi support.
 * Can be done later after WebDriver BiDi is widely adopted, the `test_drive`’s root-level methods can be silently shifted to use BiDi under the hood.
+
+### Wrap event into a class
+
+As an alternative, the event is encapsulated within a class to enhance usability.
+```javascript
+promise_test(async () => {
+    const some_message = "SOME MESSAGE";
+    // Get `log.entryAdded` BiDi event handler.
+    const entry_added_event_handler = await test_driver.bidi.log.entry_added.activate();
+    // Clean the `entry_added_event_handler`, as it can contain buffered events.
+    entry_added_event_handler.clean();
+    // Emit a console.log message.
+    console.log(some_message)
+    // Wait for the log.entryAdded event to be received.
+    const event = await entry_added_event_handler.next();
+    // Assert the log.entryAdded event has the expected message.
+    assert_equals(event.args.length, 1);
+    const event_message = event.args[0];
+    assert_equals(event_message.value, some_message);
+}, "Assert log event is logged");
+```
+
+The event handler class has the following interface:
+```javascript
+class EventHandler{
+    // Create and activate the event handler for a specific event.
+    static activate(): Promise<EventHandler>;
+    // Clean the event queue, as some events can be buffered.
+    clean(): EventEntry[]; 
+    // Return a promise which is resolved with the next log entry once one is received.
+    next(): Promise<EventEntry>;
+    // Set a custom event handler. Returns a remove handler.
+    on(callback: (EventEntry)=>void): ()=>void; 
+}
+```
 
 ### Make generic event emitting in testdriver
 
