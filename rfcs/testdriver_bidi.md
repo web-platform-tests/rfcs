@@ -50,7 +50,7 @@ The proposal changes the following parts:
 
 #### Testdriver
 
-The testdriver requires support of event processing, and exposing it as an API.
+The testdriver requires support of bidi actions, aevent processing, and exposing it as an API.
 
 ##### Testdriver API
 
