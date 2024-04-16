@@ -226,15 +226,14 @@ As an alternative, the event is encapsulated within a class to enhance usability
 ```javascript
 promise_test(async () => {
     const some_message = "SOME MESSAGE";
-    // Subscribe to `log.entryAdded` BiDi events in the current window. This will not add a listener to the page.
-    await test_driver.bidi.log.entry_added.subscribe({contexts: [window]});
-    // Add a listener for the log.entryAdded event. This will not subscribe to the event, so the subscription is
-    // required before. The cleanup is done automatically after the test is finished.
-    const log_entry_promise = new Promise(resolve => test_driver.bidi.log.entry_added.on(resolve));
+    // Get `log.entryAdded` BiDi event handler.
+    const entry_added_event_handler = await test_driver.bidi.log.entry_added.activate();
+    // Clean the `entry_added_event_handler`, as it can contain buffered events.
+    entry_added_event_handler.clean();
     // Emit a console.log message.
     console.log(some_message)
     // Wait for the log.entryAdded event to be received.
-    const event = await log_entry_promise;
+    const event = await entry_added_event_handler.next();
     // Assert the log.entryAdded event has the expected message.
     assert_equals(event.args.length, 1);
     const event_message = event.args[0];
@@ -244,17 +243,20 @@ promise_test(async () => {
 
 The event handler class has the following interface:
 ```javascript
+
 class EventHandler{
     // Create and activate the event handler for a specific event.
-    static activate(): Promise<EventHandler>;
-    // Clean the event queue, as some events can be buffered.
+    static activate(preserver_buffer: bool): Promise<EventHandler>;
+    // Clean the event queue. Can be used to ignore buffered events. Returns the cleaned events.
     clean(): EventEntry[]; 
     // Return a promise which is resolved with the next log entry once one is received.
     next(): Promise<EventEntry>;
     // Set a custom event handler. Returns a remove handler.
     on(callback: (EventEntry)=>void): ()=>void; 
 }
+
 ```
+This alternative is declined for the moment, as it can be implemented over proposed `subscribe` + `on` API.  
 
 ### Make generic event emitting in testdriver
 
