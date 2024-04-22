@@ -132,7 +132,7 @@ In this example we consider changes in [`WebDriverTestharnessExecutor.do_testhar
 
 ###### Messages from testdriver to wptrunner
 
-The communication channel between testdriver and wptrunner is set in the `do_testharness` method. Currently the messages from testdriver to wptrunner is done via long poll by calling `BaseProtocolPart.execute_async_script` which is synchronous (`async` in the name indicates that the script is wrapped in a special way before sent to the browser), and blocks processing the event loop in wptrunner, which in turn blocks the event processing while waiting for the next message form testdriver to wptrunner. To overcome this limitation, this RFC changes the wptrunner - testdriver communication channel to asynchronous non-blocking  [`BidiScriptProtocolPart.async_call_function`](https://github.com/web-platform-tests/wpt/pull/44649/files#diff-e5a8911dd97e0352b1b26d8ce6ef0a92b25378f7c9e79371a1eb1b1834bc9a8dR761) if available.  `WebDriverBidiProtocol`’s event loop should be used for message processing. This behavioral change is done only for protocols supporting BiDi.
+The communication channel between testdriver and wptrunner is set in the `do_testharness` method. Currently the messages from testdriver to wptrunner is done via long poll by calling `BaseProtocolPart.execute_async_script` which is synchronous (`async` in the name indicates that the script is wrapped in a special way before sent to the browser), and blocks processing the event loop in wptrunner, which in turn blocks the event processing while waiting for the next message form testdriver to wptrunner. To overcome this limitation, this RFC changes the wptrunner - testdriver communication channel to asynchronous non-blocking  [`BidiScriptProtocolPart.call_function`](https://github.com/web-platform-tests/wpt/pull/44649/files#diff-e5a8911dd97e0352b1b26d8ce6ef0a92b25378f7c9e79371a1eb1b1834bc9a8dR761) if available.  `WebDriverBidiProtocol`’s event loop should be used for message processing. This behavioral change is done only for protocols supporting BiDi.
 
 ###### Processing asynchronous actions
 
@@ -157,7 +157,7 @@ If `BidiEventsProtocolPart` is available, wptrunner sets a callback via [`add_ev
 
 ###### `BidiScriptProtocolPart`
 
-[`BidiScriptProtocolPart`](https://github.com/web-platform-tests/wpt/pull/44649/files#diff-47192f72de48b834a50992ada793229686299b5165612c2d97af6811764514c7R358) is required for implementing asynchronous poll messages from testdriver. It implements async [`async_call_function`](https://github.com/web-platform-tests/wpt/pull/44649/files#diff-e5a8911dd97e0352b1b26d8ce6ef0a92b25378f7c9e79371a1eb1b1834bc9a8dR142) action.
+[`BidiScriptProtocolPart`](https://github.com/web-platform-tests/wpt/pull/44649/files#diff-47192f72de48b834a50992ada793229686299b5165612c2d97af6811764514c7R358) is required for implementing asynchronous poll messages from testdriver. It implements async [`call_function`](https://github.com/web-platform-tests/wpt/pull/44649/files#diff-e5a8911dd97e0352b1b26d8ce6ef0a92b25378f7c9e79371a1eb1b1834bc9a8dR142) action.
 
 ###### Alternative
 
