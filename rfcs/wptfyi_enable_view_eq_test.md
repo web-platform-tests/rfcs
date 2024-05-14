@@ -8,10 +8,7 @@ This RFC proposes enabling a new "test" view mode. This mode introduces a new me
 ### Key Changes
 Currently, the feature is behind a feature flag that is set to false by default in production.
 * **Frontend Changes:**
-   - Rename "Default View" to "Subtest View" to match the URL parameter `view=subtest` and better explain what it is. (It will still remain the default view.)
-   - When looking at a run for Interop features, add a third button named "Test View". This would be in addition to existing "Interop View" and "Subtest View" buttons.
-   - When looking at a run for everything else, add two buttons. "Subtest View" and "Test View"
-These changes will be behind a feature flag for view=test. The default view will not change.
+No frontend changes. This is will only be reachable by a query parameter that the end user must construct.
 
 ### Background about "test" View Mode Behavior
 * Test pass is only registered when the number of passed subtests equals the total number of subtests.
