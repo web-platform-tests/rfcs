@@ -15,7 +15,7 @@ No frontend changes. This is will only be reachable by a query parameter that th
 * Percentages are not displayed, only raw counts at the directory level.
 * Individual test level display:
     - Shows "PASS" only when subtest passes equal total subtests.
-    - Shows "FAIL" when `status == OKAY` but subtest passes do not equal total subtests.
+    - Shows "FAIL" when `status == OK` but subtest passes do not equal total subtests.
     - Existing `STATUS_ABBREVIATIONS` mappings used for other statuses.
     - "FAIL" as a fallback for any unmapped statuses.
 
