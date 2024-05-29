@@ -22,7 +22,7 @@ The following are the benefits of using the GitHub registry for hosting:
     - The workflow can be manually invoked,
     - or it can be further automated to deploy any changes that land.
 
-- We can use the chane to change the versioning scheme to use integer numbers.
+- We can take the opportunity to change the versioning scheme to use integer numbers.
 
 The following PR implements changes to use the image from GitHub registry
 instead of the Docker Hub one
