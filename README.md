@@ -37,9 +37,15 @@ Cases where the RFC process need *not* be used:
     * Risks
  - The proposal is discussed by the community and it is assumed that the
    proposal will change in accordance with that discussion.
- - In the case of no substantive disagreement the RFC is considered accepted
-   after 1 week. If any participant requests it, the comment period is extended
-   to 2 weeks.
+ - At least one review approval is required to merge a PR. For changes that
+   may impact downstream WPT consumers more approvals should be sought, or at
+   least a clear acknowledgement from those consumers that this change can be
+   accommodated in their workflows.
+ - If reviewers or downstream consumers are not responsive after at least two
+   weeks, the PR should be added to the monthly [WPT infra meeting](https://github.com/web-platform-tests/wpt-notes) to ensure it gets discussed. Anyone is welcome to file issues in that repo to request the discussion of an RFC.
+ - After review approval(s) and in the case of no substantive disagreement, the
+   RFC is considered accepted 1 week after the first approval. If any participant
+   requests it, the comment period is extended to 2 weeks.
  - If substantive disagreement remains, then the issue is escalated to the
    [core team](https://github.com/orgs/web-platform-tests/teams/wpt-core-team/)
    for a decision:
