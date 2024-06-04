@@ -15,8 +15,6 @@ used in taskcluster being outdated as documented in [this PR](https://github.com
 The following are the benefits of using the GitHub registry for hosting:
 
 - It is [hosted on GitHub](https://github.com/web-platform-tests/wpt/packages) together with the wpt repository.
-- Publishing is possible by any project member who has the write permissions to the
-  repository.
 - Publishing is possible [via GitHub Actions](https://github.com/web-platform-tests/wpt/blob/master/.github/workflows/docker.yml):
 
     - The workflow can be manually invoked,
@@ -31,6 +29,24 @@ tools/docker/frontend.py.
 
 This RFC also proposes to change the version numbers to be integers starting
 with `1`.
+
+### Permissions
+
+The following permissions shall apply to publishing of the image and Dockerfile changes:
+
+* Registry permissions (**this part needs to be configured by the project admin on [this page](https://github.com/orgs/web-platform-tests/packages/container/wpt/settings)**):
+  * Default inheritance of permissions from the repository should be disabled and the access needs to be provided to:
+    * The [admin](https://github.com/orgs/web-platform-tests/teams/admins) team
+    * The [core](https://github.com/orgs/web-platform-tests/teams/wpt-core-team) team
+    * the github workflows ([docs](https://docs.github.com/en/packages/learn-github-packages/about-permissions-for-github-packages#maintaining-access-to-packages-in-github-actions-workflows))
+
+* Dockerfile changes
+  * Use CODEOWNERS to require reviews from the admins and core teams.
+
+### Download time
+
+We measured the download time for Docker Hub and Github from a TaskCluster job
+and didn't see any regression (both jobs took approx ~48 seconds).
 
 ## Risks
 
