@@ -40,8 +40,8 @@ The following permissions shall apply to publishing of the image and Dockerfile 
     * The [core](https://github.com/orgs/web-platform-tests/teams/wpt-core-team) team
     * the github workflows ([docs](https://docs.github.com/en/packages/learn-github-packages/about-permissions-for-github-packages#maintaining-access-to-packages-in-github-actions-workflows))
 
-* Dockerfile changes
-  * Use CODEOWNERS to require reviews from the admins and core teams.
+* `Dockerfile` and `.taskcluster.yml` changes
+  * Use CODEOWNERS to require reviews for changes in these files from the admins and core teams.
 
 ### Download time
 
