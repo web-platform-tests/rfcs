@@ -41,8 +41,14 @@ Cases where the RFC process need *not* be used:
    may impact downstream WPT consumers more approvals should be sought, or at
    least a clear acknowledgement from those consumers that this change can be
    accommodated in their workflows.
+ - Anyone is welcome to add the PR to the monthly
+   [WPT infra meeting](https://github.com/web-platform-tests/wpt-notes) to
+   have a dsicsussion about it. To add an RFC to the agenda, tag the PR with the
+   `agenda+` label.
  - If reviewers or downstream consumers are not responsive after at least two
-   weeks, the PR should be added to the monthly [WPT infra meeting](https://github.com/web-platform-tests/wpt-notes) to ensure it gets discussed. Anyone is welcome to file issues in that repo to request the discussion of an RFC.
+   weeks, the PR should be added to the monthly
+   [WPT infra meeting](https://github.com/web-platform-tests/wpt-notes) to
+   ensure it gets discussed.
  - After review approval(s) and in the case of no substantive disagreement, the
    RFC is considered accepted 1 week after the first approval. If any participant
    requests it, the comment period is extended to 2 weeks.
