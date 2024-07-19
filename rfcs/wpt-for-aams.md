@@ -1,4 +1,4 @@
-# RFC XX: WPT testing for AAMs
+# RFC 204: WPT testing for AAMs
 
 ## Summary
 
