@@ -18,7 +18,7 @@ This RFC proposes the creation of a new repository within the web-platform-tests
     * Clear guidelines for approvals and time limits will be established.
 * **Enumerations:**
     * To standardize reasons for hiding scores, the following enumerations will be used in feature YAML files:
-        * `incomplete`: Less than 50% of the feature is tested by any reasonable coverage metric..
+        * `incomplete`: Less than 50% of the feature is tested by any reasonable coverage metric.
         * `unrelated_feature`: Issues with an unrelated feature affect more than 10% of the tests.
         * `infra`: WPT infrastructure issues affect more than 10% of the tests.
         * `other`: Other valid reason (must include a detailed description).
