@@ -2,10 +2,10 @@
 
 ## Summary
 
-Add a `step_wait_promise(promise, timeout=default_timeout)` method to the wpt `Test`
-object. This method waits for the given `promise` to resolve within the specified
-`timeout`. If the promise is not resolved within the timeout period, it raises an
-assertion error: `Timed out waiting on condition`.
+Add a `step_wait_promise(promise, description, timeout=default_timeout)` method to 
+the wpt `Test` object. This method waits for the given `promise` to resolve within 
+the specified `timeout`. If the promise is not resolved within the timeout period, it 
+raises an assertion error: `Timed out waiting on condition`.
 
 ## Details
 
