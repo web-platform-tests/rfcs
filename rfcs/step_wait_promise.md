@@ -18,6 +18,8 @@ raises an assertion error: `Timed out waiting on condition`.
         * The function waits for the given `promise` to resolve.
         * If the `promise` resolves within the `timeout`, the function returns the
           resolved value of the promise.
+        * If the `promise` is rejected within the `timeout`, an `AssertionError` is
+          raised with the rejection reason, `description` and stacktrace.
         * If the `promise` does not resolve within the `timeout`, an `AssertionError`
           is raised with the "Timed out waiting on condition", `description` and
           stacktrace.
