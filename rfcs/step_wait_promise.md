@@ -31,9 +31,8 @@ raises an assertion error: `Timed out waiting on condition`.
 * Improved efficiency compared to `step_wait`: Eliminates the need for periodic
   checks with intervals, allowing the test to proceed immediately once the awaited
   event occurs, potentially leading to faster test execution. Even though interval
-  of
-  100ms seems to be small enough, it can still accumulate to a significant amount of
-  time.
+  of 100ms seems to be small enough, it can still accumulate to a significant amount 
+  of time.
 
 ## Examples
 
