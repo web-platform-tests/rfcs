@@ -29,6 +29,6 @@ https://github.com/paroga/cbor-js/blob/master/cbor.js
 Users of these libraries may need to update them from time to time if new
 functionality or fixes are required. This is likely not a big risk.
 
-The HPKE library proposed may require inclusion some other dependent
+The HPKE library proposed may require inclusion of some other dependent
 libraries and uses deno to build into a single JavaScript file. Perhaps
-we can build it in ways similar to other web-platform-tests.
+it's simplest to commit the single transpiled JavaScript file.
