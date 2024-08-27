@@ -21,7 +21,7 @@ tools/ directory:
 An Ed25519 Python implementation:
 https://github.com/pyca/ed25519/blob/main/ed25519.py
 
-The Ed25519 library is intended to be used by test code running on wptserve that may receive an Ed25519 private key and message to sign that message, or a public key and signature to verify that signature.
+The Ed25519 library is intended to be used by test code running on wptserve that may receive an Ed25519 private key and message to sign that message, or a public key and signature to verify that signature.  This library is CC0 licensed.
 
 An HPKE JavaScript implementation:
 https://github.com/dajiaji/hpke-js
@@ -29,7 +29,7 @@ https://github.com/dajiaji/hpke-js
 A CBOR JavaScript implementation:
 https://github.com/paroga/cbor-js/blob/master/cbor.js
 
-The HPKE and CBOR libraries are used by test code to decrypt and decode data coming from JavaScript APIs to verify their contents, and used by test code to encode and encrypt response data.
+The HPKE and CBOR libraries are used by test code to decrypt and decode data coming from JavaScript APIs to verify their contents, and used by test code to encode and encrypt response data.  These libraries and all of their included dependencies are MIT licensed.
 
 ## Risks
 
