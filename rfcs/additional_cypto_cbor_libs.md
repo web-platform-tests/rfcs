@@ -3,15 +3,15 @@
 ## Summary
 
 Several new web APIs require additional cryptography and CBOR libraries to
-properly test, for example the Protected Audience Additional Bids feature [0]
-uses Ed25519 signatures, the Protected Audience Key-Value services [1] and
-Bidding and Auction services [2] use CBOR data encoding and HPKE encryption.
+properly test, for example the [Protected Audience Additional Bids feature](https://github.com/WICG/turtledove/blob/main/FLEDGE.md#623-additional-bid-keys )
+uses Ed25519 signatures, the [Protected Audience Key-Value services](https://github.com/WICG/turtledove/blob/main/FLEDGE_Key_Value_Server_API.md#query-api-version-2) and
+[Bidding and Auction services](https://github.com/WICG/turtledove/blob/main/FLEDGE_browser_bidding_and_auction_API.md) use CBOR data encoding and HPKE encryption.
 These additional libraries are to support cryptography and the CBOR
 protocols not otherwise supported in JavaScript or Python, namely Ed25519,
 HPKE, and CBOR. There are open source libraries commonly available that
 implement these protocols and have compatible licenses. This RFC proposes
 adding such libraries to the tools/ directory (for the Python library) and
-to a <spec>/third_party/ directory [3] (for the JavaScript libraries) so
+to a [<spec>/third_party/ directory (for the JavaScript libraries)](https://github.com/web-platform-tests/rfcs/issues/46#issuecomment-587707539) so
 that web-platform-tests may exercise and verify proper compatible
 implementations of these new web APIs.
 
@@ -24,7 +24,7 @@ https://github.com/pyca/ed25519/blob/main/ed25519.py
 
 The Ed25519 library is intended to be used by test code running on wptserve that may receive an Ed25519 private key and message to sign that message, or a public key and signature to verify that signature.  This library is CC0 licensed.
 
-We're proposing adding these libraries to a third_party/ subdirectory under our spec directory as per this advice [3]:
+We're proposing adding these libraries to a third_party/ subdirectory under our spec directory as per [this advice](https://github.com/web-platform-tests/rfcs/issues/46#issuecomment-587707539):
 
 An HPKE JavaScript implementation:
 https://github.com/dajiaji/hpke-js
@@ -42,8 +42,3 @@ Users of these libraries may need to update them from time to time if new
 functionality or fixes are required. This is likely not a big risk.
 
 The HPKE library, once built/transpiled into one JavaScript file, may be slightly harder to debug, but we'll disable minification when building.
-
-[0] https://github.com/WICG/turtledove/blob/main/FLEDGE.md#623-additional-bid-keys 
-[1] https://github.com/WICG/turtledove/blob/main/FLEDGE_Key_Value_Server_API.md#query-api-version-2
-[2] https://github.com/WICG/turtledove/blob/main/FLEDGE_browser_bidding_and_auction_API.md
-[3] https://github.com/web-platform-tests/rfcs/issues/46#issuecomment-587707539
