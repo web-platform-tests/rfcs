@@ -38,8 +38,8 @@ Cases where the RFC process need *not* be used:
  - The proposal is discussed by the community and it is assumed that the
    proposal will change in accordance with that discussion.
  - At least one review approval is required to merge a PR. For changes that
-   may impact downstream WPT consumers more approvals should be sought, or at
-   least a clear acknowledgement from those consumers that this change can be
+   may impact downstream WPT consumers there is an additional requirement
+   of agreement from those consumers that the proposed change can be
    accommodated in their workflows.
  - Anyone is welcome to add the PR to the monthly
    [WPT infra meeting](https://github.com/web-platform-tests/wpt-notes) to
