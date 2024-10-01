@@ -51,7 +51,10 @@ Cases where the RFC process need *not* be used:
    ensure it gets discussed.
  - After review approval(s) and in the case of no substantive disagreement, the
    RFC is considered accepted 1 week after the first approval. If any participant
-   requests it, the comment period is extended to 2 weeks.
+   requests it, more time can be granted to review the proposal. This will not be
+   less than one week but may be longer (e.g. until the next WPT infra meeting).
+   However if no feedback is forthcoming by the agreed date, the proposal may
+   be considered accepted.
  - If substantive disagreement remains, then the issue is escalated to the
    [core team](https://github.com/orgs/web-platform-tests/teams/wpt-core-team/)
    for a decision:
