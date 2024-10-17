@@ -81,7 +81,7 @@ Even though the `TestExecutor` needs information about whether to activate BiDi 
 
 #### Alternatives
 
-* [Add metadata to `.ini` files](add-metadata-to-.ini-files).
+* [Add metadata to `.ini` files](#add-metadata-to-ini-files).
 
 #### Lint rules
 
