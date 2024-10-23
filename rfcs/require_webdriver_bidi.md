@@ -2,7 +2,7 @@
 
 ## Summary
 
-To enable the [testdriver BiDi API](https://github.com/web-platform-tests/rfcs/blob/master/rfcs/testdriver_bidi.md) for specific WPT tests, this RFC proposes a new metadata tag: `require_webdriver_bidi`. This tag, applicable to HTML and JS files, would let test runners choose between [**WebDriverProtocol**](https://github.com/web-platform-tests/wpt/blob/9c76757f5332678f9952f6ccb3824f62d30eca1f/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L644) and [**WebDriverBidiProtocol**](https://github.com/web-platform-tests/wpt/blob/9c76757f5332678f9952f6ccb3824f62d30eca1f/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L736), or leverage this metadata in implementation-specific protocol and bindings on the test bases. This approach avoids enabling testdriver BiDi for all tests.
+To enable the [testdriver BiDi API](https://github.com/web-platform-tests/rfcs/blob/master/rfcs/testdriver_bidi.md) for specific WPT tests, this RFC proposes a new metadata tag: `require_webdriver_bidi`. This tag, applicable to HTML and JS files, would let test runners choose between [**WebDriverProtocol**](https://github.com/web-platform-tests/wpt/blob/9c76757f5332678f9952f6ccb3824f62d30eca1f/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L644) and [**WebDriverBidiProtocol**](https://github.com/web-platform-tests/wpt/blob/9c76757f5332678f9952f6ccb3824f62d30eca1f/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L736), or leverage this metadata in implementation-specific protocol selection and bindings on the test bases. This approach avoids enabling testdriver BiDi for all tests.
 
 [Prototype](https://github.com/web-platform-tests/wpt/pull/48622).
 
@@ -73,7 +73,10 @@ promise_test(async () => {
 
 The `require_webdriver_bidi` property has to be passed from `SourceFile` through `TestharnessTest` to `Test`, where it can be consumed by specific test runners.
 
-The `require_webdriver_bidi` property is a flag that indicates that the test requires testdriver BiDi API support. This property is used by the test runner to determine which tests to run and how to configure the test session. Note that not having that flag does not require implementation to restrict BiDi.
+The `require_webdriver_bidi` property is a flag that indicates that the test requires testdriver BiDi API support. This property is used by the test runner to determine which tests to run and how to configure the test session.
+
+> [!NOTE]  
+> Not having that flag does not require implementation to restrict BiDi.
 
 The `require_webdriver_bidi` property can be set in the test source file, either `.html` or `.js`. The [SourceFile](https://github.com/web-platform-tests/wpt/blob/9395d384f5c69a9a3a7fc4de04249f77500b2d3f/tools/manifest/sourcefile.py#L503) object reads that property and passes it to the [TestharnessTest](https://github.com/web-platform-tests/wpt/blob/9395d384f5c69a9a3a7fc4de04249f77500b2d3f/tools/manifest/item.py#L169) object. The `TestharnessTest` object then passes the `require_webdriver_bidi` property to the `Test` object.
 
@@ -83,7 +86,7 @@ Even though the `TestExecutor` needs information about whether to activate BiDi 
 
 #### Alternatives
 
-* [Add metadata to `.ini` files](#add-metadata-to-ini-files).
+* [Add metadata to `.ini` files](add-metadata-to-.ini-files).
 
 #### Lint rules
 
