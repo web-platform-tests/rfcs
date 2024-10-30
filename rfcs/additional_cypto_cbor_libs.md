@@ -17,24 +17,45 @@ implementations of these new web APIs.
 
 ## Details
 
-We're proposing adding this library to the tools/ directory:
+### We're proposing adding these Python libraries to the tools/ directory:
 
-An Ed25519 Python implementation:
+These are all self-contained (no dependencies) pure-python libraries.
+
+##### An Ed25519 Python implementation:
 https://github.com/pyca/ed25519/blob/main/ed25519.py
 
-The Ed25519 library is intended to be used by test code running on wptserve that may receive an Ed25519 private key and message to sign that message, or a public key and signature to verify that signature.  This library is CC0 licensed.
+This Ed25519 library is intended to be used by test code running on wptserve
+that may receive an Ed25519 private key and message to sign that message, or
+a public key and signature to verify that signature.  This library is CC0 licensed.
 
-We're proposing adding these libraries to a third_party/ subdirectory under our spec directory as per [this advice](https://github.com/web-platform-tests/rfcs/issues/46#issuecomment-587707539):
+##### An HPKE Python implementation:
+https://github.com/dajiaji/pyhpke
 
-An HPKE JavaScript implementation:
+This HPKE library is intended to be used by test code running on wptserve
+that may receive an HPKE encrypted message and have to decrypt it and encrypt
+a response.  This library is MIT licensed.
+
+##### A CBOR Python implementation:
+https://github.com/agronholm/cbor2
+
+This CBOR library is intended to be used by test code running on wptserve that
+may receive an CBOR encoded message and have to decode it and encode a response.
+This library is MIT licensed.
+
+### We're proposing adding these JavaScript libraries to a third_party/ subdirectory under our spec directory as per [this advice](https://github.com/web-platform-tests/rfcs/issues/46#issuecomment-587707539):
+
+These HPKE and CBOR libraries are used by test code to decrypt and decode data
+coming from JavaScript APIs to verify their contents, and used by test code to
+encode and encrypt response data.  These libraries and all of their included
+dependencies are MIT licensed.
+
+##### An HPKE JavaScript implementation:
 https://github.com/dajiaji/hpke-js
 
 This library has some dependencies, so we're proposing building/transpiling into a single hpke.js file.
 
-A CBOR JavaScript implementation:
+##### A CBOR JavaScript implementation:
 https://github.com/paroga/cbor-js/blob/master/cbor.js
-
-The HPKE and CBOR libraries are used by test code to decrypt and decode data coming from JavaScript APIs to verify their contents, and used by test code to encode and encrypt response data.  These libraries and all of their included dependencies are MIT licensed.
 
 ## Risks
 
