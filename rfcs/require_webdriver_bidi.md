@@ -2,13 +2,15 @@
 
 ## Summary
 
-To enable the [testdriver BiDi API](https://github.com/web-platform-tests/rfcs/blob/master/rfcs/testdriver_bidi.md) for specific WPT tests, this RFC proposes a new metadata tag: `require_webdriver_bidi`. This tag, applicable to HTML and JS files, would let test runners choose between [**WebDriverProtocol**](https://github.com/web-platform-tests/wpt/blob/9c76757f5332678f9952f6ccb3824f62d30eca1f/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L644) and [**WebDriverBidiProtocol**](https://github.com/web-platform-tests/wpt/blob/9c76757f5332678f9952f6ccb3824f62d30eca1f/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L736), or leverage this metadata in implementation-specific protocol selection and bindings on the test bases. This approach avoids enabling testdriver BiDi for all tests.
+To enable the [testdriver BiDi API](https://github.com/web-platform-tests/rfcs/blob/master/rfcs/testdriver_bidi.md) for specific WPT tests, this RFC proposes a new metadata tag: `require_webdriver_bidi`. This tag, applicable to HTML and JS files, would let test runners choose between [**WebDriverProtocol**](https://github.com/web-platform-tests/wpt/blob/9c76757f5332678f9952f6ccb3824f62d30eca1f/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L644) and [**WebDriverBidiProtocol**](https://github.com/web-platform-tests/wpt/blob/9c76757f5332678f9952f6ccb3824f62d30eca1f/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L736), or leverage this metadata in implementation-specific protocol selection and bindings on the test bases. This approach does not require all the browsers to implement BiDi.
 
 [Prototype](https://github.com/web-platform-tests/wpt/pull/48622).
 
 ## Background
 
 [RFC 185](https://github.com/web-platform-tests/rfcs/blob/master/rfcs/testdriver_bidi.md) proposes adding BiDi support to  `testdriver.js`, which involves using [WebDriverBidiProtocol](https://github.com/web-platform-tests/wpt/blob/9c76757f5332678f9952f6ccb3824f62d30eca1f/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L736) instead of [WebDriverProtocol](https://github.com/web-platform-tests/wpt/blob/9c76757f5332678f9952f6ccb3824f62d30eca1f/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L644) for test runners that use the WebDriver protocol. However, this change could cause regressions in tests that don't use the testdriver BiDi API due to unintended side effects of the transport change. To address this, the `require_webdriver_bidi` flag will inform the test runner whether the given test requires the testdriver BiDi API, allowing the runner to choose the appropriate transport, if the default one does not support BiDi protocol parts.
+
+If at a certain point all the browsers implement testdriver BiDi and enable it by default, this flag can be deprecated.
 
 ## Details
 
@@ -86,7 +88,7 @@ Even though the `TestExecutor` needs information about whether to activate BiDi 
 
 #### Alternatives
 
-* [Add metadata to `.ini` files](add-metadata-to-.ini-files).
+* [Add metadata to `.ini` files](#add-metadata-to-ini-files).
 
 #### Lint rules
 
