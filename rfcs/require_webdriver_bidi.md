@@ -98,7 +98,7 @@ Some lint rules has to be added to verify is used correctly:
 
 ### Deprecating of the `require_webdriver_bidi` metadata tag
 
-Expectations are that eventually all the implementations would support BiDi either via WebDriverBiDi, or via implementation-specific bindings. At that point, the `require_webdriver_bidi` metadata tag can be deprecated. This can be done by simply removing the tag.
+Expectations are that eventually all the implementations would support BiDi either via WebDriverBiDi, or via implementation-specific bindings. At that point, the `require_webdriver_bidi` metadata tag can be removed.
 
 ## Risks
 
