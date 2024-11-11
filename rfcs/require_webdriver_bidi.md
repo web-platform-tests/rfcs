@@ -86,6 +86,8 @@ The test runner can use the `Test`’s `require_webdriver_bidi` property to dete
 
 Even though the `TestExecutor` needs information about whether to activate BiDi or not at `connect`, which happens before the runner receives the test to run, the configuration can be done at the point [the browser is configured](https://github.com/web-platform-tests/wpt/pull/48618/files#diff-0df24b5b583c460182e687f7dc7a6a79dd2cd3389bc4a96f48483f60fceb51f7R272). This data can be used later by the specific executor implementation to [decide which protocol to use](https://github.com/web-platform-tests/wpt/pull/48618/files#diff-c2f15328bc1ddfa8fb93c09ae41651e2bcfdad4f257932263a3e92c3f8deffceR248).
 
+In order to prevent [potential false-negative due to missing `require_webdriver_bidi` tag](#potential-false-negative-due-to-missing-require_webdriver_bidi-tag),  `WebDriverTestharnessExecutor` implementation should restrict using WebDriver BiDi actions, if the `require_webdriver_bidi` metadata is missing.
+
 #### Alternatives
 
 * [Add metadata to `.ini` files](#add-metadata-to-ini-files).
@@ -98,7 +100,7 @@ Some lint rules has to be added to verify is used correctly:
 
 ### Deprecating of the `require_webdriver_bidi` metadata tag
 
-Expectations are that eventually all the implementations would support BiDi either via WebDriverBiDi, or via implementation-specific bindings. At that point, the `require_webdriver_bidi` metadata tag can be removed.
+Expectations are that eventually all the implementations would support BiDi either via WebDriverBiDi, or via implementation-specific bindings. At that point, the `require_webdriver_bidi` metadata tag can be deprecated. This can be done by simply removing the tag.
 
 ## Risks
 
@@ -119,3 +121,15 @@ In this alternative approach, the `require_webdriver_bidi` metadata would be add
 ### Extract testdriver BiDi API into a separate file
 
 In this alternative, the testdriver BiDi API is extracted from testdriver. Include of the file is used as a marker to enable BiDi sessions. This alternative involves unnecessary indirections, and would require non-trivial tracking of nested includes. Separating the testdriver BiDi API from the main codebase adds complexity and maintenance challenges. It also requires careful tracking of nested includes to ensure accurate BiDi session enabling. A simpler implementation should be considered.
+
+### Add `?feature=` query parameter to `testdriver.js`
+
+Add a query parameter `?feature=bidi`. In this approach, instead of `require_webdriver_bidi` metadata, the query parameter on the included `testdriver.js` is used to indicate the test requires WebDriver BiDi. This parameter will be used by the test runner in order to decide if the given test requires WebDriver BiDi or not, and by `testdriver.js` in order to provide or not `bidi` API. This approach allows for adding more future features on-demand and to customize testdriver API based on the set of features. Also this approach addresses the risk of [potential false-negative due to missing `require_webdriver_bidi` tag](#potential-false-negative-due-to-missing-require_webdriver_bidi-tag).
+
+```javascript
+<script src="/resources/testdriver.js?features=bidi"></script>
+```
+
+```javascript
+// META: script=/resources/testdriver.js?features=bidi
+```
