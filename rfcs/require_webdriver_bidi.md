@@ -124,6 +124,8 @@ In this alternative, the testdriver BiDi API is extracted from testdriver. Inclu
 
 ### Add `?feature=` query parameter to `testdriver.js`
 
+Detailed explanation is in the [RFC 214](https://github.com/web-platform-tests/rfcs/pull/214).
+
 Add a query parameter `?feature=bidi`. In this approach, instead of `require_webdriver_bidi` metadata, the query parameter on the included `testdriver.js` is used to indicate the test requires WebDriver BiDi. This parameter will be used by the test runner in order to decide if the given test requires WebDriver BiDi or not, and by `testdriver.js` in order to provide or not `bidi` API. This approach allows for adding more future features on-demand and to customize testdriver API based on the set of features. Also this approach addresses the risk of [potential false-negative due to missing `require_webdriver_bidi` tag](#potential-false-negative-due-to-missing-require_webdriver_bidi-tag).
 
 ```javascript
