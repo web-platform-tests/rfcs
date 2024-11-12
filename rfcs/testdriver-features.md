@@ -2,15 +2,15 @@
 
 ## Summary
 
-This RFC is an alternative to [RFC 212](https://github.com/web-platform-tests/rfcs/pull/212). It proposes adding a query parameter `?feature` to `testdriver.js`. At the moment the only supported feature will be `bidi`, which will be used to enable the [testdriver BiDi API](https://github.com/web-platform-tests/rfcs/blob/master/rfcs/testdriver_bidi.md) for specific WPT tests. The feature `bidi`, applicable to HTML and JS files, would let test runners choose between [**WebDriverProtocol**](https://github.com/web-platform-tests/wpt/blob/f54cd920024da0857fdc5b036f16a7d1fd8792fd/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L587) and [**WebDriverBidiProtocol**](https://github.com/web-platform-tests/wpt/blob/f54cd920024da0857fdc5b036f16a7d1fd8792fd/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L679). This approach does not require all the browsers to implement WebDriver BiDi.
+This RFC is an alternative to [RFC 212](https://github.com/web-platform-tests/rfcs/pull/212) providing a more generic and extendable solution. It proposes adding a query parameter `?feature` to `testdriver.js` and adding a `testdriver_feature` property to the [TestgarnessTest](https://github.com/web-platform-tests/wpt/pull/49122/files#diff-8f280b64b0700ab9b4b343adabc7ff4d5ea4b1f45cb6c4bd7f50a19b21ebdb8cR169) . At the moment the only supported feature will be `bidi`, which will be used to enable the [testdriver BiDi API](https://github.com/web-platform-tests/rfcs/blob/master/rfcs/testdriver_bidi.md) for specific WPT tests. The feature `bidi`, applicable to HTML and JS files, would let test runners choose between [**WebDriverProtocol**](https://github.com/web-platform-tests/wpt/pull/49122/files#diff-c2f15328bc1ddfa8fb93c09ae41651e2bcfdad4f257932263a3e92c3f8deffceR277) and [**WebDriverBidiProtocol**](https://github.com/web-platform-tests/wpt/pull/49122/files#diff-c2f15328bc1ddfa8fb93c09ae41651e2bcfdad4f257932263a3e92c3f8deffceR279). This approach does not require all the browsers to implement WebDriver BiDi.
 
-The list of supported features can be extended by other RFCs if required.
+This approach is preferable over the [RFC 212](https://github.com/web-platform-tests/rfcs/pull/212), as it is more ergonomic and supports future extensions ergonomically. The list of supported features can be extended when required.
 
-[Prototype](TODO).
+[Prototype](https://github.com/web-platform-tests/wpt/pull/49122).
 
 ## Background
 
-[RFC 185](https://github.com/web-platform-tests/rfcs/blob/master/rfcs/testdriver_bidi.md) proposes adding BiDi support to  `testdriver.js`, which involves using [**WebDriverProtocol**](https://github.com/web-platform-tests/wpt/blob/f54cd920024da0857fdc5b036f16a7d1fd8792fd/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L587) instead of [**WebDriverBidiProtocol**](https://github.com/web-platform-tests/wpt/blob/f54cd920024da0857fdc5b036f16a7d1fd8792fd/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L679) for test runners that use the WebDriver protocol. However, this change could cause regressions in tests that don't use the testdriver BiDi API due to unintended side effects of the transport change. To address this, the query parameter `?feature=bidi` in `testdriver.js` will inform the test runner whether the given test requires the testdriver BiDi API, allowing the runner to choose the appropriate transport, if the default one does not support BiDi protocol parts.
+[RFC 185](https://github.com/web-platform-tests/rfcs/blob/master/rfcs/testdriver_bidi.md) proposes adding BiDi support to  `testdriver.js`, which involves using [**WebDriverProtocol**](https://github.com/web-platform-tests/wpt/blob/f54cd920024da0857fdc5b036f16a7d1fd8792fd/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L587) instead of [**WebDriverBidiProtocol**](https://github.com/web-platform-tests/wpt/blob/f54cd920024da0857fdc5b036f16a7d1fd8792fd/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L679) for test runners that use the WebDriver protocol. However, this change could cause regressions in tests that don't use the testdriver BiDi API due to unintended side effects of the transport change.
 
 ## Details
 
@@ -71,34 +71,30 @@ promise_test(async () => {
 
 ### Required changes
 
-#### Features
+#### `testrdriver_features`
 
-The `testrdriver_features` is a list of values of query parameters with the name `feature`, used when the `testdriver.js` is imported. It has to be passed from `SourceFile` through `TestharnessTest` to `Test`, where it can be consumed by the specific test runners.
+The `testrdriver_features` is a list of values of query parameters with the name `feature`, used when the `testdriver.js` was imported.
 
-`testdriver.js` will provide or not the `bidi` domain based on having or not the `feature=bidi` query parameter when it was included.
+#### Test driver
 
-The `feature` query parameter can be set when `testdriver.js` is included either in `.html` or `.js`. The [SourceFile](https://github.com/web-platform-tests/wpt/blob/9395d384f5c69a9a3a7fc4de04249f77500b2d3f/tools/manifest/sourcefile.py#L503) collects the features in the `testrdriver_features` list and passes it to the [TestharnessTest](https://github.com/web-platform-tests/wpt/blob/9395d384f5c69a9a3a7fc4de04249f77500b2d3f/tools/manifest/item.py#L169) object. The `TestharnessTest` object then passes the `testrdriver_features` property to the `Test` object.
+The `testdriver.js` checks if the `?feature=bidi` query parameter was included using [document.currentScript.src](https://developer.mozilla.org/en-US/docs/Web/API/Document/currentScript) like in the [prototype](https://github.com/web-platform-tests/wpt/pull/49122/files#diff-1fe2b624679a3150e5c86f84682c5901b715dad750096a524e8cb23939e5590fR16). If `bidi` was not enabled, a [descriptive error will be thrown](https://github.com/web-platform-tests/wpt/pull/49122/files#diff-1fe2b624679a3150e5c86f84682c5901b715dad750096a524e8cb23939e5590fR89-R92).
 
-The test runner can use the `Test`’s `testrdriver_features` property to determine whether to enable BiDi support for the test.
+#### Test executor
 
-Even though the `TestExecutor` needs information about whether to activate BiDi or not at `connect`, which happens before the runner receives the test to run, the configuration can be done at the point [the browser is configured](https://github.com/web-platform-tests/wpt/pull/48618/files#diff-0df24b5b583c460182e687f7dc7a6a79dd2cd3389bc4a96f48483f60fceb51f7R272). This data can be used later by the specific executor implementation to [decide which protocol to use](https://github.com/web-platform-tests/wpt/pull/48618/files#diff-c2f15328bc1ddfa8fb93c09ae41651e2bcfdad4f257932263a3e92c3f8deffceR248).
+The `feature` query parameter can be set when `testdriver.js` is included either in `.html` or `.js`. The test runner can use the `Test`’s `testrdriver_features` property to determine whether to enable BiDi support for the test.
 
-#### Lint rules
-
-Some lint rules has to be added to verify is used correctly:
-* It is unique per test file.
-* It has the correct value (either `true` or `false`).
-
-### Deprecating of the `require_webdriver_bidi` metadata tag
-
-Expectations are that eventually all the implementations would support BiDi either via WebDriverBiDi, or via implementation-specific bindings. At that point, the `require_webdriver_bidi` metadata tag can be deprecated. This can be done by simply removing the tag.
+Even though the `TestExecutor` needs information about whether to activate BiDi or not at `connect`, which happens before the runner receives the test to run, the configuration can be done at the point [the browser is configured](https://github.com/web-platform-tests/wpt/pull/49122/files#diff-0df24b5b583c460182e687f7dc7a6a79dd2cd3389bc4a96f48483f60fceb51f7R275). This data can be used later by the specific executor implementation to [decide which protocol to use](https://github.com/web-platform-tests/wpt/pull/49122/files#diff-0df24b5b583c460182e687f7dc7a6a79dd2cd3389bc4a96f48483f60fceb51f7R275).
 
 ## Risks
 
-### Having metadata in the Test is not sufficient
+### Having `testrdriver_features` in the `Test` is not sufficient
 
-`TestExecutor` needs information about whether to activate BiDi or not at `connect`, which happens before the runner receives the test metadata. This can be addressed by passing the data to implementation-specific `TestharnessExecutor` via the implementation-specific `BrowserSettings` and  like in the [example](https://github.com/web-platform-tests/wpt/pull/48618/files#diff-0df24b5b583c460182e687f7dc7a6a79dd2cd3389bc4a96f48483f60fceb51f7R269).
+`TestExecutor` needs information about whether to activate BiDi or not at `connect`, which happens before the runner receives the test metadata. This can be addressed by passing the data to implementation-specific `TestharnessExecutor` via the implementation-specific `BrowserSettings` and  like in the [example](https://github.com/web-platform-tests/wpt/pull/49122/files#diff-0df24b5b583c460182e687f7dc7a6a79dd2cd3389bc4a96f48483f60fceb51f7R269).
 
 ## Alternatives considered
 
-List of alternatives is in the [RFC 212](https://github.com/web-platform-tests/rfcs/pull/212).
+List of other alternatives is in the [RFC 212](https://github.com/web-platform-tests/rfcs/pull/212).
+
+### Always provide `bidi` API in testdriver
+
+In this alternative, the testdriver does not raise an error if the bidi feature was not enabled.This creates a risk of potential false-negative test results, if the test author forgets to add the `feature=bidi` and check the test only on the browser implementation which supports WebDriver BiDi by-default, regardless of the feature.
