@@ -71,7 +71,7 @@ promise_test(async () => {
 
 ### Required changes
 
-#### Configure testdriver.js based on the ?feature flag
+#### Configure testdriver.js based on the `?feature` flag
 
 The `testdriver.js` checks if the `?feature=bidi` query parameter was included using [document.currentScript.src](https://developer.mozilla.org/en-US/docs/Web/API/Document/currentScript) like in the [prototype](https://github.com/web-platform-tests/wpt/pull/49122/files#diff-1fe2b624679a3150e5c86f84682c5901b715dad750096a524e8cb23939e5590fR16). If `bidi` was not enabled, a [descriptive error will be thrown](https://github.com/web-platform-tests/wpt/pull/49122/files#diff-1fe2b624679a3150e5c86f84682c5901b715dad750096a524e8cb23939e5590fR22).
 
