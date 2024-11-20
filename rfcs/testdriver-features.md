@@ -16,57 +16,17 @@ This approach is preferable over the [RFC 212](https://github.com/web-platform-t
 
 ### Examples
 
-[html test](https://github.com/web-platform-tests/wpt/blob/9395d384f5c69a9a3a7fc4de04249f77500b2d3f/infrastructure/webdriver/bidi/subscription.html#L3)
+[html test](https://github.com/web-platform-tests/wpt/blob/117958ef4317d8ed16e9ea6ae63da30262f3b875/infrastructure/webdriver/bidi/subscription.html#L6)
 ```javascript
-<!DOCTYPE html>
-<meta charset="utf-8">
-<title>Test console log are present</title>
-<script src="/resources/testharness.js"></script>
-<script src="/resources/testharnessreport.js"></script>
+...
 <script src="/resources/testdriver.js?feature=bidi"></script>
-<script src="/resources/testdriver-vendor.js"></script>
-<script>
-    promise_test(async () => {
-        const some_message = "SOME MESSAGE";
-        // Subscribe to `log.entryAdded` BiDi events. This will not add a listener to the page.
-        await test_driver.bidi.log.entry_added.subscribe();
-        // Add a listener for the log.entryAdded event. This will not subscribe to the event, so the subscription is
-        // required before. The cleanup is done automatically after the test is finished.
-        const log_entry_promise = test_driver.bidi.log.entry_added.once();
-        // Emit a console.log message.
-        // Note: Lint rule is disabled in `lint.ignore` file.
-        console.log(some_message);
-        // Wait for the log.entryAdded event to be received.
-        const event = await log_entry_promise;
-        // Assert the log.entryAdded event has the expected message.
-        assert_equals(event.args.length, 1);
-        const event_message = event.args[0];
-        assert_equals(event_message.value, some_message);
-    }, "Assert testdriver can subscribe and receive events");
+...
 ```
-
+[javascript test](https://github.com/web-platform-tests/wpt/blob/117958ef4317d8ed16e9ea6ae63da30262f3b875/infrastructure/webdriver/bidi/subscription.window.js#L2)
 ```javascript
+...
 // META: script=/resources/testdriver.js?feature=bidi
-
-'use strict';
-
-promise_test(async () => {
-    const some_message = "SOME MESSAGE";
-     // Subscribe to `log.entryAdded` BiDi events. This will not add a listener to the page.
-    await test_driver.bidi.log.entry_added.subscribe();
-    // Add a listener for the log.entryAdded event. This will not subscribe to the event, so the subscription is
-    // required before. The cleanup is done automatically after the test is finished.
-    const log_entry_promise = test_driver.bidi.log.entry_added.once();
-    // Emit a console.log message.
-    // Note: Lint rule is disabled in `lint.ignore` file.
-    console.log(some_message);
-    // Wait for the log.entryAdded event to be received.
-    const event = await log_entry_promise;
-    // Assert the log.entryAdded event has the expected message.
-    assert_equals(event.args.length, 1);
-    const event_message = event.args[0];
-    assert_equals(event_message.value, some_message);
-}, "Assert testdriver can subscribe and receive events");
+...
 ```
 
 ### Required changes
