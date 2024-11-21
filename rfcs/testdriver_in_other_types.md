@@ -1,4 +1,4 @@
-# RFC 209: Support testdriver.js in other test types
+# RFC 211: Support testdriver.js in other test types
 
 ## Summary
 
@@ -17,13 +17,16 @@ However, test authors [have expressed interest] in extending testdriver.js
 support to [reftests], WPT's main source of rendering coverage.
 The features they wish to test with respect to rendering are often gated on
 user activation or require pointer input, which can't be obtained without
-testdriver.js or manual interaction:
+testdriver.js or manual interaction.
+The table below lists some use cases, and (if applicable) tests already written:
 
 | Tests | testdriver.js usage | Purpose |
 | --- | --- | --- |
 | [`fullscreen/`][1] | `bless()` | Provide [required transient activation][2] |
 | [`customizable-select/`][3] | `bless()`, `click()` | Provide transient activation [required to show `<select>` pickers][4] |
 | Various [`css/`][5] | `Actions().pointerMove()` | Exercise `:hover` styles |
+| TBD | TBD | Editing caret rendering |
+| TBD | TBD | Spelling/grammar/etc markers |
 
 * The `customizable-select/` tests are confined to [Chromium's
   `wpt_internal/`][6] because only Chromium's `run_web_tests.py` and
@@ -67,10 +70,13 @@ scripts:
 </script>
 ```
 
-There are no other changes to (print-)reftest or crashtest markup or [test
-completion behavior].
+There are no other changes to (print-)reftest or crashtest markup.
 
-[test completion behavior]: https://web-platform-tests.org/writing-tests/reftests.html#controlling-when-comparison-occurs
+Because the [default completion behavior][completion-behavior] is not
+well-ordered with respect to arbitrary testdriver calls, testdriver in
+non-testharness tests will only be supported with `class=(ref)test-wait`.
+
+[completion-behavior]: https://web-platform-tests.org/writing-tests/reftests.html#controlling-when-comparison-occurs
 
 ### Manifest Format Changes
 
@@ -115,8 +121,9 @@ without needing to re-parse test files themselves.
 
 ### Lint Tool
 
-The [`TESTDRIVER-IN-UNSUPPORTED-TYPE` rule][8] will become obsolete and can be
-removed.
+* The [`TESTDRIVER-IN-UNSUPPORTED-TYPE` rule][8] will become obsolete and can
+  be removed.
+* Add a new rule to enforce testdriver is used with `class=(ref)test-wait`.
 
 [8]: https://github.com/web-platform-tests/wpt/blob/290c27a84c2e630458687e757555dfe88b0cefc0/tools/lint/rules.py#L282-L284
 
@@ -124,9 +131,20 @@ removed.
 
 * Browser vendors that use custom test runners or non-WebDriver protocols may
   not be able to run the new tests without additional porting effort.
-  It seems unlikely that significant proportions of (print-)reftests and
-  crashtests will require testdriver in the future, so simply skipping those
-  tests should not appreciably decrease coverage from the status quo.
+  As a concrete example, Gecko runs reftests using an internal endpoint, which
+  is not set up to work with a testdriver event loop.
+  For these vendors, an acceptable workaround might be to fall back to the
+  WebDriver reftest implementation, which only requires an ["execute async
+  script" implementation][execute-async-script].
+* Even with testdriver support, some APIs may still be challenging to test
+  reliably.
+  For example, the classic `<select>` picker in mainstream browsers is rendered
+  in a separate popup window that won't be captured in a reftest screenshot.
+  In those cases, testdriver support can still help drive additional
+  interoperability and infrastructure improvements that may be required to make
+  those features fully testable.
 * Opening up testdriver to the other test types may encourage authors to write
   unnecessarily JavaScript-heavy tests.
   Test reviewers should exercise their judgement in these cases.
+
+[execute-async-script]: https://github.com/web-platform-tests/wpt/blob/f3dcc205a202467a922386036791372cd3e372fd/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L969
