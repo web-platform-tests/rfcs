@@ -80,8 +80,8 @@ non-testharness tests will only be supported with `class=(ref)test-wait`.
 
 ### Manifest Format Changes
 
-Similar to testharness manifest items, items for the other types may set a
-boolean `testharness` field in its "extras":
+Like testharness manifest items, any (print-)reftest or crashtest item that
+uses testdriver must set a `testdriver: true` field in its "extras":
 
 ```diff json
  {
