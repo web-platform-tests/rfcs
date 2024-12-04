@@ -45,7 +45,7 @@ Even though the `TestExecutor` needs information about whether to activate BiDi 
 
 ## Risks
 
-### Having `testrdriver_features` in the `Test` is not sufficient
+### Having `testdriver_features` in the `Test` is not sufficient
 
 `TestExecutor` needs information about whether to activate BiDi or not at `connect`, which happens before the runner receives the test metadata. This can be addressed by passing the data to implementation-specific `TestharnessExecutor` via the implementation-specific `BrowserSettings` and  like in the [example](https://github.com/web-platform-tests/wpt/pull/49122/files#diff-0df24b5b583c460182e687f7dc7a6a79dd2cd3389bc4a96f48483f60fceb51f7R269).
 
