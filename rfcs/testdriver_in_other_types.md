@@ -134,8 +134,9 @@ without needing to re-parse test files themselves.
   As a concrete example, Gecko runs reftests using an internal endpoint, which
   is not set up to work with a testdriver event loop.
   For these vendors, an acceptable workaround might be to fall back to the
-  WebDriver reftest implementation, which only requires an ["execute async
-  script" implementation][execute-async-script].
+  WebDriver reftest implementation, which only requires ["execute async
+  script"][execute-async-script] and ["take screenshot"][take-screenshot]
+  implementations.
 * Even with testdriver support, some APIs may still be challenging to test
   reliably.
   For example, the classic `<select>` picker in mainstream browsers is rendered
@@ -148,3 +149,4 @@ without needing to re-parse test files themselves.
   Test reviewers should exercise their judgement in these cases.
 
 [execute-async-script]: https://github.com/web-platform-tests/wpt/blob/f3dcc205a202467a922386036791372cd3e372fd/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L969
+[take-screenshot]: https://github.com/web-platform-tests/wpt/blob/f3dcc205a202467a922386036791372cd3e372fd/tools/wptrunner/wptrunner/executors/executorwebdriver.py#L1079
