@@ -35,9 +35,9 @@ This approach is preferable over the [RFC 212](https://github.com/web-platform-t
 
 The `testdriver.js` checks if the `?feature=bidi` query parameter was included using [document.currentScript.src](https://developer.mozilla.org/en-US/docs/Web/API/Document/currentScript) like in the [prototype](https://github.com/web-platform-tests/wpt/pull/49122/files#diff-1fe2b624679a3150e5c86f84682c5901b715dad750096a524e8cb23939e5590fR16). If `bidi` was not enabled, a [descriptive error will be thrown](https://github.com/web-platform-tests/wpt/pull/49122/files#diff-1fe2b624679a3150e5c86f84682c5901b715dad750096a524e8cb23939e5590fR22).
 
-#### Add `testrdriver_features` to TestharnessTest
+#### Add `testdriver_features` to TestharnessTest
 
-This RFC proposes adding `testrdriver_features` to [`TestharnessTest`](https://github.com/web-platform-tests/wpt/pull/49122/files#diff-8f280b64b0700ab9b4b343adabc7ff4d5ea4b1f45cb6c4bd7f50a19b21ebdb8cR169) so that executors can get the list of features declared by a test. The list is populated by parsing the `feature` query param from the `testdriver.js` imports used by a test. Currently, only the `bidi` feature is supported.
+This RFC proposes adding `testdriver_features` to [`TestharnessTest`](https://github.com/web-platform-tests/wpt/pull/49122/files#diff-8f280b64b0700ab9b4b343adabc7ff4d5ea4b1f45cb6c4bd7f50a19b21ebdb8cR169) so that executors can get the list of features declared by a test. The list is populated by parsing the `feature` query param from the `testdriver.js` imports used by a test. Currently, only the `bidi` feature is supported.
 
 #### (implementation-specific) Set up WebDriver BiDi in the test executor if needed
 
@@ -48,6 +48,10 @@ Even though the `TestExecutor` needs information about whether to activate BiDi 
 ### Having `testdriver_features` in the `Test` is not sufficient
 
 `TestExecutor` needs information about whether to activate BiDi or not at `connect`, which happens before the runner receives the test metadata. This can be addressed by passing the data to implementation-specific `TestharnessExecutor` via the implementation-specific `BrowserSettings` and  like in the [example](https://github.com/web-platform-tests/wpt/pull/49122/files#diff-0df24b5b583c460182e687f7dc7a6a79dd2cd3389bc4a96f48483f60fceb51f7R269).
+
+### `testdriver.js` is included in a subresource
+
+The use of `testdriver.js` within a subresource presents a challenge. Both the main resource and the subresource must specify the same features, which is hard to verify due to the lack of a complete picture of subresource usage. The most problematic scenario would be if the subresource enabled bidi APIs without the top-level test opting in (e.g., in tests against implementations where the flag is ineffective in wptrunner). Currently, this is preventable because all testdriver commands go through the top-level script, but once BiDi can be used for wptrunner itself, it could become a problem for other features.
 
 ## Alternatives considered
 
