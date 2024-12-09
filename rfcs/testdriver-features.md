@@ -6,7 +6,7 @@ This RFC is an alternative to [RFC 212](https://github.com/web-platform-tests/rf
 
 The query parameter `feature` takes a single value, which is a string representing a feature name. Feature names are compared by case-sensitive string matching. Multiple features are represented as multiple `feature` parameters for example `testdriver.js?feature=bidi&feature=SOME_OTHER_FEATURE`. This RFC only defines the `bidi` feature; future RFCs may add additional features.
 
-An implementation may define extension query parameters or features. These parameters or features must have a single colon ":" character. The part before the colon is the prefix; this is typically the same for all extensions specific to a given implementation and should be unique for a given implementation. For example `testdriver.js?feature=VENDOR_PREFIX:VENDOR_SPECIFIC_FEATURE&VENDOR_PREFIX:VENDOR_SPECIFIC_QUERY_PARAMETER=some_value`.
+An implementation may define extension features. These features must have a single colon ":" character. The part before the colon is the prefix; this is typically the same for all extensions specific to a given implementation and should be unique for a given implementation. For example `testdriver.js?feature=VENDOR_PREFIX:VENDOR_SPECIFIC_FEATURE`.
 
 This approach is preferable over the [RFC 212](https://github.com/web-platform-tests/rfcs/pull/212), as it is more ergonomic and supports future extensions ergonomically. The list of supported features can be extended when required.
 
