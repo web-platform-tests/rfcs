@@ -21,13 +21,6 @@ implementations of these new web APIs.
 
 These are all self-contained (no dependencies) pure-python libraries.
 
-##### An Ed25519 Python implementation:
-https://github.com/pyca/ed25519/blob/main/ed25519.py
-
-This Ed25519 library is intended to be used by test code running on wptserve
-that may receive an Ed25519 private key and message to sign that message, or
-a public key and signature to verify that signature.  This library is CC0 licensed.
-
 ##### An HPKE Python implementation:
 https://github.com/dajiaji/pyhpke
 
@@ -53,9 +46,19 @@ dependencies are MIT licensed.
 https://github.com/dajiaji/hpke-js
 
 This library has some dependencies, so we're proposing building/transpiling into a single hpke.js file.
+This library is MIT licensed.
 
 ##### A CBOR JavaScript implementation:
 https://github.com/paroga/cbor-js/blob/master/cbor.js
+
+This library is MIT licensed.
+
+##### An Ed25519 JavaScript implementation:
+https://github.com/paulmillr/noble-ed25519
+
+This Ed25519 library is intended to be used by JavaScript test code
+that may receive an Ed25519 private key and message to sign that message, or
+a public key and signature to verify that signature.  This library is MIT licensed.
 
 ## Risks
 
