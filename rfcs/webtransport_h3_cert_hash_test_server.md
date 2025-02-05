@@ -1,4 +1,4 @@
-# RFC 215: WebTransport over HTTP/3 Test Server that uses a self-signed certificate for authentification wit serverCertificateHashes
+# RFC 216: WebTransport over HTTP/3 Test Server that uses a self-signed certificate for authentication with serverCertificateHashes
 
 ## Summary
 
