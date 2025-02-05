@@ -1,4 +1,4 @@
-# RFC XXX: Migrate Python vendoring to vendoring
+# RFC 218: Migrate Python vendoring to vendoring
 
 ## Summary
 
