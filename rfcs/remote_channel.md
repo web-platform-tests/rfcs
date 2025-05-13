@@ -558,9 +558,9 @@ test.html
 ```html
 <!doctype html>
 <title>call example</title>
-<script src="/resources/testharness.js">
-<script src="/resources/testharnessreport.js">
-<script src="/resources/channel.js">
+<script src="/resources/testharness.js"></script>
+<script src="/resources/testharnessreport.js"></script>
+<script src="/resources/channel.sub.js"></script>
 
 <script>
 promise_test(async t => {
