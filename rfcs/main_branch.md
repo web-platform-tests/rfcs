@@ -53,7 +53,7 @@ There are approximately 200 references to the string 'master' in the wpt.fyi cod
 
 #### Default branch name
 
-wpt.fyi already has 'main' as its primary branch name in GitHub.
+wpt.fyi already has 'main' as its default branch name in GitHub.
 
 ### WPT
 
@@ -61,8 +61,8 @@ wpt.fyi already has 'main' as its primary branch name in GitHub.
 
 #### Default branch name
 
-Today wpt.fyi has 'master' as its primary branch name in GitHub. Changing this to e.g. 'main' would
-have similar steps [as for wpt.fyi](#wpt.fyi) (e.g. changing the primary GitHub
+Today wpt.fyi has 'master' as its default branch name in GitHub. Changing this to e.g. 'main' would
+have similar steps [as for wpt.fyi](#wpt.fyi) (e.g. changing the default GitHub
 branch, branch protection, etc), but with more complexity due to having more continuous integration
 (CI) systems and many downstream consumers.
 
