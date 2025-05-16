@@ -51,33 +51,15 @@ There are approximately 200 references to the string 'master' in the wpt.fyi cod
 
 - 4 in webdriver/
 
-#### Primary branch name
+#### Default branch name
 
-~~Today wpt.fyi has 'master' as its primary branch name in GitHub. Changing this to e.g. 'main'
-would require at least:~~
-
-- ~~Creating the new branch ('git branch -m master main; git push -u origin main'),~~
-
-- ~~Changing the primary branch in GitHub,~~
-
-- ~~Editing all open pull requests (currently only 5) to have 'main' as their target,~~
-
-- ~~Switching the branch protection rules to apply to 'main', and~~
-
-- ~~Updating the CI workflows (e.g. \`.github/workflows/ci.yml\`) to run on the new branch.~~
-
-- ~~Deleting the master branch~~
-
-~~There is also a reference to 'master' in the gcloud deployment steps in the Makefile.~~
-
-~~I am not aware of any downstream consumers of the branch name for wpt.fyi, so we could likely do
-the introduction of 'main' as a mostly-atomic move with no prerequisites.~~
+wpt.fyi already has 'main' as its primary branch name in GitHub.
 
 ### WPT
 
 [https://github.com/web-platform-tests/wpt](https://github.com/web-platform-tests/wpt)
 
-#### Primary branch name
+#### Default branch name
 
 Today wpt.fyi has 'master' as its primary branch name in GitHub. Changing this to e.g. 'main' would
 have similar steps [as for wpt.fyi](#wpt.fyi) (e.g. changing the primary GitHub
@@ -223,10 +205,6 @@ The ones I am aware of are:
 
   - These would be difficult to update ahead of time; they could possibly be removed entirely and
     rely on the default branch.
-
-- w3c-test.org:
-
-  - This may also pull directly from master like wpt.live, unknown.
 
 - There is also the web-test runner, not sure if that has any dependencies on WPT branch names.
 
