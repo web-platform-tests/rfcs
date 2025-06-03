@@ -1,4 +1,4 @@
-# RFC XXX: Remove implicit session creation for webdriver client
+# RFC 224: Remove implicit session creation for webdriver client
 
 ## Summary
 
