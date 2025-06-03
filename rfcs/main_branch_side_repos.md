@@ -1,4 +1,4 @@
-# RFC #XX: Rename `master` branch to `main` in non-test repositories
+# RFC #225: Rename `master` branch to `main` in non-test repositories
 
 ## Summary
 
