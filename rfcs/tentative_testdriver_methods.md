@@ -25,5 +25,8 @@ To answer these questions, it would be helpful if browser vendors could collabor
   At the very least, other vendors may wish to contribute tests which exercise the implementation to ensure it fits their needs before agreeing to a final specification.
 
 ## Risks
-Methods could be added which never end up being specified, resulting in cruft and non-standardised functionality.
-This is not a significant risk to the web at large because these methods only impact tests and the tests must be marked tentative, preventing them from being considered for Interop scoring, for example.
+1. Methods could be added which never end up being specified, resulting in cruft and non-standardised functionality.
+  This is not a significant risk to the web at large because these methods only impact tests and the tests must be marked tentative, preventing them from being considered for Interop scoring, for example.
+2. The API could change significantly before it becomes finalized, with many tests depending on the tentative API.
+  This could mean that migrating the tests to the final API requires significant effort.
+3. Because of the lack of specification, other vendors interested in ensuring interoperability with the feature being tested might have to reverse engineer how the tentative API is intended to function.
