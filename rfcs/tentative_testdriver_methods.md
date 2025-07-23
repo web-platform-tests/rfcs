@@ -1,7 +1,7 @@
 # RFC 226: Tentative testdriver methods
 
 ## Summary
-Allow tentative methods to be added to testdriver.js that are not yet included in the WebDriver or WebDriver BiDi specifications.
+Allow tentative methods to be added to testdriver.js which use WebDriver endpoints not yet defined in a specification.
 This should only be allowed where there is consensus between multiple browser vendors and where there is clear progress towards a specification.
 
 ## Background
