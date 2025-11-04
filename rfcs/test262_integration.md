@@ -8,7 +8,7 @@ Execution of these tests will be strictly opt-in, controlled by a new `wpt` comm
 
 ## Motivation
 
-*   **Comprehensive Conformance:** Test262 is the authoritative test suite for ECMAScript (JavaScript). Its inclusion provides a complete and standards-aligned signal for JS engine conformance, which is a core part of the web platform.
+*   **Testing in Browsers:** Provides a standardized way to run Test262 within actual web browsers (both stable and experimental channels), capturing the behavior of the integrated JS engine rather than standalone shells. This offers a complementary and more holistic conformance signal, specifically for how ECMAScript behaves within the full web platform environment, which differs from results obtained in isolated JS shells (e.g., as typically presented on `test262.fyi`).
 *   **Unified Infrastructure:** Integrating Test262 allows browser vendors to run this essential suite using the same mature infrastructure (`wptrunner`, CI) and analyze results on the same platform (`wpt.fyi`) as all other web platform features.
 *   **Operational Efficiency:** This removes the need for vendors to maintain separate infrastructure for running Test262 and attempting to correlate its results with WPT. It streamlines the engineering workflow for testing and triaging JS engine behavior.
 
@@ -49,16 +49,24 @@ To prevent performance degradation for users not focused on JS engine testing, r
 
 *   **Default Behavior:** By default, `wpt run` will **not** look for the Test262 directory and will **not** include its tests in the run.
 *   **Opt-in Flag:** A new command-line flag, `--test262`, will be added to `wpt run`.
-*   **Flag Behavior:** When the `--test262` flag is present, `wpt` will verify that the Test262 source directory exists. If the directory is missing, `wpt` will raise an error with instructions on how to sync the code (as described in the "Acquiring Test262 Source Code" section). If present, it will include the tests in the run.
+*   **Flag Behavior:** When the `--test262` flag is present, `wpt` will verify that the Test262 source directory exists. If the directory is missing, `wpt` will raise an error with instructions on how to sync the code (as described in the "Acquiring Test262 Source Code" section). If present, it will include the Test262 tests **in addition to** the standard WPT tests discovered.
 *   **CI Integration:** CI systems can explicitly enable Test262 runs by adding this flag to their configuration, after ensuring the source has been acquired.
+
+## Alternatives Considered
+
+### Using `--test-types=test262`
+
+One alternative would be to treat Test262 as a new "test type" within `wptrunner`, discoverable via a flag like `--test-types=test262`.
+
+*   **Reason for Rejection:** This approach was rejected because Test262 tests are fundamentally different from other WPT test types (e.g., `testharness`, `reftest`). They do not live in the WPT repository, have their own unique metadata format (YAML frontmatter), and require a completely different harness and server setup. A new, dedicated `--test262` flag provides a clearer separation of concerns. It explicitly signals that the user is opting into a distinct, large, and externally managed test suite, rather than just another flavor of a standard WPT test. This explicitness also leads to a cleaner implementation, as the logic for acquiring and locating the external test suite can be cleanly tied to a single, unambiguous flag.
 
 ## Implementation Considerations & Risks
 
 *   **Vendor Integration:** The responsibility for acquiring the Test262 source code is deliberately left to the user. This allows vendors with non-Git source control systems to implement their own mechanisms for syncing the required Test262 revision.
-*   **`WEB_FEATURES.yml` Mapping:** The current mechanism for mapping tests to features relies on `WEB_FEATURES.yml` files being co-located with the tests they describe. Since the Test262 source will not be in the main WPT repository, a new mechanism will need to be devised to associate these tests with web features for analysis in tools like `wpt.fyi`.
+*   **CI Submodule Behavior:** While WPT has historically moved away from submodules for vendoring dependencies, using one here as an *optional, on-demand pointer* presents a different trade-off. However, a risk remains that some CI systems are configured to check out git submodules by default. This could cause an unintentional, resource-intensive checkout of the large Test262 repository. The impact and configuration options for common CI systems should be investigated.
 *   **CI Performance:** A full Test262 run is lengthy. The impact on CI resources and runtime must be monitored. It is anticipated that full runs will be scheduled on a nightly or weekly basis rather than on every pull request.
 *   **Initial Source Checkout:** The first time a user runs with `--test262`, they must ensure the Test262 source is checked out. The one-time delay of fetching the repository should be clearly documented.
-*   **Source Code Visibility on wpt.fyi:** A key trade-off is that `wpt.fyi` cannot easily link to the source code of Test262 tests. The necessity of this feature and potential solutions (e.g., linking to a harness page with a note) will need to be discussed.
+*   **Source Code Visibility on wpt.fyi:** A key trade-off is that `wpt.fyi` cannot easily link to the source code of Test262 tests without special handling. A solution is likely feasible but would require `wpt.fyi` to have access to a manifest that maps test names to their original file paths within the Test262 repository and to be aware of the pinned submodule SHA for a given run. This is a similar challenge to other generated tests and can be considered a future enhancement.
 
 ## Proof of Concept
 
