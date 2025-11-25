@@ -2,7 +2,7 @@
 
 ## Summary
 
-This RFC integrates the Test262 (ECMAScript) test suite into WPT by vendoring it directly under `tc39/test262`. Execution is opt-in via `--test-types=test262`.
+This RFC integrates the Test262 (ECMAScript) test suite into WPT by vendoring it directly under `third_party/test262`. Execution will be on by default.
 
 ## Motivation
 
@@ -15,12 +15,19 @@ This RFC integrates the Test262 (ECMAScript) test suite into WPT by vendoring it
 
 ### 1. Source Management
 
-The Test262 test suite will be vendored directly into the WPT repository under `tc39/test262/`. This path mirrors external test suites like WebAssembly (`wasm/core/`), with `tc39/` serving as a namespace for TC39-originated tests.
+The Test262 test suite will be vendored directly into the WPT repository under `third_party/test262/`. This establishes a clear convention for third-party test suites. Other suites, such as WebAssembly (`wasm/core/`), could be moved under `third_party/` in the future for consistency.
 
-*   A dedicated CI job, similar to `update-wasm-tests.yml`, will keep this vendored copy up-to-date. It will periodically:
-    1.  Checkout the official `tc39/test262` repository.
-    2.  Copy the `test/` and `harness/` directories into `tc39/test262`.
-    3.  Open a PR against `main`, noting the upstream commit SHA in the body for traceability.
+*   A `vendored.toml` file will be located at `third_party/test262/vendored.toml`. This file will contain the source repository URL and the specific commit SHA of the vendored revision, acting as a source of truth. The format will be:
+    ```toml
+    [test262]
+    source = "https://github.com/tc39/test262"
+    rev = "<sha1>"
+    ```
+*   A dedicated CI job will keep this vendored copy up-to-date. By having a separate configuration file for each vendored suite, automated update PRs for different suites will not conflict with each other. The CI job will periodically:
+    1.  Fetch the latest commit SHA from the official `tc39/test262` repository.
+    2.  Copy the `test/` and `harness/` directories into `third_party/test262`.
+    3.  Update the `rev` in `vendored.toml`.
+    4.  Open a PR with all the above changes.
 *   The update PR will include a smoketest to ensure Test262 integration is not broken. This small, dedicated test suite in `infrastructure/test262/` will verify key integration points (e.g., YAML frontmatter parsing for `negative` tests/`flags`, `assert.js` harness injection). Expected results will be in corresponding `.ini` files within `infrastructure/metadata/test262/` (e.g., `infrastructure/testharness/lone-surrogates.html` metadata in `infrastructure/metadata/infrastructure/testharness/lone-surrogates.html.ini`). This smoketest is the *only* blocking Test262-related check in the PR; full test runs occur in scheduled nightly runs, populating wpt.fyi.
 *   This approach ensures WPT consumers have no novel requirements beyond selecting the test type.
 
@@ -28,18 +35,17 @@ The Test262 test suite will be vendored directly into the WPT repository under `
 
 WPT's manifest generation will be extended to support Test262.
 
-*   **Manifest Generation:** `wpt manifest` will, by default, recognize `tc39/test262`, traverse its `test` directory, and add discovered tests to `MANIFEST.json`.
+*   **Manifest Generation:** `wpt manifest` will, by default, recognize `third_party/test262`, traverse its `test` directory, and add discovered tests to `MANIFEST.json`.
 *   **Metadata Parsing:** A new Test262-specific parser will read YAML frontmatter from `.js` files to extract metadata (e.g., ES features, negative expectations, execution flags). Unlike `wasm/core` tests, which are pre-processed, Test262 metadata will be used by `wptserve` handlers at runtime.
 *   **Harness and Server:** Specialized Test262 harness files and `wptserve` handlers will use parsed metadata to construct the execution environment. Test modes will use distinct URL conventions based on file extensions (e.g., `path/to/test.js` served as `path/to/test.test262.html` or `path/to/test.test262-module.html`).
 
 ### 3. Execution Control
 
-Running Test262 is **opt-in**.
+Running Test262 is **on by default**.
 
-*   **Default Behavior:** `wpt run` will not include Test262 tests by default, even if they are present in the manifest.
-*   **Opt-in Flag:** The existing `--test-types` flag selects Test262 tests.
-*   **Flag Behavior:** When `--test-types=test262` is present, `wpt` includes Test262 tests from `tc39/test262`.
-*   **CI Integration:** CI systems enable Test262 runs by adding `--test-types=test262` to their `wpt run` command.
+*   **Default Behavior:** `wpt run` will include Test262 tests by default, consistent with all other test types.
+*   **Excluding Tests:** Users who wish to exclude Test262 (or any other type) can do so by specifying the types they *do* want to run (e.g., `wpt run --test-types=testharness,reftest`). A dedicated `--exclude-test-types` flag may be added in the future.
+*   **CI Integration:** CI systems will run Test262 tests by default. No special flags are needed to enable them.
 
 ## Alternatives Considered
 
