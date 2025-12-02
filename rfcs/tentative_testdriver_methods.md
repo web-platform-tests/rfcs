@@ -12,8 +12,6 @@ To answer these questions, it would be helpful if browser vendors could collabor
 
 ## Details
 1. There must be publicly documented (e.g. as part of an Interop Investigation Area) consensus between at least two browser vendors and intent to work towards a specification.
-2. Any tentative methods added to testdriver.js should be prefixed with `tentative_`.
-3. Any utility methods which call tentative testdriver methods should also be prefixed with `tentative_`.
 2. Any tests directly or indirectly calling tentative testdriver methods must be [marked tentative](https://web-platform-tests.org/writing-tests/file-names.html#:~:text=.tentative,-:%20).
 
 ## Alternatives considered
