@@ -13,6 +13,7 @@ To answer these questions, it would be helpful if browser vendors could collabor
 ## Details
 1. There must be publicly documented (e.g. as part of an Interop Investigation Area) consensus between at least two browser vendors and intent to work towards a specification.
 2. Any tests directly or indirectly calling tentative testdriver methods must be [marked tentative](https://web-platform-tests.org/writing-tests/file-names.html#:~:text=.tentative,-:%20).
+3. These testdriver methods should assert that the test is tentative (URL path includes `.tentative' or '/tentative/'). 
 
 ## Alternatives considered
 1. Avoid any changes to the WPT repository until the specification is finalised.
