@@ -44,7 +44,7 @@ WPT's manifest generation will be extended to support Test262.
 Running Test262 is **on by default**.
 
 - **Default Behavior:** `wpt run` will include Test262 tests by default, consistent with all other test types.
-- **Excluding Tests:** Users who wish to exclude Test262 (or any other type) can do so by specifying the types they _do_ want to run (e.g., `wpt run --test-types=testharness,reftest`). A dedicated `--exclude-test-types` flag may be added in the future.
+- **Excluding Tests:** Users who wish to exclude Test262 (or any other type) can do so by specifying the types they _do_ want to run (e.g., `wpt run --test-types=testharness reftest`). A dedicated `--exclude-test-types` flag may be added in the future.
 - **CI Integration:** CI systems will run Test262 tests by default. No special flags are needed to enable them.
 
 ## Alternatives Considered
