@@ -76,6 +76,7 @@ This was considered to provide a clear separation from WPT's internal test types
 - **CI Performance:** Full Test262 runs are lengthy. They will be scheduled during the existing nighly builds, not on every pull request.
 - **Upstream Changes:** Updating vendored Test262 tests requires care to ensure changes to the test harness or metadata format are handled correctly. The CI job's update PRs will include a smoketest for basic integration issues.
 - **Unit Tests for New Code:** New Python code for Test262 integration (e.g., manifest parsing, serving logic) will have dedicated unit tests, separate from integration smoketests.
+- **`PyYAML` Dependency:** Parsing the YAML frontmatter in Test262 files introduces a dependency on the `PyYAML` library. This library will be added to a `requirements.txt` file or leverage an existing `requirements.txt` file. A consequence of this is that several `wpt` commands which did not previously require a virtual environment will now need to be configured with `"virtualenv": true` in `commands.json` file(s) to ensure this dependency is available.
 
 ## Proof of Concept
 
