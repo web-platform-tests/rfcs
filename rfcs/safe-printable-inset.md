@@ -1,4 +1,4 @@
-# RFC #xyz: Simulate safe printable inset
+# RFC #233: Simulate safe printable inset
 
 ## Summary
 
