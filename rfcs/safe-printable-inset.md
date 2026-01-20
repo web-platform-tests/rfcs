@@ -18,7 +18,7 @@ areas.
 One rather straight-forward solution would be a META value that sets the width
 of the unprintable area on all four sides. For instance:
 
-`<meta name="safe-printable-inset" content="[inset-specifier]"`
+`<meta name="safe-printable-inset" content="[inset-specifier]">`
 
 where `inset-specifier` is a numeric value. The unit could be CSS pixels or
 points. Using centimeters for anything here isn't a great idea, since they don't
@@ -31,4 +31,4 @@ oversimplification of reality, printers may rotate the print output at their own
 discretion. The user agent may therefore not be able to make assumptions about
 which edge (long or short?) will be fed first into the printer, or what
 orientation the sheet of paper has. Therefore using just one value (which should
-represent the largest of the four) seems reasonable.
+represent the larger of the four) seems reasonable.
