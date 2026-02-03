@@ -12,7 +12,7 @@ support for it. As a result, we have been unable to update several dependencies
 that now require Python 3.9 or newer.
 
 Historically, continued Python 3.8 support was required due to downstream CI
-integrations with Apple’s and Google’s infrastructure. These systems have since
+integrations with vendor infrastructure. These systems have since
 been updated and no longer depend on Python 3.8, removing the primary blocker
 for increasing our minimum supported version.
 
