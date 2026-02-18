@@ -346,7 +346,7 @@ to be able to use the browser.
 
 ## Potential Solutions
 
-### Extend testharness.js
+### 1. Extend testharness.js with new API end point used to execute tests on backend
 
 We have an [PR open on WPT to extend
 testharness.js](https://github.com/web-platform-tests/wpt/pull/53733)
@@ -354,7 +354,7 @@ which adds a new endpoint to test_driver which will take a set of
 asserts and execute them against the accessibility APIs in the python
 layer.
 
-### New test type `aamtest` inspired by `wdspec`
+### 3. Add a new test type `aamtest` inspired by `wdspec`
 
 Similarly, we have an [PR open on WPT for a new test
 type](https://github.com/web-platform-tests/wpt/pull/53733) which is
