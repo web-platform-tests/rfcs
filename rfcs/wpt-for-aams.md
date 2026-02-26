@@ -346,7 +346,7 @@ to be able to use the browser.
 
 ## Potential Solutions
 
-### 1. Extend testharness.js with new API end point used to execute tests on backend
+### 1. Extend testharness.js with new API end point used to execute tests on the backend
 
 We have an [PR open on WPT to extend
 testharness.js](https://github.com/web-platform-tests/wpt/pull/53733)
@@ -354,9 +354,9 @@ which adds a new endpoint to test_driver which will take a set of
 asserts and execute them against the accessibility APIs in the python
 layer.
 
-### 3. Add a new test type `aamtest` inspired by `wdspec`
+### 2. Add a new test type `aamtest` inspired by `wdspec`
 
-Similarly, we have an [PR open on WPT for a new test
+We have an [PR open on WPT for a new test
 type](https://github.com/web-platform-tests/wpt/pull/53733) which is
 modeled after `wdspec` tests and re-uses some of the same classes and
 python test fixture.
@@ -366,7 +366,7 @@ python test fixture.
 <summary><h3>Open questions on technical implementations and test design</h3>
 </summary>
 
-The patch includes all relevant technologies and the basic steps
+The patches include all relevant technologies and the basic steps
 necessary to test the platform-specific accessibility APIs. However,
 there are some open design questions which we would love feedback on.
 
@@ -381,7 +381,9 @@ on macOS.
 
 How do we ensure that WPT users have these libraries available?
 
-#### Using the `testharness` test type rather a new test type.
+#### Using the `testharness` test type or the new `aamtest` based on `wdspec` tests
+
+These are the two potential solutions provide above.
 
 Either way, we can use webdriver to interact with the browser for more
 complicated tests. Each test will be some html, potentially CSS and
@@ -390,30 +392,26 @@ python. We can either make the test an html file that sends commands
 to python to execute on the backend, or a python file that load an
 HTML page via webdriver.
 
-
 #### Per-platform tests
 
 Currently, each test tests a "mapping" in the AAM, for example, how a
-`button` element is exposed in accessiblity APIs. A single file
-corrosponds to the mappings for `button` and there is a subtest for
-each accessibility API. If you are testing the mac API on linux, the
-mac API passes trivially (no assertions run) but ideally it should
-have a test type such as "not applicable".
+`button` element is exposed in accessibility APIs. A single file
+corresponds to the mappings for `button` and there is a subtest for
+each accessibility API. If you are testing the mac API on linux,
+should the tests for the mac API passes trivially (no assertions run)
+or should they report test type "PRECONDITION_FAILED".
 
 #### [Getting the browser PID](https://github.com/w3c/webdriver/issues/1823)
 
-In order to query the browser application via accessibility APIs,
-we need a reliable way to find the correct browser application.
-The [proof of concept](https://github.com/Igalia/wpt/pull/2/files)
-uses the application name;
-however this creates obvious problems if you're trying to use a particular browser
-at the same time as WPT is running a separate instance of the same browser for testing.
+In order to query the browser application via accessibility APIs, we
+need a reliable way to find the correct browser application. We can do
+this by the application name (which means only one browser instance
+can run at a time) or by PID. To run the test by PID, we need to get
+the PID of the browser.
 
-So far, the best way we've found is to use the process ID;
-this allows us to unambiguously find the browser process under test.
-However, since WPT often doesn't start browsers directly,
-but uses an automation tool like Marionette or ChromeDriver,
-we can't always get the process ID of the browser easily from WPT.
+Geckodriver exposes the PID in the capabilities as `moz:processID` and
+Chromedriver exposes it as "goog:processID". Safaridriver does not
+expose the ID.
 
 Valerie has filed [an issue](https://github.com/w3c/webdriver/issues/1823)
 on WebDriver to propose adding a mechanism to request the browser PID,
@@ -423,11 +421,18 @@ potentially through the `capabilities` object used when creating a Session.
 
 ## Risks
 
-These test might be slow to to run. The browser is noticeably slower when accessibility features are turn on (when the browser builds the accessibility tree).
-Additionally, the browser can't run in headless mode.
+These test might be slow to to run. The browser is noticeably slower
+when accessibility features are turn on (when the browser builds the
+accessibility tree).  Additionally, the browser can't run in headless
+mode.
 
-The tests may be flaky due to timing issues with the accessibility tree being built. The accessibility tree lags behind the DOM and even paint, with no feedback available to the page about what the status of the accessibility tree is.
-The webdriver computed name/computed role APIs sidestep this issue, since they build the accessiblity tree on demand.
+The tests may be flaky due to timing issues with the accessibility
+tree being built. The accessibility tree lags behind the DOM and even
+paint, with no feedback available to the page about what the status of
+the accessibility tree is.  The webdriver computed name/computed role
+APIs sidestep this issue, since they build the accessibility tree on
+demand.
 
-These tests introduce platform specific tests and results, which increase the complexity of WPT.
+These tests introduce platform specific tests and results, which
+increase the complexity of WPT.
 
