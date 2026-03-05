@@ -235,6 +235,62 @@ to allow accessing a full "computed accessibility node" for an element.
 This would allow fetching a much more extensive set of computed accessibility properties for an element via WebDriver.
 Like Computed Label and Computed Role, these would be querying the platform-independent, computed accessibility tree.
 
+#### First attempt at AAM tests in WPT: Extending testharness.js
+
+The first version of this proposal create a [proof of concept PR on WPT to extend
+testharness.js](https://github.com/web-platform-tests/wpt/pull/53733).
+The POC added new endpoint to test_driver which will take a set of
+asserts and execute them against the accessibility APIs in the python
+layer. It worked on Mac, Windows and Linux.
+
+The main downsides where that:
+1. The logic of the test (what was executed against accessibility APIs) was far from the test writing. The logic to execute a test was under the /tools directory, but a test author would add a new tests in the core-aam/ directory. In order to write a test that tested a API different then what had been test before, you would need to update the executors under /tools. As a work around, we discussed having python in a string that was sent to the backend to execute, which also didn't seem ideal.
+2. The tests did not have their own test type.
+
+Technical Details:
+- Adding a set of platform-specific `ExecutorImpl` classes,
+  [`AtspiExecutorImpl`](https://github.com/Igalia/wpt/pull/2/files#diff-9247f1aa2fe3d167af87ee04c48bc3ceb244d3de5040fdf97cdb129e05fa47e4) and
+  [`AXAPIExecutorImpl`](https://github.com/Igalia/wpt/pull/2/files#diff-a52eb168f8a233c8e81ba15c97691a7ac144e3168a3bfbd2c6c80ece5ab55c58) (so far),
+  which can:
+  - find the browser application's root accessibility node
+  - find the root accessibility node for the browser's active tab
+  - find the accessibility node corresponding to a particular DOM ID
+  - serialize an accessibility node into a JSON string
+- Adding a `PlatformAccessibilityProtocolPart` class in a new file,
+  [`executors/executorplatformaccessibility.py`](https://github.com/Igalia/wpt/pull/2/files#diff-4136e59af143c98357cb7a6153da10afc1fde0c16a657194efd31b1b4edd4f50),
+  extending `ProtocolPart` and providing one protocol method,
+  `get_accessibility_api_node(self, dom_id)`.
+  - Unlike the other `ProtocolPart`s, `PlatformAccessibilityProtocolPart`
+    provides its own, canonical implementation for its protocol method,
+    and is **not** listed in `protocol.py`
+  - During its `setup()`, `PlatformAccessibilityProtocolPart`
+    instantiates the appropriate platform-specific accessibility API executor class:
+    `AtspiExecutorImpl` for Linux, and `AXAPIExecutorImpl` for Mac and `WindowsAccessibilityExecutorImpl`
+    for Windows.
+  - When `get_accessibility_api_node()` is called, the platform-specific Executor's
+    `get_accessibility_api_node()` implementation is used to serialize the relevant
+    accessibility information into a JSON string.
+  - We may eventually decide a more granular API is preferable;
+    `get_accessibility_api_node()` was the easiest to use to write a proof-of-concept test
+- Importing the `PlatformAccessibilityProtocolPart` class into
+  [`executorwebdriver.py`](https://github.com/Igalia/wpt/pull/2/files#diff-e5a8911dd97e0352b1b26d8ce6ef0a92b25378f7c9e79371a1eb1b1834bc9a8d) and
+  [`executormarionette.py`](https://github.com/Igalia/wpt/pull/2/files#diff-df97e1990f484c82b8d8a34baf584d01761bfd98386beb69fac702edb31003a3),
+  adding it to the list of `implements` `ProtocolPart`s for
+  `MarionetteProtocol` and `WebDriverProtocol`.
+- [Adding a `GetAccessibilityAPINodeAction`](https://github.com/Igalia/wpt/pull/2/files#diff-57303393b05825acd5eb3124fb15dd5c9f9b996eb898b659fbb3676fc247a8f3) class
+  in `executors/actions.py`,
+  which calls into `protocol.platform_accessibility.get_accessibility_api_node()`
+- [Extending `testdriver-extra.js`](https://github.com/Igalia/wpt/pull/2/files#diff-46aeeb40b0a0c13031b151392ca70a17614295533d3e890c0cb4360cb3b91542)
+  to add a `get_accessibility_api_node()` method,
+  which runs a `"get_accessibility_api_node"` action
+- [Extending `testdriver.js`](https://github.com/Igalia/wpt/pull/2/files#diff-1fe2b624679a3150e5c86f84682c5901b715dad750096a524e8cb23939e5590f)
+  to add a `get_accessibility_api_node()` method,
+  which calls into `test_driver_internal`'s `get_accessibility_api_node()` method
+  - See "Extending `testdriver.js`" below
+- Adding a [proof-of-concept Testharness test](https://github.com/Igalia/wpt/pull/2/files#diff-4c6cae4648eadb186a175370e04a9e9581664a469c60fdb72d0d20600b28adeb),
+  which uses the new `get_accessibility_api_node` to get the platform-specific role
+  for a particular element.
+
 </details>
 
 ### Proposal: testing AAMs via platform accessibility APIs directly
@@ -344,64 +400,38 @@ in order for users of the assistive technologies which query those APIs
 to be able to use the browser.
 </details>
 
-## Potential Solutions
-
-### 1. Extend testharness.js with new API end point used to execute tests on the backend
-
-We have an [PR open on WPT to extend
-testharness.js](https://github.com/web-platform-tests/wpt/pull/53733)
-which adds a new endpoint to test_driver which will take a set of
-asserts and execute them against the accessibility APIs in the python
-layer.
-
-### 2. Add a new test type `aamtest` inspired by `wdspec`
+# Test Design
 
 We have an [PR open on WPT for a new test
-type](https://github.com/web-platform-tests/wpt/pull/53733) which is
+type `aamtest`](https://github.com/web-platform-tests/wpt/pull/53733) which is
 modeled after `wdspec` tests and re-uses some of the same classes and
 python test fixture.
 
+## Test files
 
-<details>
-<summary><h3>Open questions on technical implementations and test design</h3>
-</summary>
+Like the `wdspec` tests, a test file is a python file. Each file
+represents a mapping table in one of the AAMs including: (1) some html
+markup, and (2) a subtest for each accessibility API. The WPT
+webdriver client implementation is used to load HTML into the
+browser. The accessibility APIs are provide via pytest fixtures. On
+platforms where the subtest does not apply, the "PRECONDITION_FAILED"
+test result is used.
 
-The patches include all relevant technologies and the basic steps
-necessary to test the platform-specific accessibility APIs. However,
-there are some open design questions which we would love feedback on.
+## Ensuring accessibility is enabled in the browser
 
-#### Adding dependencies on the Python bindings for the platform APIs
+The introduction of the new test type allows us to restart the browser
+when the wptrunner enounters the `aamtest`, or a test other than the
+`aamtest`. When the next test is an `aamtest`, the browser is started
+with accessibility enabled. When it leaves `aamtests`, the browser is
+restarted without accessibility enabled.
 
-We use [comtypes](https://pypi.org/project/comtypes/) on Windows,
-[PyGObject](https://pygobject.gnome.org/index.html) on Linux, and
-[pyobjc-framework-ApplicationServices](https://pypi.org/project/pyobjc-framework-ApplicationServices/)
-and
-[pyobjc-framework-Accessibility](https://pypi.org/project/pyobjc-framework-Accessibility/)
-on macOS.
+Firefox and Chrome both allow for the accessibility to be enabled from
+a CLI argument. Safari does not yet, but there is a [PR to add this
+functionality in the
+works](https://github.com/WebKit/WebKit/pull/56965). Until this PR
+lands, Safari will not support this test type.
 
-How do we ensure that WPT users have these libraries available?
-
-#### Using the `testharness` test type or the new `aamtest` based on `wdspec` tests
-
-These are the two potential solutions provide above.
-
-Either way, we can use webdriver to interact with the browser for more
-complicated tests. Each test will be some html, potentially CSS and
-Javascript, and queries against the exposed accessibility APIs in
-python. We can either make the test an html file that sends commands
-to python to execute on the backend, or a python file that load an
-HTML page via webdriver.
-
-#### Per-platform tests
-
-Currently, each test tests a "mapping" in the AAM, for example, how a
-`button` element is exposed in accessibility APIs. A single file
-corresponds to the mappings for `button` and there is a subtest for
-each accessibility API. If you are testing the mac API on linux,
-should the tests for the mac API passes trivially (no assertions run)
-or should they report test type "PRECONDITION_FAILED".
-
-#### [Getting the browser PID](https://github.com/w3c/webdriver/issues/1823)
+## Finding the browser through the accessibility API
 
 In order to query the browser application via accessibility APIs, we
 need a reliable way to find the correct browser application. We can do
@@ -411,13 +441,13 @@ the PID of the browser.
 
 Geckodriver exposes the PID in the capabilities as `moz:processID` and
 Chromedriver exposes it as "goog:processID". Safaridriver does not
-expose the ID.
+expose the ID, until they do, testing Safari cannot be
+parallelized (as only one safari instance can run in order to find it
+by name in the accessibility API).
 
 Valerie has filed [an issue](https://github.com/w3c/webdriver/issues/1823)
 on WebDriver to propose adding a mechanism to request the browser PID,
 potentially through the `capabilities` object used when creating a Session.
-
-</details>
 
 ## Risks
 
