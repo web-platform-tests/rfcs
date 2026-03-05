@@ -440,7 +440,7 @@ can run at a time) or by PID. To run the test by PID, we need to get
 the PID of the browser.
 
 Geckodriver exposes the PID in the capabilities as `moz:processID` and
-Chromedriver exposes it as "goog:processID". Safaridriver does not
+Chromedriver exposes it as `goog:processID`. Safaridriver does not
 expose the ID, until they do, testing Safari cannot be
 parallelized (as only one safari instance can run in order to find it
 by name in the accessibility API).
