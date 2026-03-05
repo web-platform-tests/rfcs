@@ -459,9 +459,14 @@ mode.
 The tests may be flaky due to timing issues with the accessibility
 tree being built. The accessibility tree lags behind the DOM and even
 paint, with no feedback available to the page about what the status of
-the accessibility tree is.  The webdriver computed name/computed role
-APIs sidestep this issue, since they build the accessibility tree on
-demand.
+the accessibility tree is. For now, this is handled by the use of
+polling, with a timeout set to half of timeout for test otherwise. The
+webdriver computed name/computed role APIs sidestep this issue, since
+they build the accessibility tree on demand.
+
+These test introduce new python dependencies, and one of those python
+dependencies (the linux API) replies on a system level package, and
+installation of that package cannot be handled by the test suite.
 
 These tests introduce platform specific tests and results, which
 increase the complexity of WPT.
