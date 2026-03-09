@@ -20,9 +20,10 @@ of the unprintable area on all four sides. For instance:
 
 `<meta name="safe-printable-inset" content="[inset-specifier]">`
 
-where `inset-specifier` is a numeric value. The unit could be CSS pixels or
-points. Using centimeters for anything here isn't a great idea, since they don't
-convert nicely into CSS pixels (unlike inches). I suggest using CSS pixels.
+where `inset-specifier` is a numeric value. This values is in centimeters, to
+match the other inputs to webdriver when printing. Using centimeters isn't
+great, since they don't convert nicely into CSS pixels (unlike inches), but
+since everything else is already in centimeters, better follow suit.
 
 Why just one value for all four edges? Although many printers indeed don't
 necessarily have a uniform unprintable area width along each of the four paper
