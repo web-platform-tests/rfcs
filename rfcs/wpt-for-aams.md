@@ -413,7 +413,7 @@ Like the `wdspec` tests, a test file is a python file. Each file
 represents a mapping table in one of the AAMs including: (1) some html
 markup, and (2) a subtest for each accessibility API. The WPT
 webdriver client implementation is used to load HTML into the
-browser. The accessibility APIs are provide via pytest fixtures. On
+browser. The accessibility APIs are provided via pytest fixtures. On
 platforms where the subtest does not apply, the "PRECONDITION_FAILED"
 test result is used.
 
@@ -451,8 +451,8 @@ potentially through the `capabilities` object used when creating a Session.
 
 ## Risks
 
-These test might be slow to to run. The browser is noticeably slower
-when accessibility features are turn on (when the browser builds the
+These tests might be slow to to run. The browser is noticeably slower
+when accessibility features are turned on (when the browser builds the
 accessibility tree).  Additionally, the browser can't run in headless
 mode.
 
@@ -464,7 +464,7 @@ polling, with a timeout set to half of timeout for test otherwise. The
 webdriver computed name/computed role APIs sidestep this issue, since
 they build the accessibility tree on demand.
 
-These test introduce new python dependencies, and one of those python
+These tests introduce new python dependencies, and one of those python
 dependencies (the linux API) replies on a system level package, and
 installation of that package cannot be handled by the test suite.
 
