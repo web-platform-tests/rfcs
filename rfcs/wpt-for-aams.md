@@ -332,11 +332,13 @@ specifications. The easiest and most reliable way to test that is to
 use the APIs directly, matching the way that assistive technology
 communicates with the browser.
 
-An alternative would be to extend WebDriver to mirror each platform API's vocabulary.
-This would involve a great deal of work to specify how those vocabularies should be expressed
-through WebDriver and testdriver,
-and implementation work to implement those APIs and test the implementation,
-before we could even write any tests using the WebDriver version.
+An alternative would be to extend WebDriver to mirror each platform API's
+vocabulary.  This would involve a great deal of work to specify how those
+vocabularies should be expressed through WebDriver and testdriver, and
+implementation work to implement those APIs and test the implementation, before
+we could even write any tests using the WebDriver version. Additionally, there
+is the potential for the webdriver implementation to get out of sync with what
+is actually communicated through the APIs.
 
 <details>
 <summary><h3>Example: computed role vs. platform API mapping for <code>&lt;input type="password"&gt;</code>
