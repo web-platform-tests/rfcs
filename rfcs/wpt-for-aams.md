@@ -405,7 +405,7 @@ to be able to use the browser.
 # Test Design
 
 We have an [PR open on WPT for a new test
-type `aamtest`](https://github.com/web-platform-tests/wpt/pull/53733) which is
+type `aamtest`](https://github.com/web-platform-tests/wpt/pull/57696) which is
 modeled after `wdspec` tests and re-uses some of the same classes and
 python test fixture.
 
