@@ -2,7 +2,7 @@
 
 ## Summary
 
-Extend WPT with the ability to test Accessibility APIs exposed by browsers.
+Extend WPT with the ability to test how browsers expose user interface to platform Accessibility APIs.
 
 The Accessibility API Mapping (AAM) specifications
 ([Core-AAM](https://www.w3.org/TR/core-aam-1.2/),
@@ -229,11 +229,12 @@ elements](https://www.w3.org/TR/html-aam-1.0/#accname-computation).
 
 #### Potential WebDriver extensions for accessibility
 
-There is [a proposal](https://github.com/WICG/aom/issues/203) to add an extension to WebDriver
-to allow accessing a full "computed accessibility node" for an element.
+There is [a proposal](https://github.com/WICG/aom/issues/203) and a related 
+[WPT Pull Request](https://github.com/web-platform-tests/wpt/pull/55784) to add an extension to WebDriver
+to allow accessing a more complete list of computed accessibility properties.
 
 This would allow fetching a much more extensive set of computed accessibility properties for an element via WebDriver.
-Like Computed Label and Computed Role, these would be querying the platform-independent, computed accessibility tree.
+Like Computed Label and Computed Role, these would be querying the platform-independent, browser-internal accessibility tree.
 
 #### First attempt at AAM tests in WPT: Extending testharness.js
 
