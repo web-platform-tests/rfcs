@@ -1,4 +1,4 @@
-# RFC 226: Exclusions in WEB_FEATURES.yml files
+# RFC 237: Exclusions in WEB_FEATURES.yml files
 
 ## Summary
 
