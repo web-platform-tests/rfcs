@@ -2,7 +2,8 @@
 
 ## Summary
 
-Extend WPT with the ability to test how browsers expose user interface to platform Accessibility APIs.
+Extend WPT with the ability to test how browsers expose user interface to
+platform Accessibility APIs.
 
 The Accessibility API Mapping (AAM) specifications
 ([Core-AAM](https://www.w3.org/TR/core-aam-1.2/),
@@ -76,8 +77,10 @@ changing in a way that should be brought to the user's attention.
 
 #### The computed accessibility tree
 
-Since browser engines are typically platform-independent, typically they will compute a generic accessibility tree which can be adapted to any platform's accessibility APIs.
-The platform APIs are typically supported using an adapter which maps the platform API on to data from the computed accessibility tree.
+Since browser engines are typically platform-independent, typically they will
+compute a generic accessibility tree which can be adapted to any platform's
+accessibility APIs.  The platform APIs are typically supported using an adapter
+which maps the platform API on to data from the computed accessibility tree.
 
 #### AAM specifications
 
@@ -229,9 +232,10 @@ elements](https://www.w3.org/TR/html-aam-1.0/#accname-computation).
 
 #### Potential WebDriver extensions for accessibility
 
-There is [a proposal](https://github.com/WICG/aom/issues/203) and a related 
-[WPT Pull Request](https://github.com/web-platform-tests/wpt/pull/55784) to add an extension to WebDriver
-to allow accessing a more complete list of computed accessibility properties.
+There is [a proposal](https://github.com/WICG/aom/issues/203) and a related [WPT
+Pull Request](https://github.com/web-platform-tests/wpt/pull/55784) to add an
+extension to WebDriver to allow accessing a more complete list of computed
+accessibility properties.
 
 This would allow fetching a much more extensive set of computed accessibility properties for an element via WebDriver.
 Like Computed Label and Computed Role, these would be querying the platform-independent, browser-internal accessibility tree.
@@ -456,7 +460,7 @@ potentially through the `capabilities` object used when creating a Session.
 
 These tests might be slow to to run. The browser is noticeably slower
 when accessibility features are turned on (when the browser builds the
-accessibility tree).  Additionally, the browser can't run in headless
+accessibility tree).  Additionally, the browser can't run in window-less
 mode.
 
 The tests may be flaky due to timing issues with the accessibility
