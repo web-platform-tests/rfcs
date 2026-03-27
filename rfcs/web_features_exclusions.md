@@ -184,7 +184,8 @@ features:
 ```
 
 While clear precedence is important (especially for future extensions), the
-complexity of this structure seems preferable to the noise of pattern prefixes.
+complexity of this structure doesn't seem preferable to the noise of pattern
+prefixes.
 
 ### More explicit pattern prefixes
 
