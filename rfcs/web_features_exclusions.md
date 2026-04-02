@@ -197,7 +197,7 @@ features:
 - name: alerts
   patterns:
   - files:*
-  - !feature:print
+  - "!feature:print"
 - name: print
   patterns:
   - files:print-*
@@ -247,7 +247,7 @@ features:
   - "!print"
 - name: print
   files:
-  - ./print-*
+  - print-*
 ```
 
 While this disambiguation heuristic would be trivial to implement in software,
