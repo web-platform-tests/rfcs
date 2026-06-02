@@ -24,25 +24,41 @@ A few examples of policies on LLM use in FOSS contributions:
   - [Policy about LLM generated code from PRs · Issue #28335 · opencv/opencv](https://github.com/opencv/opencv/issues/28335)
   - [CONTRIBUTING.md: Guidelines relevant to AI-assisted contributions by gasche · Pull Request #14052 · ocaml/ocaml](https://github.com/ocaml/ocaml/pull/14052)
   - [LLVM AI Tool Use Policy — LLVM 23.0.0git documentation](https://llvm.org/docs/AIToolPolicy.html)
+  - [Chromium AI Coding Policy](https://chromium.googlesource.com/chromium/src/+/4f44016dfbd4fcd890694c00d7f9ec6dcefe4955/agents/ai_policy.md)
+  - [Firefox AI Coding Policy](https://github.com/mozilla-firefox/firefox/blob/1f7030c8de8f2b349c7d91d7b5a3253c109a1cc1/docs/contributing/ai-coding.md)
 - prohibitive
   - [Code of Conduct ⚡ Zig Programming Language](https://ziglang.org/code-of-conduct/#strict-no-llm-no-ai-policy)
   - [Getting Started - The Servo Book](https://book.servo.org/contributing/getting-started.html#ai-contributions)
 
 ## Details
 
-Proposed text:
+The following text describes the policy in full and will be maintained in a
+dedicated document within WPT's `docs/writing-tests/` directory (which will be
+referenced both from the project's `README.md` file and the
+`docs/writing-tests/index.md` file):
 
-> ### For Individual Contributors
+> ### Guidelines for acceptable LLM use
+>
+> The use of large language models (LLMs) as tools to help author commits to
+> this repository is allowed with the stipulations described below.
+> Contributors who repeatedly fail to adhere to these guidelines may be banned
+> from contributing to this project.
 >
 > #### Disclosure
 >
-> Contributions that contain substantial amounts of tool-generated content must
-> be labeled as such.
+> If LLMs are used as a significant input to a commit, authors are encouraged
+> to include details about how they were used as part of the commit message in
+> order to help review and future understanding of the code.
+>
+> Human-authored code discourse (e.g. issue descriptions, pull request
+> descriptions, and responses to discussion threads) should not include
+> LLM-generated content in the main text; any such content must be clearly
+> labelled and placed inside a `<details>` element.
 >
 > #### Attribution
 >
-> Commits generated entirely by an LLM must be attributed to the LLM in the
-> "Author" field.
+> All commits must be attributed to the human who is taking responsibility for
+> them, regardless of LLM use.
 >
 > #### Understanding
 >
@@ -50,14 +66,9 @@ Proposed text:
 > the pull request description, understand every change proposed, and be
 > prepared to engage in technical discussion regarding those changes.
 >
-> ### For Trusted External Review
+> #### Discussion
 >
-> Some external projects conduct review which the WPT maintainers recognize as
-> authoritative. From rendering engines like Gecko to dedicated test suites
-> like WASM, patches merged in these projects are incorporated into WPT without
-> further review. The policy outlined by this document does not apply to these
-> contributions; the external projects are trusted to determine their own
-> mechanisms for quality assurance.
+> Discussion
 
 ## Risks
 
@@ -76,7 +87,10 @@ social ones.
 ### Encouraging low-value contributions
 
 All but the most restrictive policy could be interpreted as an invitation to
-take shortcuts which undermine the quality of contributions.
+take shortcuts which undermine the quality of contributions. Any permissive
+policy might be taken as encouragement to rely on fallible tools (LLMs are
+particularly susceptible to certain kinds of test-writing errors, such as
+over-fitting and fabrication).
 
 However, it will not be possible to strictly enforce any policy. It inevitably
 falls on contributors to follow rules and for administrators to police
