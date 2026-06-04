@@ -2,17 +2,16 @@
 
 ## Summary
 
-Extend the schema of the `WEB_FEATURES.yml` files to support excluding one set
-of tests from another.
+Redesign the schema of the `WEB_FEATURES.yml` files to reduce repetition and
+assist human readers.
 
 ## Background
 
 [Contributors classified a large number of web-features over the final months
 of
-2025](https://github.com/search?q=repo%3Aweb-platform-tests%2Fwpt++is%3Apr+author%3Achrisc+author%3Ajugglinmike+author%3Astalgiag+author%3Ahoward-e++author%3Agnarf+created%3A%3E2025-09-01+&type=pullrequests),
-and their experience surfaced many opportunities for improving the
-maintainability of WPT's `WEB_FEATURES.yml` files[^1]. One of them is a
-shorthand for excluding one set of tests from another set.
+2025](https://github.com/search?q=repo%3Aweb-platform-tests%2Fwpt++is%3Apr+author%3Achrisc+author%3Ajugglinmike+author%3Astalgiag+author%3Ahoward-e++author%3Agnarf+created%3A2025-09-01..2026-05-01&type=pullrequests),
+and their experience surfaced ways in which the design of WPT's
+`WEB_FEATURES.yml` files[^1] is not optimized for their purpose.
 
 The problem starts with the application of filename-matching patterns. On its
 face, this is a helpful feature. It helps maintainers avoid some of the
@@ -47,212 +46,103 @@ for brevity, but there exist many files with far more duplication, e.g.
 Although in-line comments can alert contributors to the intention and implore
 them to maintain it, a structural fix would alleviate everyone of this chore.
 
+In this design, multiple rules can match the same file, and when they do, the
+files are implicitly assigned to multiple web-features. Cross-cutting tests are
+certainly present in WPT, but it is far more common to express membership as
+mutually-exclusive. By simplifying a rare use-case while frustrating a common
+use-case, the current design is not optimally suited for its purpose.
+
 ## Details
 
-We propose allowing any entry for one web-feature to reference another from the
-`files` list by prefixing the web-feature ID with the number sign (`#`). The
-matched files can be excluded from the referencing set by further prefixing
-with the exclamation point (`!`), just as with filename patterns. Filename
-patterns should be distinguished with a leading sequence of `./`.
+We propose re-structuring the files to declare file pattern rules in a flat
+list (where every entry individual entry also specifies the identifier of the
+web-feature), and to apply a "first pattern wins" heuristic when generating the
+file manifest.
 
 The example above, altered according to this proposed change, would appear as
 follows:
 
 ```yaml
 features:
-- name: alerts
-  files:
-  - ./*
-  - "!#print"
-- name: print
-  files:
-  - ./print-*
+- print-*: print
+- "*": alerts
+```
+
+This design reduces the need for the exclusion syntax currently expressed with
+an exclamation point (`!`) prefix. In cases where a given file should belong to
+one web-feature but not another (as in the example above), exclusion can be
+expressed through careful sequencing of rules.
+
+However, rule ordering alone cannot address cases where files should be
+excluded from *all* web-features. Rather than maintain a grammatical convention
+for a rare use-case, this proposal also introduces the use of the YAML keyword
+`NULL` to signify files which should not belong to any particular web-feature.
+
+In the example above, to exclude the file named `foo.html` from *any*
+web-feature, one would write:
+
+```yaml
+features:
+- foo.html: NULL
+- print-*: print
+- "*": alerts
+```
+
+Finally, in order to support the case of cross-cutting tests, it should be
+possible to express membership in multiple web-features via a list of
+web-feature IDs in place of a single web-feature ID.
+
+In the example above, to include the file named `bar.html` in both the `print`
+web-feature *and* the `alerts` web-feature, one would write:
+
+```yaml
+features:
+- foo.html: NULL
+- bar.html: [print, alerts]
+- print-*: print
+- "*": alerts
 ```
 
 ## Alternatives Considered
 
-### Changing the name of the `files` key
+### A feature-based exclusion syntax
 
-The patterns will no longer directly describe files, so "files" may not be the
-more accurate name. Names like `patterns` or `tests` may be more appropriate.
+The problem of set exclusion could be addressed without changes to the
+structure or semantics of the `WEB_FEATURES.yml` files via a new micro-syntax
+for excluding entire sets.
 
-```yaml
-features:
-- name: alerts
-  patterns:
-  - ./*
-  - "!#print"
-- name: print
-  patterns:
-  - ./print-*
-```
-
-However, file-matching continues to be the patterns' purpose. This might be
-worth re-visiting when/if we decide to allow for matching tests as distinct
-from files (e.g. matching specific expansions of [`.any.js`
-tests](https://web-platform-tests.org/writing-tests/testharness.html#tests-for-other-or-multiple-globals-any-js)).
-
-### Exclusion as the default (and only) behavior
-
-Currently, we only have need to exclude sets. The `!` prefix, borrowed from
-existing file-pattern syntax, insinuates non-existent "inclusion" use-case.
-Omitting it would avoid any such insinuation and reduce the number of
-characters necessary to support the desired use-case.
+In the example above, this might be expressed as follows:
 
 ```yaml
 features:
 - name: alerts
   files:
   - ./*
-  - "#print"
+  - "!#print" # exclude all files belonging to the `print` web-feature
 - name: print
   files:
   - ./print-*
 ```
 
-That said, it seems somewhat confusing for the semantics of the two types of
-patterns to vary so widely. (This could be mitigated by placing exclusions
-under a separate key since. A name like "exclusions" would make it much easier
-to recognize the "exclude by default" semantic of these patterns. However,
-introducing a separate key by any name has its own drawbacks--see the next
-section.) There's also reason to believe that future extensions will make use
-of feature *inclusion* (namely: the ability to explicitly express intentional
-overlaps).
+However, this design increases the complexity of the schema. Any complexity
+reduces the likelihood that these files will be organically maintained by
+typical WPT contributors (since they are generally more focused on test
+material than on metadata).
 
-### Expressing inclusions under a dedicated key
+This design also does not address the mismatch between ergonomics and use-case
+frequency. That is: it continues to favor the rare "overlap" case over the
+common "exclude" case.
 
-Introducing a new key like `features` (and placing all feature exclusion rules
-there) would negate the need for "pattern type" prefixes altogether and obviate
-all the design considerations which follow this one. Since we expect most
-patterns to describe files directly, any prefix for those entries could be
-considered noisy. (They will also dramatically increase the size of the patch
-which enacts this RFC.)
+### Changing the semantics but not the schema
 
-For example:
+This proposal's strength comes from making file-matching rules mutually
+exclusive by default. Because these rules have a deterministic order under the
+existing schema, the main benefits could be enjoyed without any schema changes
+whatsoever.
 
-```yaml
-features:
-- name: alerts
-  files:
-  - "*"
-  features:
-  - "!print"
-- name: print
-  files:
-  - print-*
-```
-
-And for completeness, here's how that could look with the "exclude by default"
-semantic contemplated above:
-
-```yaml
-features:
-- name: alerts
-  files:
-  - "*"
-  exclude:
-  - print
-- name: print
-  files:
-  - print-*
-```
-
-However, splitting patterns across two keys, whatever their name, has
-concerning implications for pattern precedence. The sequence for applying two
-distinct sets of patterns isn't immediately obvious (especially considering
-that this feature may one day be used to express intentional overlaps between
-sets). Whatever design we might select, the need for a dedicated design effort
-suggests that the behavior may not be intuitive for contributors.
-
-A more complex schema could have it both ways: a "list of maps of lists" would
-reduce the repetition of a "files" designation while preserving the author's
-control over the order of operations. For example, the rules expressed in the
-following sketch have a much more clear sequence:
-
-```yaml
-features:
-- name: alerts
-  patterns:
-  - files:
-    - "*"
-  - features:
-    - "!print"
-- name: print
-  patterns:
-  - files:
-    - print-*
-```
-
-While clear precedence is important (especially for future extensions), the
-complexity of this structure doesn't seem preferable to the noise of pattern
-prefixes.
-
-### More explicit pattern prefixes
-
-Keyword prefixes like `files:` and `feature:` would be more self-documenting
-(and would likely justify the key-renaming change explored above):
-
-```yaml
-features:
-- name: alerts
-  patterns:
-  - files:*
-  - "!feature:print"
-- name: print
-  patterns:
-  - files:print-*
-```
-
-The shorter prefixes (`./` and `#`) are inspired by conventions that many
-developers will recognize (filesystem paths and HTML IDs, respectively), so
-they strike a balance between verbosity and understandability.
-
-### Omitting the `files:` prefix
-
-The prefix is not technically necessary because tooling could assume entries
-are filename patterns if they lack an explicit "feature" prefix (whatever that
-prefix may be).
-
-```yaml
-features:
-- name: alerts
-  files:
-  - "*"
-  - "!#print"
-- name: print
-  files:
-  - print-*
-```
-
-This inconsistency in the two pattern types may cause confusion for readers.
-For what it's worth: the two-character `./` prefix obviates the need to apply
-quotes to patterns which begin with `*`, so applying this change to those
-amounts to simply swapping characters[^2].
-
-### Omitting *both* prefixes
-
-*Neither* prefix may be necessary to disambiguate the two types of patterns.
-Today (and for the foreseeable future), all test filename patterns include
-either an asterisk character (`*`) or a period character (`.`), and no
-web-feature ID includes those characters. If we could secure an explicit
-commitment from the WebDX community group about the makeup of web-feature IDs,
-then we could lean on these details to infer pattern type based on their
-content alone.
-
-```yaml
-features:
-- name: alerts
-  files:
-  - "*"
-  - "!print"
-- name: print
-  files:
-  - print-*
-```
-
-While this disambiguation heuristic would be trivial to implement in software,
-it's not particularly discoverable (and even after folks learn about it, it
-feels cognitively burdensome to apply).
+However, less structure is generally easier for human contributors to read and
+understand. A simpler structure will tend to promote maintenance by those who
+have less awareness of WPT infrastructure.
 
 ## Risks
 
@@ -280,28 +170,23 @@ tests can be silently matched to the wrong web-feature.
 
 While this is a risk, it is present in the current implementation of
 `WEB_FEATURES.yml` files (specifically through the pattern-matching, or
-"globbing", syntax). This RFC only simplifies how file-matching are expressed;
+"globbing", syntax). This RFC only simplifies how file-matching is expressed;
 it does not introduce a fundamentally different mechanism for matching files.
 
-### Complexity may discourage contribution
+### Verbosity of naming web-feature identifiers on a per-file-pattern basis
 
-The more complex a custom schema becomes, the more effort contributors have to
-spend in order to participate.
+This proposal's schema modifications involve declaring a web-feature ID for
+every file-matching pattern. When web-features have many such patterns, the
+repetition of their ID will tend to make the restructured `WEB_FEATURE.yml`
+files more verbose than they would be using the original schema.
 
-The fact that this functionality is purely additive reduces the load for
-newcomers. Even without understanding the exclusion syntax, they can express
-the relationships--albeit in a more literal and less maintainable way. It can
-be the prerogative of reviewers (or future contributors) to revise such patches
-with the new syntax, where applicable.
-
-We also intend to supplement this change with further linting rules, such as
-verifying the existence of web-feature identifiers. This will provide immediate
-and contextual feedback to contributors who may be experimenting with the
-syntax for the first time.
+In practice, however, web-features typically have a small number of patterns.
+At the time of this RFC, the mean number of file-matching patterns per
+web-feature in a given directory[^2] is approximately 2.362 with a standard
+deviation of approximately 5.7487. This reduces the benefit of optimizing for
+the case of web-features with many associated file-matching patterns.
 
 [^1]: `WEB_FEATURES.yml` files were introduced via [RFC
       163](https://github.com/web-platform-tests/rfcs/blob/main/rfcs/web_features.md).
-[^2]: There are currently 212 such patterns
-
-          $ find . -name WEB_FEATURES.yml -print0 | xargs -0 grep "\- [\"']\*" | wc -l
-          212
+[^2]: These statistics exclude `!`-prefixed entries because this proposal
+      obviates such entries.
