@@ -51,9 +51,7 @@ Helpers can then select `{{ports[h3][0]}}` and use `wss://` for the WebSocket UR
 
 ### Integration
 
-`wptrunner` should recognize `h3` tests but keep them disabled unless H3 support is explicitly enabled, for example with `--enable-h3`. When enabled, `wptrunner` includes those tests, and `wptserve` launches and monitors the WebSocket over HTTP/3 server.
-
-Chromium should use the configured H3 port and force QUIC for that origin.
+When a run includes the `h3` variant, WPT starts and monitors the WebSocket-over-HTTP/3 server as part of the test environment.
 
 ### Dependencies
 
@@ -69,4 +67,4 @@ Support for WebSocket over HTTP/1.1 and WebSocket over HTTP/2 remains unchanged.
 
 The main risks are the extra opt-in daemon, the adapter between asynchronous HTTP/3 streams and pywebsocket3's synchronous handler API, and keeping static-resource behavior aligned with `wptserve`.
 
-The Web Networking and Ecosystem Infra owners should maintain the integration point and server behavior.
+The WPT project should maintain the integration point and server behavior. Chromium's Web Networking and Ecosystem Infra teams are available to help with implementation and ongoing support.
