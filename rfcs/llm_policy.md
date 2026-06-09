@@ -65,10 +65,6 @@ referenced both from the project's `README.md` file and the
 > Every pull request must be initiated by one human. That person must author
 > the pull request description, understand every change proposed, and be
 > prepared to engage in technical discussion regarding those changes.
->
-> #### Discussion
->
-> Discussion
 
 ## Risks
 
