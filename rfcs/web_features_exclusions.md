@@ -73,34 +73,50 @@ an exclamation point (`!`) prefix. In cases where a given file should belong to
 one web-feature but not another (as in the example above), exclusion can be
 expressed through careful sequencing of rules.
 
-However, rule ordering alone cannot address cases where files should be
-excluded from *all* web-features. Rather than maintain a grammatical convention
-for a rare use-case, this proposal also introduces the use of the YAML keyword
-`NULL` to signify files which should not belong to any particular web-feature.
+This proposal retains the special `"**"` value originally proposed in [RFC
+#153](https://github.com/web-platform-tests/rfcs/blob/main/rfcs/web_features.md).
+That value continues to match all tests in the current directory and all tests
+in any subdirectories. It is subject to the same sequence-based precedence as
+the other patterns.
 
-In the example above, to exclude the file named `foo.html` from *any*
-web-feature, one would write:
+In the example above, to classify all tests in all sub-directories (along with
+all tests in the current directory except for those prefixed with `print-`)
+with the `alerts` web-feature, one would write:
 
 ```yaml
 features:
-- foo.html: NULL
 - print-*: print
-- "*": alerts
+- "**": alerts
 ```
 
-Finally, in order to support the case of cross-cutting tests, it should be
-possible to express membership in multiple web-features via a list of
-web-feature IDs in place of a single web-feature ID.
+In order to support the case of cross-cutting tests, it should be possible to
+express membership in multiple web-features via a list of web-feature IDs in
+place of a single web-feature ID.
 
-In the example above, to include the file named `bar.html` in both the `print`
+In the example above, to include the file named `foo.html` in both the `print`
 web-feature *and* the `alerts` web-feature, one would write:
 
 ```yaml
 features:
-- foo.html: NULL
-- bar.html: [print, alerts]
+- foo.html: [print, alerts]
 - print-*: print
-- "*": alerts
+- "**": alerts
+```
+
+Finally, careful rule ordering alone cannot address cases where files should be
+excluded from *all* web-features. As one might infer from the schema's support
+of collections of web-feature IDs, this proposal designates the empty list as
+a signifier for files which should not belong to any particular web-feature.
+
+In the example above, to exclude the file named `bar.html` from *any*
+web-feature, one would write:
+
+```yaml
+features:
+- foo.html: [print, alerts]
+- bar.html: []
+- print-*: print
+- "**": alerts
 ```
 
 ## Alternatives Considered
