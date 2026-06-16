@@ -64,8 +64,8 @@ follows:
 
 ```yaml
 features:
-- print-*: print
-- "*": alerts
+- print-*: [print]
+- "*": [alerts]
 ```
 
 This design reduces the need for the exclusion syntax currently expressed with
@@ -85,13 +85,12 @@ with the `alerts` web-feature, one would write:
 
 ```yaml
 features:
-- print-*: print
-- "**": alerts
+- print-*: [print]
+- "**": [alerts]
 ```
 
 In order to support the case of cross-cutting tests, it should be possible to
-express membership in multiple web-features via a list of web-feature IDs in
-place of a single web-feature ID.
+express membership in multiple web-features via a list of web-feature IDs.
 
 In the example above, to include the file named `foo.html` in both the `print`
 web-feature *and* the `alerts` web-feature, one would write:
@@ -99,8 +98,8 @@ web-feature *and* the `alerts` web-feature, one would write:
 ```yaml
 features:
 - foo.html: [print, alerts]
-- print-*: print
-- "**": alerts
+- print-*: [print]
+- "**": [alerts]
 ```
 
 Finally, careful rule ordering alone cannot address cases where files should be
@@ -115,8 +114,8 @@ web-feature, one would write:
 features:
 - foo.html: [print, alerts]
 - bar.html: []
-- print-*: print
-- "**": alerts
+- print-*: [print]
+- "**": [alerts]
 ```
 
 ## Alternatives Considered
