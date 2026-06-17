@@ -201,6 +201,29 @@ web-feature in a given directory[^2] is approximately 2.362 with a standard
 deviation of approximately 5.7487. This reduces the benefit of optimizing for
 the case of web-features with many associated file-matching patterns.
 
+### Extendability
+
+There is some expectation among maintainers that the rules in these files will
+one day need to include additional structural metadata. The prior design
+included dictionary values with well-defined keys, making it trivial to extend
+the schema with support for new metadata. Because the design in this proposal
+uses dictionary keys for data (i.e. file patterns) rather than structure, it is
+not so readily extensible for metadata.
+
+This design contemplates accommodating any future need for metadata through an
+alternate and more verbose form of rule definition. For example, rules whose
+could be expressed as a nested dictionaries in cases that need additional
+metadata, and all other rules could go unchanged (continuing to use the more
+concise syntax described by this proposal).
+
+```yaml
+rules:
+- print-*: [print]
+- "*":
+    ids: [alerts]
+    metadata_name: some metadata value
+```
+
 [^1]: `WEB_FEATURES.yml` files were introduced via [RFC
       163](https://github.com/web-platform-tests/rfcs/blob/main/rfcs/web_features.md).
 [^2]: These statistics exclude `!`-prefixed entries because this proposal
