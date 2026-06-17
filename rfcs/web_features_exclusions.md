@@ -63,7 +63,7 @@ The example above, altered according to this proposed change, would appear as
 follows:
 
 ```yaml
-features:
+rules:
 - print-*: [print]
 - "*": [alerts]
 ```
@@ -84,7 +84,7 @@ all tests in the current directory except for those prefixed with `print-`)
 with the `alerts` web-feature, one would write:
 
 ```yaml
-features:
+rules:
 - print-*: [print]
 - "**": [alerts]
 ```
@@ -96,7 +96,7 @@ In the example above, to include the file named `foo.html` in both the `print`
 web-feature *and* the `alerts` web-feature, one would write:
 
 ```yaml
-features:
+rules:
 - foo.html: [print, alerts]
 - print-*: [print]
 - "**": [alerts]
@@ -111,7 +111,7 @@ In the example above, to exclude the file named `bar.html` from *any*
 web-feature, one would write:
 
 ```yaml
-features:
+rules:
 - foo.html: [print, alerts]
 - bar.html: []
 - print-*: [print]
