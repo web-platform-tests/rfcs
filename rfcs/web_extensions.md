@@ -29,10 +29,13 @@ Because these tests don’t leverage `testharness.js` directly, we introduce a n
 `.extension.js`, that creates the necessary boilerplate to convert these messages into the
 corresponding assertions in `testharness.js`.
 
-It’s important to note that it isn’t guaranteed that the web page loads before the extension.
-A race condition could occur that causes the `browser.test` assertion results not to be reported
-back to the test harness if the `browser.test.onMessage` listener isn’t registered. To resolve
-this, user agents queue the results until a listener is registered, then report them.
+It is important to note that the web page driving the extension loading and tests will load before
+the extension. We take advantage of this to ensure that test status listeners
+(`browser.test.onTestStarted` and `browser.test.onTestFinished`) are registered before a test
+starts. This avoids race conditions stemming from variations in how different browsers load
+extensions and the speed at which tests execute. It also prevents the need for complex browser
+logic to handle both scenarios (test status listeners registering before or after the tests start),
+which will hopefully simplify each browser's implementation of this RFC.
 
 Lastly, since the `Classic` and `BiDi` implementations support loading an extension using a
 `path` or `archivePath` to the extension’s resources, the full path to the extension’s resources
