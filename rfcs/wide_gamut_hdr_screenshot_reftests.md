@@ -24,7 +24,9 @@ A reftest opts in by declaring the requested output color space on the root test
 <meta name="reftest-color-space" content="display-p3">
 ```
 
-The value uses the identifier defined by WebDriver BiDi. WPT does not define aliases or separate color-space semantics. Expected identifiers include `srgb`, `display-p3`, `rec2020`, an identifier for Adobe RGB (1998), such as `a98-rgb`, if standardized by WebDriver BiDi, and `rec2100-pq` and `rec2100-hlg`.
+The value uses the identifier defined by WebDriver BiDi. WPT does not define aliases or separate color-space semantics. Planned outputs are `srgb` and `display-p3`, with `rec2100-pq` as a future HDR output.
+
+These are screenshot output spaces, not the color spaces of the input content. Separate Adobe RGB, SDR Rec.2020, and HLG outputs are deferred. The corresponding input tests remain in scope. Display-P3 output alone will not cover all of them.
 
 The metadata is valid only on the root test and applies to every match and mismatch reference in its reference graph. Reference files do not override the root request. This allows the same reference file to be reused by tests that request different output color spaces.
 
@@ -39,6 +41,8 @@ Support is defined for a `colorSpace` / `image/png` pair. WPT enables a value on
 ### Capture contract
 
 For each enabled `colorSpace` / `image/png` pair, WebDriver BiDi defines enough about the returned PNG for WPT to validate and interpret it. This includes the required bit depth, color signaling, and sample interpretation. This RFC refers to those requirements as the **capture contract**. WPT consumes the contract; it does not define the HDR value semantics or the PNG representation.
+
+For future `rec2100-pq` screenshots, the capture contract must map SDR reference white to 203 cd/m² (203 nits) on the PQ scale, following [CSS Color HDR](https://www.w3.org/TR/css-color-hdr-1/#compositing). This defines the reference white of the returned image, not its maximum luminance or the brightness of the attached display.
 
 A rejected request, an explicitly reported fallback, or a PNG that does not satisfy the capture contract is reported as a capture error and is not compared. The log identifies the cause. A capture error remains distinct from `FAIL`, which means that two valid captures differed. In particular, the runner does not compare fallback sRGB or tone-mapped SDR pixels.
 
@@ -55,7 +59,7 @@ On a rendering mismatch or invalid capture, the runner keeps the available origi
 ## Risks
 
 - **Decoder support.** Existing Python image libraries and WPT code paths may reduce precision, convert to sRGB, discard color signaling, or tone-map. The color-preserving path needs targeted fixtures for these failures.
-- **Protocol and implementation dependency.** WPT cannot enable a color space until WebDriver BiDi defines the corresponding PNG output and at least one browser and runner can produce and decode it. `display-p3` is the intended first end-to-end path; PQ and HLG remain dependent on protocol and implementation feasibility.
+- **Protocol and implementation dependency.** WPT cannot enable a color space until WebDriver BiDi defines the corresponding PNG output and at least one browser and runner can produce and decode it. `display-p3` is the intended first end-to-end path; PQ remains dependent on protocol and implementation feasibility.
 - **Fuzzy comparison.** Exact comparison is likely too strict for broad JPEG XL coverage, but an underspecified higher-precision tolerance would produce inconsistent results across runners.
 - **Reference quality.** A reference containing only sRGB or SDR values makes an opted-in test ineffective.
 - **Cost and debugging.** Higher-bit-depth PNGs require more storage and decode time and may not display correctly in ordinary image viewers.
