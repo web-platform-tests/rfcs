@@ -32,6 +32,8 @@ The metadata is valid only on the root test and applies to every match and misma
 
 The manifest stores the requested color space on the root reftest item so the value is available to the runner before execution. Unknown identifiers, malformed values, and duplicate metadata are authoring errors. A valid request that the browser or driver does not support is a capture error instead.
 
+`wptrunner` uses this value to select a capture path that meets the capture contract. If that path requires different browser launch settings, the browser integration provides them through `Browser.settings(test)`. The runner starts or restarts the browser with those settings. The executor handles setup within the current session. Any setup required before navigation must finish before loading the test or any reference. The same settings must apply to the test and all references. Before a test with different requirements reuses the environment, the runner and executor must remove or replace changed settings, including after errors.
+
 ### Requesting screenshot output
 
 For opted-in tests, `wptrunner` passes the requested color space to the executor. The executor may use classic WebDriver or WebDriver BiDi. The current BiDi proposal would send `colorSpace` and `format: { type: "image/png" }` to `browsingContext.captureScreenshot`. The APIs and capture requirements for these extensions are still under discussion in both protocols. The encoded image type is fixed by the initial implementation and is not exposed as test metadata.
@@ -40,11 +42,13 @@ Support is defined for a `colorSpace` / `image/png` pair. WPT enables a value on
 
 ### Capture contract
 
-For each enabled `colorSpace` / `image/png` pair, the WebDriver specifications define enough about the returned PNG for WPT to validate and interpret it. This includes the required bit depth, color signaling, and sample interpretation. This RFC refers to those requirements as the **capture contract**. WPT consumes the contract; it does not define the HDR value semantics or the PNG representation.
+For each enabled `colorSpace` / `image/png` pair, the WebDriver specifications define enough about the returned PNG for WPT to validate and interpret it. This includes the rendering requirements, required bit depth, color signaling, and sample interpretation. This RFC refers to those requirements as the **capture contract**. WPT consumes the contract; it does not define the HDR value semantics or the PNG representation.
+
+This RFC proposes using the requested output gamut as the target for rendering the capture. The browser may reuse rendering data that preserves the required values. Otherwise, it must perform the rendering needed for the requested target. Converting pixels after those values have been lost is not sufficient. The requested space need not match the physical display.
 
 For future `rec2100-pq` screenshots, the capture contract must map SDR reference white to 203 cd/m² (203 nits) on the PQ scale, following [CSS Color HDR](https://www.w3.org/TR/css-color-hdr-1/#compositing). This defines the reference white of the returned image, not its maximum luminance or the brightness of the attached display.
 
-A rejected request, an explicitly reported fallback, or a PNG that does not satisfy the capture contract is reported as a capture error and is not compared. The log identifies the cause. A capture error remains distinct from `FAIL`, which means that two valid captures differed. In particular, the runner does not compare fallback sRGB or tone-mapped SDR pixels.
+The runner reports `ERROR` when the required rendering or capture mode is unavailable, a request is rejected, a fallback is explicitly reported, or a PNG does not satisfy the capture contract. For these capture errors, it logs the cause and does not compare the images. Valid captures use the normal match or mismatch comparison to determine `PASS` or `FAIL`. Incorrect rendering is not reclassified as unsupported.
 
 ### Comparison and `wptrunner`
 
@@ -59,10 +63,11 @@ On a rendering mismatch or invalid capture, the runner keeps the available origi
 ## Risks
 
 - **Decoder support.** Existing Python image libraries and WPT code paths may reduce precision, convert to sRGB, discard color signaling, or tone-map. The color-preserving path needs targeted fixtures for these failures.
+- **Capture validation.** Tests of the capture implementation must check known pixel values through rendering, capture, and decoding, not only the PNG color profile. The fixtures should also include a mismatch pair whose colors differ in Display-P3 but become equal after a defined sRGB clipping conversion.
 - **Protocol and implementation dependency.** WPT cannot enable a color space until the WebDriver specifications define the corresponding PNG output and at least one browser and runner can produce and decode it. `display-p3` is the intended first end-to-end path; PQ remains dependent on protocol and implementation feasibility.
 - **Fuzzy comparison.** Exact comparison is likely too strict for broad JPEG XL coverage, but an underspecified higher-precision tolerance would produce inconsistent results across runners.
 - **Reference quality.** A reference containing only sRGB or SDR values makes an opted-in test ineffective.
-- **Cost and debugging.** Higher-bit-depth PNGs require more storage and decode time and may not display correctly in ordinary image viewers.
+- **Cost and debugging.** Higher-bit-depth PNGs require more storage and decode time and may not display correctly in ordinary image viewers. Capture paths that require new launch settings also incur the cost of restarting the browser when those settings change.
 - **Downstream consumers.** Vendor harnesses, dashboards, and artifact systems need to handle the new metadata, capture errors, and image artifacts.
 
 ## References
