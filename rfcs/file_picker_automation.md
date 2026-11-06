@@ -42,6 +42,10 @@ Links:
 
 * [WebDriver BiDi Issue 1177 (`browser.setFileDialogBehavior`)](https://github.com/w3c/webdriver-bidi/issues/1177)
 * [WebDriver BiDi PR 1193 (`browser.setFileDialogBehavior` spec PR)](https://github.com/w3c/webdriver-bidi/pull/1193)
+* [WebDriver BiDi PR 1202 (`browser.createTemporaryDirectory` & `browser.removeTemporaryDirectory` spec PR)](https://github.com/w3c/webdriver-bidi/pull/1202)
+* [WHATWG HTML PR 13197 (`<input type="file">` hook integration)](https://github.com/whatwg/html/pull/13197)
+* [WICG File System Access PR 477 (`showOpenFilePicker`, `showSaveFilePicker`, `showDirectoryPicker` hook integration)](https://github.com/WICG/file-system-access/pull/477)
+* [Companion WPT PR 64840](https://github.com/web-platform-tests/wpt/pull/64840)
 * [Prototype Implementation in Chromium](https://chromium-review.googlesource.com/c/chromium/src/+/8482432) (to be updated)
 
 
