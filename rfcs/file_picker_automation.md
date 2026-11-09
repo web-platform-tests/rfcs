@@ -15,25 +15,24 @@ Following discussions at TPAC 2026 in the WPT and WebDriver BiDi working groups 
 
 ### **1. File Picker Automation API (`testdriver.js` / WebDriver BiDi `browser.setFileDialogBehavior`)**
 
-* `test_driver.set_file_picker_behavior(options)`: Pre-configures the behavior of the next file or directory picker dialog. Maps onto WebDriver BiDi `browser.setFileDialogBehavior` ([w3c/webdriver-bidi#1177](https://github.com/w3c/webdriver-bidi/issues/1177), [w3c/webdriver-bidi#1193](https://github.com/w3c/webdriver-bidi/pull/1193)).
-  * `options.action`: `"accept"` or `"cancel"` (or `null` to reset to the default behavior).
-  * `options.paths`: An array of paths (returned by temporary directory/file provisioning below) to be selected when `action` is `"accept"`, and disallowed when `action` is `"cancel"`.
-  * **Acceptance (`{ action: "accept", paths: [...] }`)**: Pre-configures the paths to return. Passing an empty array (`[]`), non-array, or omitting paths throws an upfront `TypeError`, as confirming zero files is not a valid OS dialog state. Providing multiple paths to a single-select picker (e.g. `showOpenFilePicker({ multiple: false })` or `showSaveFilePicker()`) cancels the dialog, causing the picker call to reject with an `AbortError`.
-  * **Cancellation (`{ action: "cancel" }`)**: Simulates user cancellation or dismissing the dialog, causing the next picker call to reject with an `AbortError`.
+* `test_driver.bidi.browser.set_file_dialog_behavior(params)`: Pre-configures the behavior of file and directory picker dialogs. Maps directly onto WebDriver BiDi `browser.setFileDialogBehavior` ([w3c/webdriver-bidi#1177](https://github.com/w3c/webdriver-bidi/issues/1177), [w3c/webdriver-bidi#1193](https://github.com/w3c/webdriver-bidi/pull/1193)).
+  * `params.fileDialogBehavior`: `{ type: "accept", paths: [...] }`, `{ type: "cancel" }`, or `null` (to reset to the default behavior).
+  * **Acceptance (`{ type: "accept", paths: [...] }`)**: Pre-configures the paths (returned by temporary directory/file provisioning below) to select when a file or directory dialog opens. Providing a non-empty array of paths is required. Providing multiple paths to a single-select picker (e.g. `showOpenFilePicker({ multiple: false })` or `showSaveFilePicker()`), or paths that do not exist or do not match the requested dialog type, cancels the dialog (causing the picker call to reject with an `AbortError` or fire a `cancel` event on `<input type="file">`).
+  * **Cancellation (`{ type: "cancel" }`)**: Simulates user cancellation or dismissing the dialog, causing the picker call to reject with an `AbortError` (or fire a `cancel` event on `<input type="file">`).
 
-### **2. Temporary Directory & File Provisioning (`testdriver.js` / WebDriver BiDi `browser.createTemporaryDirectory`)**
+### **2. Temporary Directory & File Provisioning (`testdriver.js` / WebDriver BiDi `browser.createTemporaryDirectory` & `browser.removeTemporaryDirectory`)**
 
-Rather than provisioning files on the host in `wptrunner`, temporary directory and test file creation is handled by a separate WebDriver BiDi command (`browser.createTemporaryDirectory`, to be specified in a dedicated WebDriver BiDi PR):
+Rather than provisioning files on the host in `wptrunner`, temporary directory and test file creation and cleanup are handled by WebDriver BiDi commands (`browser.createTemporaryDirectory` and `browser.removeTemporaryDirectory`, specified in [w3c/webdriver-bidi#1202](https://github.com/w3c/webdriver-bidi/pull/1202)):
 
-* **Declarative remote-end provisioning**: Exposed to tests via `test_driver.create_temporary_directory(options)`, this command allocates an isolated temporary directory inside the remote end's writable space and populates test files/subdirectories declaratively (e.g. specifying relative filename, base64-encoded content, byte size, and file attributes/permissions as defined by the BiDi spec).
-* **Orthogonal composition**: Returns the created directory/file path(s) on the remote end, which tests pass directly into `test_driver.set_file_picker_behavior({ action: "accept", paths: [path] })` (or `input.setFiles`).
+* **Declarative remote-end provisioning**: Exposed to tests via `test_driver.bidi.browser.create_temporary_directory(params)`, this command allocates an isolated temporary directory inside the remote end's writable space and populates test files, subdirectories, and symbolic links declaratively (specifying relative path, `network.BytesValue` content or byte size, symbolic link target, and permissions as defined by the BiDi spec).
+* **Orthogonal composition**: Returns the created directory path on the remote end, which tests pass directly into `test_driver.bidi.browser.set_file_dialog_behavior({ fileDialogBehavior: { type: "accept", paths: [path] } })` (or `input.setFiles`).
 * **Cross-platform & remote-friendly**: Because provisioning happens entirely on the BiDi remote end, tests work across all platforms—including iOS (inside the app container sandbox) and remote cloud grids (BrowserStack, Sauce Labs)—without requiring shared host filesystems or out-of-band channels like `adb`.
-* **Automatic cleanup**: The remote end manages the lifecycle of temporary directories created during the session and cleans them up automatically.
+* **Per-test and session cleanup**: Tests or `wptrunner` can remove temporary directories after each test via `test_driver.bidi.browser.remove_temporary_directory({ path })`, and the remote end also cleans up any remaining temporary directories automatically when the session ends.
 
 
 ## Protocol & Runner Integration
 
-* **WebDriver BiDi**: Dialog interception (`browser.setFileDialogBehavior`, [w3c/webdriver-bidi#1193](https://github.com/w3c/webdriver-bidi/pull/1193)) and temporary directory/file creation (`browser.createTemporaryDirectory`) are defined in WebDriver BiDi and exposed through `testdriver.js`.
+* **WebDriver BiDi**: Dialog interception (`browser.setFileDialogBehavior`, [w3c/webdriver-bidi#1193](https://github.com/w3c/webdriver-bidi/pull/1193)) and temporary directory creation/removal (`browser.createTemporaryDirectory` and `browser.removeTemporaryDirectory`, [w3c/webdriver-bidi#1202](https://github.com/w3c/webdriver-bidi/pull/1202)) are defined in WebDriver BiDi and exposed through `testdriver.js` (`test_driver.bidi.browser.*`).
 * **`wptrunner`**: Forwards the `testdriver.js` actions directly to the corresponding WebDriver BiDi commands without requiring custom host-side filesystem management.
 * **In-browser harnesses**: Legacy or in-browser test runners (such as Chromium's `content_shell`) can delegate `testdriver-vendor.js` calls to internal mock dialog and temporary directory APIs.
 
